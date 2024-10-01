@@ -1,16 +1,16 @@
 <script>
-    import Header from './header.svelte';
+	import Header from './header.svelte';
 </script>
 
 <div class="cowsSaysMoo">
-    <Header />
+	<Header />
 	<main>
 		<slot />
 	</main>
 </div>
 
 <style>
-    .cowsSaysMoo {
+	.cowsSaysMoo {
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
