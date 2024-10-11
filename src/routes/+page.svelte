@@ -1,2 +1,8 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	var num = 0;
+	function onclick() {
+		num++;
+	}
+</script>
+
+<h1>Hi Tom</h1>
