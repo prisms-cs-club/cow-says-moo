@@ -5,7 +5,7 @@
 let counter = 1+1;
 </script>
 <p>What is 1 + 1: {counter}</p>
-<p>NOTE: The timer does not work yet</p>
+<p>This page is awesome</p>
 <i>Wait... We want some of your suggestions!</i>
 <p></p>
 <button class = "btn">Click if you agree that this code is awesome</button>
