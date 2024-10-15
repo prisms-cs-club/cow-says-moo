@@ -2,9 +2,9 @@
 <p>This is Jammy's first HTML code</p>
 <b>Really it's the first code!</b>
 <script>
-let counter = 1;
+let counter = 1+1;
 </script>
-<p>How many seconds you've been on this page: {counter}</p>
+<p>What is 1 + 1: {counter}</p>
 <p>NOTE: The timer does not work yet</p>
 <i>Wait... We want some of your suggestions!</i>
 <p></p>
