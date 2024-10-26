@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Counter from '$lib/Counter.svelte';
 
-	export let data;
+	let { data } = $props();
 </script>
 
 <div class="hero min-h-screen bg-base-200">
