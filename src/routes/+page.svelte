@@ -1,68 +1,7 @@
 <script>
-	import menu_icon_1 from '../assets/menu_icon_1.png';
-	import menu_icon_2 from '../assets/menu_icon_2.png';
-	var navbar_menu_icon = menu_icon_1;
-	function change_menu_icon_enter() {
-		navbar_menu_icon = menu_icon_2;
-	}
-	function change_menu_icon_leave() {
-		navbar_menu_icon = menu_icon_1;
-	}
+	import PageHeader from '$lib/page_header.svelte';
 </script>
 
 <h1>
-	<div id="navbar_container">
-		<button
-			on:mouseenter={change_menu_icon_enter}
-			on:mouseleave={change_menu_icon_leave}
-			id="navbar_menu"
-		>
-			<img src={navbar_menu_icon} alt="Menu Icon" />
-		</button>
-		<div id="navbar_btns_div">
-			<div>
-				<button id="navbar_btn"> NAVBAR_BTN_1 </button>
-				<button id="navbar_btn"> NAVBAR_BTN_2 </button>
-				<button id="navbar_btn"> NAVBAR_BTN_3 </button>
-				<button id="navbar_btn"> NAVBAR_BTN_4 </button>
-				<button id="navbar_btn"> NAVBAR_BTN_5 </button>
-			</div>
-		</div>
-	</div>
+	<PageHeader />
 </h1>
-
-<style>
-	#navbar_menu {
-		border: 0;
-		height: 60px;
-		width: 120px;
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
-	#navbar_container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	h1 {
-		background-color: white;
-		color: white;
-		height: 60px;
-	}
-	#navbar_btns_div {
-		display: flex;
-		align-items: center;
-	}
-	#navbar_btn {
-		background-color: white;
-		border: 0;
-		height: 60px;
-		width: 120px;
-		color: black;
-	}
-	#navbar_btn:hover {
-		background-color: black;
-		color: white;
-	}
-</style>
