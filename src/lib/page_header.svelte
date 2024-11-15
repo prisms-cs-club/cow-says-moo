@@ -53,6 +53,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		width: 100%;
 	}
 	h1 {
 		background-color: white;
@@ -61,6 +62,7 @@
 	}
 	#navbar_btns_div {
 		display: flex;
+		justify-content: center;
 		align-items: center;
 	}
 	#navbar_btn {
@@ -71,10 +73,7 @@
 		color: black;
 	}
 	#navbar_btn:hover {
-		background-color: black;
+		background-color: rgb(80, 0, 0);
 		color: white;
-	}
-	html {
-		position: fixed;
 	}
 </style>
