@@ -7,4 +7,4 @@ export default {
 		extend: {}
 	},
 	plugins: [daisyui]
-} satisfies Config;
+} as Config;

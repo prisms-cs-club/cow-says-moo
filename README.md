@@ -1,5 +1,4 @@
-# cow-says-moo
- PRISMS House Website
+# Cow Says Moo
 
 UwU
 UwU
