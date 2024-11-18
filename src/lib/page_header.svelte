@@ -19,26 +19,24 @@
 	function navbarBtn5Onclick() {}
 </script>
 
-<h1>
-	<div id="navbar_container">
-		<button
-			on:mouseenter={changeMenuIconEnter}
-			on:mouseleave={changeMenuIconLeave}
-			id="navbar_menu"
-		>
-			<img src={navbar_menu_icon} alt="Menu Icon" />
-		</button>
-		<div id="navbar_btns_div">
-			<div>
-				<button id="navbar_btn" on:click={navbarBtn1Onclick}> Home </button>
-				<button id="navbar_btn" on:click={navbarBtn2Onclick}> Events </button>
-				<button id="navbar_btn" on:click={navbarBtn3Onclick}> NAVBAR_BTN_3 </button>
-				<button id="navbar_btn" on:click={navbarBtn4Onclick}> NAVBAR_BTN_4 </button>
-				<button id="navbar_btn" on:click={navbarBtn5Onclick}> NAVBAR_BTN_5 </button>
-			</div>
+<div id="navbar_container">
+	<button
+		on:mouseenter={changeMenuIconEnter}
+		on:mouseleave={changeMenuIconLeave}
+		id="navbar_menu"
+	>
+		<img src={navbar_menu_icon} alt="Menu Icon" />
+	</button>
+	<div id="navbar_btns_div">
+		<div>
+			<button id="navbar_btn" on:click={navbarBtn1Onclick}> Home </button>
+			<button id="navbar_btn" on:click={navbarBtn2Onclick}> Events </button>
+			<button id="navbar_btn" on:click={navbarBtn3Onclick}> NAVBAR_BTN_3 </button>
+			<button id="navbar_btn" on:click={navbarBtn4Onclick}> NAVBAR_BTN_4 </button>
+			<button id="navbar_btn" on:click={navbarBtn5Onclick}> NAVBAR_BTN_5 </button>
 		</div>
 	</div>
-</h1>
+</div>
 
 <style>
 	#navbar_menu {
