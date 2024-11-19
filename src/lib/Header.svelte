@@ -17,7 +17,7 @@
 	/*parallax extra credit*/
 	.parallax {
 		/*Image Source: cntraveler.com/hotels/thailand/ang-thong/four-seasons-resort-koh-samui*/
-		background-image: url('bg.png');
+		/* background-image: url('bg.png'); */
 		grid-column-start: 1;
 		grid-column-end: 9;
 		grid-row-start: 1;

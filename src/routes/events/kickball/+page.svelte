@@ -10,8 +10,6 @@
 
 <script>
 	import RankBar from '$lib/RankBar.svelte';
-	import HouseScoreLeaderboard from '$lib/RankBar.svelte';
-	import { svelte } from '@sveltejs/vite-plugin-svelte';
 	let event_title = 'Kickball';
 	let event_text =
 		'Kickball (also known as soccer baseball in most of Canada and football rounders in the United Kingdom) is a team sport and league game, similar to baseball. Like baseball, it is a safe haven game in which one team tries to score by having its players return a ball from home base to the field and then circle the bases. Meanwhile, the other team tries to stop them by tagging them "out" with the ball before they can return to home base. However, instead of hitting a small, hard ball with a bat, players kick an inflated rubber ball; this makes it more accessible to young children. As in baseball, teams alternate half-innings. The team with the most runs after a predefined number of innings wins.';
@@ -30,12 +28,7 @@
 			You can see the RankBar component in the src/lib/RankBar.svelte file.
 				-- Tom Geng
 		-->
-		<RankBar
-			albemarle={110}
-			lambert={450}
-			hobler={140}
-			ettl={190}
-		/>
+		<RankBar albemarle={110} lambert={450} hobler={140} ettl={190} />
 	</div>
 </div>
 
