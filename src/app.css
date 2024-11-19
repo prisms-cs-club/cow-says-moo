@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
-body{
-    font-family: Times;
-    padding: 15px;
-    font-size: large;
+body {
+	font-family: Times;
+	padding: 15px;
+	font-size: large;
 }

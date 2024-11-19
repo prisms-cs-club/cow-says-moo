@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { DataType } from './+page.ts';
-    export let data: DataType;
+	import type { DataType } from './+page.ts';
+	export let data: DataType;
 </script>
 
 <!-- Put your event template code here! -->
