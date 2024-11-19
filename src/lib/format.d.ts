@@ -44,7 +44,7 @@ export type Event = {
      * Otherwise, the result field will be null.
      */
     result: {
-        ablemarle: number,
+        albemarle: number,
         hobler: number,
         lambert: number,
         ettl: number,
