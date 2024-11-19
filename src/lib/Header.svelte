@@ -24,7 +24,6 @@
 		grid-row-end: 6;
 		text-align: center;
 
-		min-height: 1000px;
 		min-width: 100px;
 
 		background-attachment: fixed;
@@ -106,8 +105,7 @@
 		grid-row-start: 3;
 		grid-row-end: 4;
 		text-align: left;
-		margin-left: 10px;
-		margin-right: 10px;
+
 		padding: 10px;
 	}
 
