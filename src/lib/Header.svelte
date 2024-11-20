@@ -1,14 +1,19 @@
 <!-- Author: Addison Steen -->
 
+<script>
+	import RedirectButton from './redirectButton.svelte';
+</script>
+
 <div id="wrapper">
 	<div class="parallax"></div>
 	<div id="navbar">
 		<ul>
-			<li class="o"><a href="index.html">Home</a></li>
-			<li class="o"><a href="index.html">House Rankings</a></li>
-			<li class="o"><a href="index.html">Upcoming Events</a></li>
-			<li class="o"><a href="index.html">Calendar</a></li>
-			<li class="o"><a href="index.html">Activity Suggestions</a></li>
+			<RedirectButton className="btn" name="Home" target="index.html" />
+			<RedirectButton className="btn" name="House Rankings" target="/ranking" />
+			<RedirectButton className="btn" name="Upcoming Events" target="/events" />
+			<RedirectButton className="btn" name="Calendar" target="/calendar" />
+			<RedirectButton className="btn" name="Activity Suggestions" target="index.html" />
+			<RedirectButton className="btn" name="Houses" target="/houses" />
 		</ul>
 	</div>
 </div>
@@ -24,7 +29,7 @@
 		grid-row-end: 6;
 		text-align: center;
 
-		min-height: 1000px;
+		min-height: 20px;
 		min-width: 100px;
 
 		background-attachment: fixed;
