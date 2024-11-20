@@ -26,7 +26,7 @@ const sampleCompletedEvent: Event = {
 		albemarle: 400,
 		hobler: 300,
 		lambert: 200,
-		ettl: 100
+		ettl: 100,
 	},
 	winner: 'Ablemarle'
 };
