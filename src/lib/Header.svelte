@@ -4,11 +4,10 @@
 	<div class="parallax"></div>
 	<div id="navbar">
 		<ul>
-			<li class="o"><a href="index.html">Home</a></li>
-			<li class="o"><a href="index.html">House Rankings</a></li>
-			<li class="o"><a href="index.html">Upcoming Events</a></li>
-			<li class="o"><a href="index.html">Calendar</a></li>
-			<li class="o"><a href="index.html">Activity Suggestions</a></li>
+			<li class="o "><a href="/">Home</a></li>
+			<li class="o "><a href="ranking/">House Rankings</a></li>
+			<li class="o "><a href="events/">Upcoming Events</a></li>
+			<li class="o "><a href="calendar/">Calendar</a></li>
 		</ul>
 	</div>
 </div>
@@ -60,6 +59,9 @@
 		grid-column-end: 9;
 		grid-row-start: 1;
 		grid-row-end: 2;
+		position: fixed;
+		top: 0;
+		width: 100%;
 	}
 
 	.navbar {
@@ -93,6 +95,4 @@
 		margin-right: 10px;
 		padding: 10px;
 	}
-
-	/*image*/
 </style>
