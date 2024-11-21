@@ -44,7 +44,7 @@
 
 	#navbar ul {
 		font-size: medium;
-		font-family: Times;
+		font-family: Georgia;
 		list-style-type: none;
 		margin: 0px;
 		padding: 10px;
@@ -53,12 +53,12 @@
 	}
 
 	#navbar ul li {
-		font-family: Times;
+		font-family: Georgia;
 		display: inline;
 	}
 
 	#navbar li a {
-		font-family: Times;
+		font-family: Georgia;
 		text-decoration: none;
 		padding: 10px;
 		color: #facec5;
@@ -66,13 +66,13 @@
 	}
 
 	#navbar a:hover {
-		font-family: Times;
+		font-family: Georgia;
 		color: #a61618;
 		background-color: #facec5;
 	}
 
 	#navbar {
-		font-family: Times;
+		font-family: Georgia;
 		grid-column-start: 1;
 		grid-column-end: 9;
 		grid-row-start: 1;
@@ -80,12 +80,12 @@
 	}
 
 	.navbar {
-		font-family: Times;
+		font-family: Georgia;
 		overflow: hidden;
 	}
 
 	.navbar a {
-		font-family: Times;
+		font-family: Georgia;
 		float: left;
 		font-size: 16px;
 		color: #facec5;
