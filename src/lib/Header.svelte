@@ -61,14 +61,14 @@
 		font-family: Georgia;
 		text-decoration: none;
 		padding: 10px;
-		color: #facec5;
+		color: #FFFFFF;
 		background-color: #a61618;
 	}
 
 	#navbar a:hover {
 		font-family: Georgia;
 		color: #a61618;
-		background-color: #facec5;
+		background-color: #FFFFFF;
 	}
 
 	#navbar {
@@ -88,7 +88,7 @@
 		font-family: Georgia;
 		float: left;
 		font-size: 16px;
-		color: #facec5;
+		color: #FFFFFF;
 		text-align: center;
 		padding: 14px 16px;
 		text-decoration: none;
@@ -97,9 +97,9 @@
 	/*description*/
 	#d {
 		border: double;
-		color: #facec5;
+		color: #FFFFFF;
 		border-width: 4px;
-		box-shadow: 5px 5px #facec5;
+		box-shadow: 5px 5px #FFFFFF;
 		background-color: #a61618;
 		grid-column-start: 1;
 		grid-column-end: 5;
