@@ -14,24 +14,7 @@
 </div>
 
 <style>
-	/*parallax extra credit*/
-	.parallax {
-		/*Image Source: cntraveler.com/hotels/thailand/ang-thong/four-seasons-resort-koh-samui*/
-		/* background-image: url('bg.png'); */
-		grid-column-start: 1;
-		grid-column-end: 9;
-		grid-row-start: 1;
-		grid-row-end: 6;
-		text-align: center;
 
-		min-height: 1000px;
-		min-width: 100px;
-
-		background-attachment: fixed;
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: cover;
-	}
 
 	#wrapper {
 		display: grid;
@@ -61,14 +44,14 @@
 		font-family: Georgia;
 		text-decoration: none;
 		padding: 10px;
-		color: #FFFFFF;
+		color: #facec5;
 		background-color: #a61618;
 	}
 
 	#navbar a:hover {
 		font-family: Georgia;
 		color: #a61618;
-		background-color: #FFFFFF;
+		background-color: #facec5;
 	}
 
 	#navbar {
@@ -88,7 +71,7 @@
 		font-family: Georgia;
 		float: left;
 		font-size: 16px;
-		color: #FFFFFF;
+		color: #facec5;
 		text-align: center;
 		padding: 14px 16px;
 		text-decoration: none;
@@ -97,9 +80,9 @@
 	/*description*/
 	#d {
 		border: double;
-		color: #FFFFFF;
+		color: #facec5;
 		border-width: 4px;
-		box-shadow: 5px 5px #FFFFFF;
+		box-shadow: 5px 5px #facec5;
 		background-color: #a61618;
 		grid-column-start: 1;
 		grid-column-end: 5;
