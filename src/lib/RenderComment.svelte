@@ -3,7 +3,7 @@
 <script lang="ts">
 	let { page } = $props();
 
-	import Comment from '$lib/Comment.svelte';
+	import InputComment from '$lib/InputComment.svelte';
 
 	let json_obj = JSON.parse(page);
 </script>
@@ -21,4 +21,4 @@
 	<pre data-prefix="~"><code>{json_obj.content}</code>
   </pre>
 </div>
-<Comment source_page="/test"></Comment>
+<InputComment source_page="/test"></InputComment>
