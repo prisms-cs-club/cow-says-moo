@@ -1,6 +1,6 @@
 <!-- Author: Addison Steen -->
 
-<script>
+<script lang="ts">
 	import RedirectButton from './redirectButton.svelte';
 </script>
 
@@ -8,12 +8,28 @@
 	<div class="parallax"></div>
 	<div id="navbar">
 		<ul>
-			<RedirectButton className="btn" name="Home" target="index.html" />
-			<RedirectButton className="btn" name="House Rankings" target="/ranking" />
-			<RedirectButton className="btn" name="Upcoming Events" target="/events" />
-			<RedirectButton className="btn" name="Calendar" target="/calendar" />
-			<RedirectButton className="btn" name="Activity Suggestions" target="index.html" />
-			<RedirectButton className="btn" name="Houses" target="/houses" />
+			<RedirectButton className="btn bg-navbarColor text-white" name="Home" target="/" />
+			<RedirectButton
+				className="btn bg-navbarColor text-white"
+				name="House Rankings"
+				target="/ranking"
+			/>
+			<RedirectButton
+				className="btn bg-navbarColor text-white"
+				name="Upcoming Events"
+				target="/events"
+			/>
+			<RedirectButton
+				className="btn bg-navbarColor text-white"
+				name="Calendar"
+				target="/calendar"
+			/>
+			<RedirectButton
+				className="btn bg-navbarColor text-white"
+				name="Activity Suggestions"
+				target="index.html"
+			/>
+			<RedirectButton className="btn bg-navbarColor text-white" name="Houses" target="/houses" />
 		</ul>
 	</div>
 </div>

@@ -1,10 +1,7 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 
-	/**
-	 * @param {string | URL} where
-	 */
-	function redirect(where) {
+	function redirect(where: string) {
 		goto(where);
 	}
 

@@ -61,7 +61,9 @@
 
 	async function fetchEvents() {
 		try {
-			const response = await fetch('/api/events');
+			const response = await fetch('/api/events', {
+				method: 'GET'
+			});
 			if (!response.ok) {
 				throw new Error('Failed to fetch events');
 			}
@@ -74,7 +76,9 @@
 
 	async function fetchEventById(id: string) {
 		try {
-			const response = await fetch(`/api/events?id=${id}`);
+			const response = await fetch(`/api/events?id=${id}`, {
+				method: 'GET'
+			});
 			if (!response.ok) {
 				throw new Error('Failed to fetch event');
 			}

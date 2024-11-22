@@ -5,12 +5,32 @@
 	let { children } = $props();
 </script>
 
-<div id="header">
-	<Header />
+<div id="wrapper">
+	<div id="header">
+		<Header />
+	</div>
+	<div id="content">
+		{@render children()}
+	</div>
+	<div id="footer">
+		<Footer />
+	</div>
 </div>
-<div id="content">
-	{@render children()}
-</div>
-<div id="footer">
-	<Footer />
-</div>
+
+<style>
+	#wrapper {
+		display: flex;
+		flex-direction: column;
+		min-height: 96vh;
+	}
+
+	#content {
+		flex: 1;
+	}
+
+	#footer {
+		background-color: #f8f8f8;
+		padding: 10px;
+		text-align: center;
+	}
+</style>
