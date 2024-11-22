@@ -1,22 +1,47 @@
-<!-- Author: Levi Segal -->
-
 <script lang="ts">
 	import daygridPlugin from '@fullcalendar/daygrid';
-	import FullCalendar, { Draggable } from 'svelte-fullcalendar';
+	import FullCalendar from 'svelte-fullcalendar';
 	import interactionPlugin from '@fullcalendar/interaction';
+	import { onMount } from 'svelte';
+
+	import type { Event } from '$lib/format.d.ts';
+
+	let events: Event[] = [];
+	let calendarEvents = [{ title: '', date: '' }];
+
+	onMount(async () => {
+		await fetchEvents();
+	});
+
+	async function fetchEvents() {
+		try {
+			const response = await fetch('/api/events', {
+				method: 'GET'
+			});
+			if (!response.ok) {
+				throw new Error('Failed to fetch events');
+			}
+			events = await response.json();
+			calendarEvents = events.map((event) => {
+				return {
+					title: event.title,
+					date: event.dateStart
+				};
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
 	let options = {
-		events: [
-			{ title: 'Computer Science Club', date: '2024-11-05' },
-			{ title: 'Computer Science Club', date: '2024-11-13' }
-		],
+		events: calendarEvents,
 		initialView: 'dayGridMonth',
 		schedulerLicenseKey: 'XXX',
 		plugins: [interactionPlugin, daygridPlugin],
 		droppable: true
 	};
-</script>
 
-<Draggable eventData={{ title: 'Computer Science Club' }}>Computer Science Dates</Draggable>
+	$: options = { ...options, events: calendarEvents };
+</script>
 
 <FullCalendar {options} />
