@@ -14,12 +14,7 @@
 		<p id="text">{data.event.description}</p>
 	</div>
 	<div id="leaderboard">
-		<RankBar
-			albemarle={data.event.result?.albemarle ?? 0}
-			lambert={data.event.result?.lambert ?? 0}
-			hobler={data.event.result?.hobler ?? 0}
-			ettl={data.event.result?.ettl ?? 0}
-		/>
+		<RankBar />
 	</div>
 </div>
 
