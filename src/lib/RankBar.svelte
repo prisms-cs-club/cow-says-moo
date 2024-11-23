@@ -29,8 +29,6 @@
 			console.error(error);
 		}
 	}
-
-	console.log(maxPoints);
 </script>
 
 <h1>House Points</h1>
@@ -49,7 +47,7 @@
 		<progress class="progress progress-info w-56" value={lambert.points} max={maxPoints}></progress>
 	</p>
 {:else}
-	<p>Loading...</p>
+	<span class="loading loading-bars loading-lg"></span>
 {/if}
 
 <style>

@@ -84,7 +84,6 @@
 				throw new Error('Failed to fetch event');
 			}
 			const event: Event = await response.json();
-			console.log(event);
 		} catch (error) {
 			console.error(error);
 		}
@@ -103,7 +102,6 @@
 				throw new Error('Failed to create event');
 			}
 			const result: Event = await response.json();
-			console.log(result);
 			await fetchEvents();
 		} catch (error) {
 			console.error(error);
@@ -123,7 +121,6 @@
 				throw new Error('Failed to update event');
 			}
 			const result: Event = await response.json();
-			console.log(result);
 			await fetchEvents();
 		} catch (error) {
 			console.error(error);
@@ -139,7 +136,6 @@
 				throw new Error('Failed to delete event');
 			}
 			const result = await response.json();
-			console.log(result);
 			await fetchEvents();
 		} catch (error) {
 			console.error(error);

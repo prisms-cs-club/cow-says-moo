@@ -3,7 +3,6 @@ import type { Event } from '$lib/format.d.ts';
 
 async function fetchEventById(fetch: typeof window.fetch, id: string): Promise<Event> {
     try {
-        console.log(id);
         const response = await fetch(`/api/events?id=${id}`, {
             method: 'GET'
         });
@@ -11,7 +10,6 @@ async function fetchEventById(fetch: typeof window.fetch, id: string): Promise<E
             throw new Error('Failed to fetch event');
         }
         const event: Event = await response.json();
-        // console.log(event);
         return event;
     } catch (err) {
         console.error(err);

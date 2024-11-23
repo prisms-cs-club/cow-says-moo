@@ -55,9 +55,7 @@ export async function PUT({ request }) {
 
 export async function DELETE({ url }) {
     const title = url.searchParams.get('id');
-    console.log(title);
     events = events.filter(event => event.title !== title);
-    console.log(events);
     return new Response(JSON.stringify({ message: `Event ${title} deleted` }), {
         headers: {
             'Content-Type': 'application/json'
