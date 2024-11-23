@@ -11,7 +11,7 @@ export async function GET({ url }) {
     events = events.sort((a, b) => a.title.localeCompare(b.title));
 
     if (id) {
-        const event = { id, title: `Event ${id}`, date: '2024-11-18' };
+        const event = events.find(event => event.title === id);
         return new Response(JSON.stringify(event), {
             headers: {
                 'Content-Type': 'application/json'

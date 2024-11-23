@@ -1,42 +1,69 @@
 <!-- Author: Ivey Wang -->
 
 <script lang="ts">
-	export let ettl: number; // score of Ettl house
-	export let hobler: number; // score of Hobler house
-	export let albemarle: number; // score of Albemarle house
-	export let lambert: number; // score of Lambert house
+	import { onMount } from 'svelte';
+	import type { House } from './format';
+	import { queryHouse } from '$lib/queryHouse';
+
+	let ettl: House = { name: '', description: '', points: 0 };
+	let hobler: House = { name: '', description: '', points: 0 };
+	let albemarle: House = { name: '', description: '', points: 0 };
+	let lambert: House = { name: '', description: '', points: 0 };
+	let maxPoints = 100;
+	let shown = false;
+	onMount(async () => {
+		await fetchScores();
+	});
+
+	async function fetchScores() {
+		try {
+			ettl = await queryHouse('ettl');
+			hobler = await queryHouse('hobler');
+			albemarle = await queryHouse('albemarle');
+			lambert = await queryHouse('lambert');
+			maxPoints =
+				Math.max(Math.max(ettl.points, hobler.points), Math.max(albemarle.points, lambert.points)) *
+				1.1;
+			shown = true;
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	console.log(maxPoints);
 </script>
 
-<p><progress class="progress progress-success w-56" value={ettl} max="1000"></progress></p>
-<p><progress class="progress progress-error w-56" value={hobler} max="1000"></progress></p>
-<p><progress class="progress progress-warning w-56" value={albemarle} max="1000"></progress></p>
-<p><progress class="progress progress-info w-56" value={lambert} max="1000"></progress></p>
-<p><progress id="id1" class="progress w-56" value="70" max="100"></progress></p>
+<h1>House Points</h1>
+{#if shown}
+	<p>
+		<progress class="progress progress-success w-56" value={ettl.points} max={maxPoints}></progress>
+	</p>
+	<p>
+		<progress class="progress progress-error w-56" value={hobler.points} max={maxPoints}></progress>
+	</p>
+	<p>
+		<progress class="progress progress-warning w-56" value={albemarle.points} max={maxPoints}
+		></progress>
+	</p>
+	<p>
+		<progress class="progress progress-info w-56" value={lambert.points} max={maxPoints}></progress>
+	</p>
+{:else}
+	<p>Loading...</p>
+{/if}
 
 <style>
-	#id1 {
-		background: #ffff97;
-	}
 	.progress {
 		position: relative;
 		width: 80%;
 		left: 10%;
 		appearance: none;
 		overflow: hidden;
-		height: 2.5rem /* 8px */;
-		border-radius: var(--rounded-box, 1rem /* 16px */);
+		height: 2.5rem;
+		border-radius: var(--rounded-box, 1rem);
 		background-color: var(--fallback-bc, oklch(var(--bc) / 0.1));
 	}
 	.progress-success::-moz-progress-bar {
-		border-radius: var(--rounded-box, 1rem /* 16px */);
-		--tw-bg-opacity: 1;
-		background-color: var(--fallback-su, oklch(var(--su) / var(--tw-bg-opacity)));
-	}
-	.progress-success:indeterminate {
-		--progress-color: var(--fallback-su, oklch(var(--su) / 1));
-	}
-	.progress-success::-webkit-progress-value {
-		--tw-bg-opacity: 1;
-		background-color: var(--fallback-su, oklch(var(--su) / var(--tw-bg-opacity)));
+		background-color: var(--fallback-su, oklch(var(--su) / 1));
 	}
 </style>

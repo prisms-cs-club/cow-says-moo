@@ -22,6 +22,7 @@
 				throw new Error('Failed to fetch events');
 			}
 			events = await response.json();
+
 			calendarEvents = events.map((event) => {
 				return {
 					title: event.title,
@@ -38,10 +39,17 @@
 		initialView: 'dayGridMonth',
 		schedulerLicenseKey: 'XXX',
 		plugins: [interactionPlugin, daygridPlugin],
-		droppable: true
+		droppable: true,
+		height: '660px'
 	};
 
 	$: options = { ...options, events: calendarEvents };
 </script>
 
-<FullCalendar {options} />
+<div class="small-calendar"><FullCalendar {options} /></div>
+
+<style>
+	.small-calendar {
+		width: 100%;
+	}
+</style>

@@ -32,6 +32,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Event } from '$lib/format.d.ts';
+	import RedirectButton from '$lib/redirectButton.svelte';
 
 	let events: Event[] = [];
 	let newEvent: Partial<Event> = {
@@ -172,5 +173,5 @@
 
 	<h2>Delete Event</h2>
 	<input type="text" bind:value={deleteEventId} placeholder="Event ID" />
-	<button on:click={deleteEventById}>Delete</button>
+	<button on:click={deleteEventById}>Delete</button>\\
 </div>

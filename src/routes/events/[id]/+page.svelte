@@ -1,8 +1,60 @@
 <script lang="ts">
-	import type { DataType } from './+page.ts';
-	export let data: DataType;
+	import { onMount } from 'svelte';
+	import RankBar from '$lib/RankBar.svelte';
+	export let data;
+
+	onMount(async () => {});
 </script>
 
-<!-- Put your event template code here! -->
-<!-- note: use `data.eventObj` to access the details of the event -->
-<h1>{data.eventBody.title}</h1>
+<div id="frame">
+	<div id="title_frame">
+		<h1 id="title">{data.event.title}</h1>
+	</div>
+	<div id="text_frame">
+		<p id="text">{data.event.description}</p>
+	</div>
+	<div id="leaderboard">
+		<RankBar
+			albemarle={data.event.result?.albemarle ?? 0}
+			lambert={data.event.result?.lambert ?? 0}
+			hobler={data.event.result?.hobler ?? 0}
+			ettl={data.event.result?.ettl ?? 0}
+		/>
+	</div>
+</div>
+
+<style>
+	#title_frame {
+		display: flex;
+		justify-content: left;
+		align-items: left;
+		width: 100%;
+	}
+	#title {
+		color: rgb(80, 0, 0);
+		height: 60px;
+		font-size: 48px;
+		width: 100%;
+		text-align: left;
+	}
+	#frame {
+		background-color: #f8f8f8;
+		overflow: auto;
+		height: 100vh;
+		width: 100%;
+		border-top-width: 2px;
+	}
+	#text_frame {
+		display: flex;
+		justify-content: left;
+		align-items: left;
+	}
+	#text {
+		color: black;
+		font-size: 16px;
+		width: 60%;
+		border-color: black;
+		border-width: 2px;
+		text-align: left;
+	}
+</style>

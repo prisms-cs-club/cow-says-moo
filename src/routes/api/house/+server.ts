@@ -1,4 +1,6 @@
-const house = [{ name: "ettl", description: "asdf" }, { name: "haha", description: "haha" }];
+import type { House } from '$lib/format.d.ts';
+
+const house: House[] = [{ name: "ettl", description: "asdf", points: 10 }, { name: "hobler", description: "haha", points: 20 }, { name: "lambert", description: "hehe", points: 30 }, { name: "albemarle", description: "hihi", points: 40 }];
 const nothing = [{ name: "null", description: "null" }];
 
 export async function GET({ url }) {

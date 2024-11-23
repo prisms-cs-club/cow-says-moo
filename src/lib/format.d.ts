@@ -55,3 +55,9 @@ export type Event = {
 	 */
 	winner: string?;
 };
+
+export type House = {
+	name: string;
+	description: string;
+	points: number;
+};
