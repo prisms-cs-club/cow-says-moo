@@ -5,38 +5,98 @@
 	export let hobler: number; // score of Hobler house
 	export let albemarle: number; // score of Albemarle house
 	export let lambert: number; // score of Lambert house
+	ettl = 300
+	hobler = 200
+	albemarle = 300
+	lambert = 400
+	let maxValue = Math.max(ettl,hobler,lambert,albemarle);
 </script>
-
-<p><progress class="progress progress-success w-56" value={ettl} max="1000"></progress></p>
-<p><progress class="progress progress-error w-56" value={hobler} max="1000"></progress></p>
-<p><progress class="progress progress-warning w-56" value={albemarle} max="1000"></progress></p>
-<p><progress class="progress progress-info w-56" value={lambert} max="1000"></progress></p>
-<p><progress id="id1" class="progress w-56" value="70" max="100"></progress></p>
+<title>House Ranking</title>
+<p class = text>Ettl</p> <p><progress class="progress progress-ettl w-56" value={ettl} max={maxValue}></progress></p>
+<p class = text>Hobler</p> <p><progress class="progress progress-hobler w-56" value={hobler} max={maxValue}></progress></p>
+<p class = text>Albemarle</p> <p><progress class="progress progress-albemarle w-56" value={albemarle} max={maxValue}></progress></p>
+<p class = text>Lambert</p> <p><progress class="progress progress-lambert w-56" value={lambert} max={maxValue}></progress></p>
 
 <style>
-	#id1 {
-		background: #ffff97;
+	.text {
+		top:70px;
+		position: relative;
+		left:5px;
 	}
 	.progress {
 		position: relative;
+		top: 50px;
 		width: 80%;
-		left: 10%;
+		left:10%;
 		appearance: none;
 		overflow: hidden;
-		height: 2.5rem /* 8px */;
+		height: 2rem /* 8px */;
 		border-radius: var(--rounded-box, 1rem /* 16px */);
-		background-color: var(--fallback-bc, oklch(var(--bc) / 0.1));
+		background-color: var(--fallback-bc,oklch(var(--bc)/0.2));
 	}
-	.progress-success::-moz-progress-bar {
+	.progress::-moz-progress-bar {
 		border-radius: var(--rounded-box, 1rem /* 16px */);
 		--tw-bg-opacity: 1;
-		background-color: var(--fallback-su, oklch(var(--su) / var(--tw-bg-opacity)));
+		background-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)));
 	}
-	.progress-success:indeterminate {
-		--progress-color: var(--fallback-su, oklch(var(--su) / 1));
+	:root {
+		--color-albemarle: #ede625;
+		--color-ettl:#26be3a;
+		--color-hobler:#fa4242;
+		--color-lambert:#4270fa;
 	}
-	.progress-success::-webkit-progress-value {
+
+	/* Four progress bar's color in different browsers*/
+	/* Ettl progress bar in different browsers*/
+	.progress-ettl::-moz-progress-bar {
+		border-radius: var(--rounded-box, 1rem /* 16px */);
 		--tw-bg-opacity: 1;
-		background-color: var(--fallback-su, oklch(var(--su) / var(--tw-bg-opacity)));
+		background-color: var(--color-ettl);
+	}
+	.progress-ettl:indeterminate {
+		--progress-color: var(--color-ettl);
+	}
+	.progress-ettl::-webkit-progress-value {
+		--tw-bg-opacity: 1;
+		background-color: var(--color-ettl);
+	}
+	/* Albemarle progress bar in different browsers*/
+	.progress-albemarle::-moz-progress-bar {
+		border-radius: var(--rounded-box, 1rem /* 16px */);
+		--tw-bg-opacity: 1;
+		background-color: var(--color-albemarle);
+	}
+	.progress-albemarle:indeterminate {
+		--progress-color: var(--color-albemarle);
+	}
+	.progress-albemarle::-webkit-progress-value {
+		--tw-bg-opacity: 1;
+		background-color: var(--color-albemarle);
+	}
+	/* Lambert progress bar in different browsers*/
+	.progress-lambert::-moz-progress-bar {
+		border-radius: var(--rounded-box, 1rem /* 16px */);
+		--tw-bg-opacity: 1;
+		background-color: var(--color-lambert);
+	}
+	.progress-lambert:indeterminate {
+		--progress-color: var(--color-lambert);
+	}
+	.progress-lambert::-webkit-progress-value {
+		--tw-bg-opacity: 1;
+		background-color: var(--color-lambert);
+	}
+	/* Hobler progress bar in different browsers*/
+	.progress-hobler::-moz-progress-bar {
+		border-radius: var(--rounded-box, 1rem /* 16px */);
+		--tw-bg-opacity: 1;
+		background-color: var(--color-hobler);
+	}
+	.progress-hobler:indeterminate {
+		--progress-color: var(--color-hobler);
+	}
+	.progress-hobler::-webkit-progress-value {
+		--tw-bg-opacity: 1;
+		background-color: var(--color-hobler);
 	}
 </style>
