@@ -1,12 +1,12 @@
-import type { Event } from '$lib/format.d.ts';
+import type { PrismsEvent } from '$lib/format.d.ts';
 import { error } from '@sveltejs/kit';
 
 export type DataType = {
 	id: string;
-	eventBody: Event;
+	eventBody: PrismsEvent;
 };
 
-const sampleOngoingEvent: Event = {
+const sampleOngoingEvent: PrismsEvent = {
 	title: 'Sample Ongoing Event',
 	dateStart: '2024-11-18',
 	dateEnd: '2024-11-18',
@@ -16,7 +16,7 @@ const sampleOngoingEvent: Event = {
 	winner: null
 };
 
-const sampleCompletedEvent: Event = {
+const sampleCompletedEvent: PrismsEvent = {
 	title: 'Sample Completed Event',
 	dateStart: '2024-11-18',
 	dateEnd: '2024-11-18',
