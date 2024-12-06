@@ -9,7 +9,7 @@
 	hobler = 200
 	albemarle = 300
 	lambert = 400
-	let maxValue = Math.max(ettl,hobler,lambert,albemarle);
+	let maxValue = Math.max(ettl,hobler,lambert,albemarle) * 1.1;
 </script>
 <title>House Ranking</title>
 <p class = text>Ettl</p> <p><progress class="progress progress-ettl w-56" value={ettl} max={maxValue}></progress></p>
@@ -18,7 +18,7 @@
 <p class = text>Lambert</p> <p><progress class="progress progress-lambert w-56" value={lambert} max={maxValue}></progress></p>
 
 <style>
-	.text {
+	.text{
 		top:70px;
 		position: relative;
 		left:5px;
