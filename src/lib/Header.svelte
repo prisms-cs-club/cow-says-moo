@@ -1,98 +1,70 @@
-<!-- Author: Addison Steen -->
+<script>
+	function navbarBtn1Onclick() {
+		window.location.href = '/';
+	}
+	function navbarBtn2Onclick() {
+		window.location.href = '/events';
+	}
+	function navbarBtn3Onclick() {
+		window.location.href = '/ranking';
+	}
+	function navbarBtn4Onclick() {
+		window.location.href = '/calendar';
+	}
+	function navbarBtn5Onclick() {}
+</script>
 
-<div id="wrapper">
-	<div class="parallax"></div>
-	<div id="navbar">
-		<ul>
-			<li class="o "><a href="/">Home</a></li>
-			<li class="o "><a href="ranking/">House Rankings</a></li>
-			<li class="o "><a href="events/">Upcoming Events</a></li>
-			<li class="o "><a href="calendar/">Calendar</a></li>
-		</ul>
+<h1>
+	<div id="navbar_container">
+		<div id="navbar_btns_div">
+			<div>
+				<button id="navbar_btn" on:click={navbarBtn1Onclick}> Home </button>
+				<button id="navbar_btn" on:click={navbarBtn2Onclick}> Events </button>
+				<button id="navbar_btn" on:click={navbarBtn3Onclick}> Rankings </button>
+				<button id="navbar_btn" on:click={navbarBtn4Onclick}> Calender </button>
+				<button id="navbar_btn" on:click={navbarBtn5Onclick}> NAVBAR_BTN_5 </button>
+			</div>
+		</div>
 	</div>
-</div>
+</h1>
 
 <style>
-
-
-	#wrapper {
-		display: grid;
-		grid-gap: 5px;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-		grid-template-rows: auto auto auto;
-	}
-
-	/*Nav Bar*/
-
-	#navbar ul {
-		font-size: medium;
-		font-family: Georgia;
-		list-style-type: none;
-		margin: 0px;
-		padding: 10px;
-		text-align: center;
-		background-color: #a61618;
-	}
-
-	#navbar ul li {
-		font-family: Georgia;
-		display: inline;
-	}
-
-	#navbar li a {
-		font-family: Georgia;
-		text-decoration: none;
-		padding: 10px;
-		color: #facec5;
-		background-color: #a61618;
-	}
-
-	#navbar a:hover {
-		font-family: Georgia;
-		color: #a61618;
-		background-color: #facec5;
-	}
-
-	#navbar {
-		font-family: Georgia;
-		grid-column-start: 1;
-		grid-column-end: 9;
-		grid-row-start: 1;
-		grid-row-end: 2;
-		position: fixed;
-		top: 0;
+	#navbar_container {
+		display: flex;
+		position: fixed; /* Change position to fixed */
+		top: 0; /* Position it at the top */
+		left: 0; /* Ensure it starts from the left edge */
+		right: 0; /* Ensure it covers the full width */
+		overflow: auto;
+		justify-content: center;
+		align-items: center;
 		width: 100%;
+		background-color: rgb(80, 0, 0); /* Give it a background color */
+		z-index: 1000; /* Ensure it stays on top */
 	}
 
-	.navbar {
-		font-family: Georgia;
-		overflow: hidden;
+	h1 {
+		height: 60px;
+		margin: 0; /* Remove margin */
+		width: 100%; /* Ensure it covers the full width */
 	}
 
-	.navbar a {
-		font-family: Georgia;
-		float: left;
-		font-size: 16px;
-		color: #facec5;
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
+	#navbar_btns_div {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
-	/*description*/
-	#d {
-		border: double;
-		color: #facec5;
-		border-width: 4px;
-		box-shadow: 5px 5px #facec5;
-		background-color: #a61618;
-		grid-column-start: 1;
-		grid-column-end: 5;
-		grid-row-start: 3;
-		grid-row-end: 4;
-		text-align: left;
-		margin-left: 10px;
-		margin-right: 10px;
-		padding: 10px;
+	#navbar_btn {
+		border: 0;
+		height: 60px;
+		width: 120px;
+		color: white;
+		cursor: pointer; /* Add a pointer cursor */
+	}
+
+	#navbar_btn:hover {
+		background-color: black;
+		color: white;
 	}
 </style>
