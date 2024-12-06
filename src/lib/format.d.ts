@@ -11,7 +11,7 @@ export type News = {
 /**
  * Type definition of the event.
  */
-export type Event = {
+export type PrismsEvent = {
     /**
      * Title of the event
      */
