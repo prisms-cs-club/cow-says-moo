@@ -5,9 +5,9 @@
 	<div id="navbar">
 		<ul>
 			<li class="o "><a href="/">Home</a></li>
-			<li class="o "><a href="ranking/">House Rankings</a></li>
-			<li class="o "><a href="events/">Upcoming Events</a></li>
-			<li class="o "><a href="calendar/">Calendar</a></li>
+			<li class="o "><a href="/ranking/">House Rankings</a></li>
+			<li class="o "><a href="/events/">Upcoming Events</a></li>
+			<li class="o "><a href="/calendar/">Calendar</a></li>
 		</ul>
 	</div>
 </div>
