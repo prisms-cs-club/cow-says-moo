@@ -2,4 +2,4 @@
 	import RankBar from '$lib/RankBar.svelte';
 </script>
 
-<RankBar ettl={500} hobler={300} albemarle={200} lambert={100} />
+<RankBar ettl={300} hobler={200} albemarle={300} lambert={400} />
