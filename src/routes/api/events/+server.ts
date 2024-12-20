@@ -1,7 +1,6 @@
 import type { Event } from "$lib/format.js";
 import type { RequestEvent } from '@sveltejs/kit';
 
-// var events = [{ name: 'Event 1', date: '2024-11-18' }, { name: 'Event 2', date: '2024-11-18' }, { name: 'Event 3', date: '2024-11-18' }];
 /** @type {Event} */
 let events: Event[] = [];
 

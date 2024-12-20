@@ -169,5 +169,5 @@
 
 	<h2>Delete Event</h2>
 	<input type="text" bind:value={deleteEventId} placeholder="Event ID" />
-	<button on:click={deleteEventById}>Delete</button>\\
+	<button on:click={deleteEventById}>Delete</button>
 </div>
