@@ -24,6 +24,7 @@
 		"@sveltejs/kit": "^2.5.27",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@types/eslint": "^9.6.0",
+		"@types/node": "^22.10.2",
 		"autoprefixer": "^10.4.20",
 		"daisyui": "^4.12.13",
 		"eslint": "^9.7.0",
@@ -45,6 +46,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@auth/core": "^0.37.4",
+		"@auth/sveltekit": "^1.7.4",
+		"arctic": "^2.3.3",
 		"svelte-spa-router": "^4.0.1"
 	}
 }

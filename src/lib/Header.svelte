@@ -2,6 +2,8 @@
 
 <script lang="ts">
 	import RedirectButton from './redirectButton.svelte';
+	import { page } from '$app/stores';
+	import { signIn, signOut } from '@auth/sveltekit/client';
 </script>
 
 <div id="wrapper">
@@ -31,6 +33,18 @@
 			/>
 			<RedirectButton className="btn bg-navbarColor text-white" name="Houses" target="/houses" />
 		</ul>
+	</div>
+	<div>
+		{#if $page.data.session}
+			<span>
+				<small>Signed in as</small><br />
+				<strong>{$page.data.session.user?.name ?? 'User'}</strong>
+			</span>
+			<button on:click={() => signOut()} class="button">Sign out</button>
+		{:else}
+			<span>You are not signed in</span>
+			<button on:click={() => signIn('google')}> Sign In with Google </button>
+		{/if}
 	</div>
 </div>
 
