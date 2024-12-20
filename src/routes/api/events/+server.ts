@@ -1,11 +1,11 @@
-// src/routes/api/events/+server.js
 import type { Event } from "$lib/format.js";
+import type { RequestEvent } from '@sveltejs/kit';
 
 // var events = [{ name: 'Event 1', date: '2024-11-18' }, { name: 'Event 2', date: '2024-11-18' }, { name: 'Event 3', date: '2024-11-18' }];
 /** @type {Event} */
 let events: Event[] = [];
 
-export async function GET({ url }) {
+export async function GET({ url } : RequestEvent) {
     const id = url.searchParams.get('id');
 
     events = events.sort((a, b) => a.title.localeCompare(b.title));
@@ -26,7 +26,7 @@ export async function GET({ url }) {
     }
 }
 
-export async function POST({ request }) {
+export async function POST({ request } : RequestEvent) {
     const newEvent = await request.json();
     if (events.find(event => event.title === newEvent.title)) {
         return new Response(JSON.stringify({ message: 'Event already exists, use update instead' }), {
@@ -43,7 +43,7 @@ export async function POST({ request }) {
     });
 }
 
-export async function PUT({ request }) {
+export async function PUT({ request } : RequestEvent) {
     const updatedEvent = await request.json();
     events = events.map(event => event.title === updatedEvent.title ? updatedEvent : event);
     return new Response(JSON.stringify({ message: 'Event updated', event: updatedEvent }), {
@@ -53,7 +53,7 @@ export async function PUT({ request }) {
     });
 }
 
-export async function DELETE({ url }) {
+export async function DELETE({ url } : RequestEvent) {
     const title = url.searchParams.get('id');
     events = events.filter(event => event.title !== title);
     return new Response(JSON.stringify({ message: `Event ${title} deleted` }), {
