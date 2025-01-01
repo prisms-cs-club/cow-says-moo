@@ -9,7 +9,7 @@
 <div id="wrapper">
 	<div class="parallax"></div>
 	<div id="navbar">
-		<ul>
+		<ul style="display: inline-block; margin: auto">
 			<RedirectButton className="btn bg-navbarColor text-white" name="Home" target="/" />
 			<RedirectButton
 				className="btn bg-navbarColor text-white"
@@ -29,44 +29,22 @@
 			<RedirectButton
 				className="btn bg-navbarColor text-white"
 				name="Activity Suggestions"
-				target="index.html"
+				target="/"
 			/>
 			<RedirectButton className="btn bg-navbarColor text-white" name="Houses" target="/houses" />
-
+		</ul>
+		<ul style="float:right; height: 100%">
 			<!-- signin message -->
-			<!-- TODO: change text & button styles -->
+			<!-- TODO: avatar and button not aligned vertically -->
 			{#if $page.data.session}
 				{#if $page.data.session.user?.image}
-					<span style="background-image: url('{$page.data.session.user.image}')" class="avatar" />
+					<li><img src="{$page.data.session.user.image}" alt="avatar" class="avatar" /></li>
 				{/if}
-			
-				<span>
-					<small>Signed in as</small>
-					<br />
-					<strong>
-						{$page.data.session.user?.email ?? $page.data.session.user?.name}
-					</strong>
-				</span>
-			
-				<a href="/auth/signout" class="button" data-sveltekit-preload-data="off"> Sign out </a>
+				<li><a href="/auth/signout" class="button" data-sveltekit-preload-data="off"> Sign out </a></li>
 			{:else}
-				<span class="notSignedInText"> You are not signed in </span>
-			
-				<a href="/auth/signin" class="buttonPrimary" data-sveltekit-preload-data="off"> Sign in </a>
+				<li><a href="/auth/signin" class="button-primary" data-sveltekit-preload-data="off"> Sign in </a></li>
 			{/if}
 		</ul>
-	</div>
-	<div>
-		{#if $page.data.session}
-			<span>
-				<small>Signed in as</small><br />
-				<strong>{$page.data.session.user?.name ?? 'User'}</strong>
-			</span>
-			<button on:click={() => signOut()} class="button">Sign out</button>
-		{:else}
-			<span>You are not signed in</span>
-			<button on:click={() => signIn('google')}> Sign In with Google </button>
-		{/if}
 	</div>
 </div>
 
@@ -106,7 +84,6 @@
 		margin: 0px;
 		padding: 10px;
 		text-align: center;
-		background-color: #a61618;
 	}
 
 	#navbar ul li {
@@ -134,21 +111,7 @@
 		grid-column-end: 9;
 		grid-row-start: 1;
 		grid-row-end: 2;
-	}
-
-	.navbar {
-		font-family: Times;
-		overflow: hidden;
-	}
-
-	.navbar a {
-		font-family: Times;
-		float: left;
-		font-size: 16px;
-		color: #facec5;
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
+		background-color: #a61618;
 	}
 
 	/*description*/
@@ -169,4 +132,16 @@
 	}
 
 	/*image*/
+	img.avatar {
+		border-radius: 50%;
+		display: inline-block;
+		height: 2.1em;
+		width: 2.1em;
+		vertical-align: center;
+	}
+
+	a.button-primary {
+		display: inline-block;
+		vertical-align: center;
+	}
 </style>

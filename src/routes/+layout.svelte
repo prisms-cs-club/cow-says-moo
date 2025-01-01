@@ -6,6 +6,10 @@
 	import { page } from '$app/stores';
 </script>
 
+<svelte:head>
+	<title>PRISMS House Info</title>
+</svelte:head>
+
 <div id="wrapper">
 	<div id="header">
 		<Header />

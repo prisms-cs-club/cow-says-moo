@@ -1,6 +1,8 @@
 import type { Event } from "$lib/format.js";
 import type { RequestEvent } from '@sveltejs/kit';
 
+// handle request of information of an event
+
 /** @type {Event} */
 let events: Event[] = [];
 

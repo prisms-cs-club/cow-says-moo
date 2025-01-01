@@ -1,34 +1,3 @@
-<!-- Author: Benjamin Zhao
-
-<script></script>
-
-	I removed your page header here, since we decided to use Addison's header
-		--Tom Geng 
-
-<div id="frame">
-	<div id="kickball_frame" class="event_frame">
-		<a href="/events/kickball">go to kickball</a>
-	</div>
-</div>
-
-<style>
-	#frame {
-		background-color: #f8f8f8;
-		overflow: auto;
-		height: 100vh;
-		width: 100%;
-	}
-	#kickball_frame {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.event_frame {
-		height: 320px;
-		width: 60%;
-	}
-</style> -->
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Event } from '$lib/format.d.ts';
@@ -147,7 +116,7 @@
 	<h1>Events</h1>
 	<ul>
 		{#each events as event}
-			<li>{event.title} - {event.dateStart}</li>
+			<li><a href="/events/{event.title}">{event.title}</a> - {event.dateStart}</li>
 		{/each}
 	</ul>
 
