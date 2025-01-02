@@ -1,7 +1,7 @@
 import type { Event } from '$lib/format.d.ts';
 
 export async function queryEvents(id: string): Promise<Event[]> {
-    const response = await fetch(`/api/events?id=${id}`, {
+    const response = await fetch(`/api/event?id=${id}`, {
         method: 'GET'
     });
 

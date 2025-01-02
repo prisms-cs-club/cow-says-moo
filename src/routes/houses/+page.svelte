@@ -1,5 +1,5 @@
 <script>
-	import RedirectButton from '$lib/redirectButton.svelte';
+	import RedirectButton from '$lib/RedirectButton.svelte';
 </script>
 
 <h1>Go to House:</h1>

@@ -61,3 +61,10 @@ export type House = {
 	description: string;
 	points: number;
 };
+
+export type Member = {
+	email: string;
+	name: string;
+	house: string;
+	role: "student" | "teacher" | "admin";
+};

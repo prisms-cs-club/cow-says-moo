@@ -3,7 +3,7 @@ import type { Event } from '$lib/format.d.ts';
 
 async function fetchEventById(fetch: typeof window.fetch, id: string): Promise<Event> {
     try {
-        const response = await fetch(`/api/events?id=${id}`, {
+        const response = await fetch(`/api/event?id=${id}`, {
             method: 'GET'
         });
         if (!response.ok) {

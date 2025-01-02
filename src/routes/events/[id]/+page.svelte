@@ -15,7 +15,7 @@
 	</div>
 	<div id="leaderboard">
 		<!-- TODO urgent: set up API to query the score each house get in each event -->
-		<RankBar />
+		<RankBar albemarle={0} lambert={0} hobler={0} ettl={0} />
 	</div>
 </div>
 

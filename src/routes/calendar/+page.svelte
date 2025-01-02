@@ -15,7 +15,7 @@
 
 	async function fetchEvents() {
 		try {
-			const response = await fetch('/api/events', {
+			const response = await fetch('/api/event', {
 				method: 'GET'
 			});
 			if (!response.ok) {

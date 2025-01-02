@@ -1,9 +1,10 @@
 <!-- Author: Addison Steen -->
 
 <script lang="ts">
-	import RedirectButton from './redirectButton.svelte';
+	import RedirectButton from '$lib/RedirectButton.svelte';
 	import { page } from '$app/stores';
-	import { signIn, signOut } from '@auth/sveltekit/client';
+	import SignInIcon from "$lib/icon/SignIn.svelte";
+	import SignOutIcon from "$lib/icon/SignOut.svelte";
 </script>
 
 <div id="wrapper">
@@ -39,9 +40,11 @@
 				{#if $page.data.session.user?.image}
 					<li><img src="{$page.data.session.user.image}" alt="avatar" class="avatar" /></li>
 				{/if}
-				<li><a href="/auth/signout" class="button-primary" data-sveltekit-preload-data="off"> Sign out </a></li>
+				<li><a href="/auth/signout" class="button-primary" data-sveltekit-preload-data="off"> Sign out <SignOutIcon class="inline-svg" size="1em" /> </a></li>
 			{:else}
-				<li><a href="/auth/signin" class="button-primary" data-sveltekit-preload-data="off"> Sign in </a></li>
+				<li>
+					<a href="/auth/signin" class="button-primary" data-sveltekit-preload-data="off"> Sign in <SignInIcon class="inline-svg" size="1em"/></a>
+				</li>
 			{/if}
 		</ul>
 	</div>
@@ -111,23 +114,6 @@
 		grid-row-start: 1;
 		grid-row-end: 2;
 		background-color: #a61618;
-	}
-
-	/*description*/
-	#d {
-		border: double;
-		color: #facec5;
-		border-width: 4px;
-		box-shadow: 5px 5px #facec5;
-		background-color: #a61618;
-		grid-column-start: 1;
-		grid-column-end: 5;
-		grid-row-start: 3;
-		grid-row-end: 4;
-		text-align: left;
-		margin-left: 10px;
-		margin-right: 10px;
-		padding: 10px;
 	}
 
 	/*image*/

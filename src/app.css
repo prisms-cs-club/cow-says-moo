@@ -14,3 +14,7 @@ body {
 	padding: 15px;
 	font-size: large;
 }
+
+svg.inline-svg {
+	display: inline-block;
+}
