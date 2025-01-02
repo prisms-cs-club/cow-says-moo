@@ -35,12 +35,11 @@
 		</ul>
 		<ul style="float:right; height: 100%">
 			<!-- signin message -->
-			<!-- TODO: avatar and button not aligned vertically -->
 			{#if $page.data.session}
 				{#if $page.data.session.user?.image}
 					<li><img src="{$page.data.session.user.image}" alt="avatar" class="avatar" /></li>
 				{/if}
-				<li><a href="/auth/signout" class="button" data-sveltekit-preload-data="off"> Sign out </a></li>
+				<li><a href="/auth/signout" class="button-primary" data-sveltekit-preload-data="off"> Sign out </a></li>
 			{:else}
 				<li><a href="/auth/signin" class="button-primary" data-sveltekit-preload-data="off"> Sign in </a></li>
 			{/if}
