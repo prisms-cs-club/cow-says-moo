@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--color-albemarle: #ede625;
+	--color-ettl: #26be3a;
+	--color-hobler: #fa4242;
+	--color-lambert: #4270fa;
+}
+
 body {
 	font-family: Times;
 	padding: 15px;

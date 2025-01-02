@@ -14,6 +14,7 @@
 		<p id="text">{data.event.description}</p>
 	</div>
 	<div id="leaderboard">
+		<!-- TODO urgent: set up API to query the score each house get in each event -->
 		<RankBar />
 	</div>
 </div>
