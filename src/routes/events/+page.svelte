@@ -11,8 +11,8 @@
 		dateEnd: '',
 		description: '',
 		tier: 0,
-		result: null,
-		winner: null
+		// result: null,
+		// winner: null
 	};
 	let updateEvent: Partial<Event> = {
 		title: '',
@@ -20,8 +20,8 @@
 		dateEnd: '',
 		description: '',
 		tier: 0,
-		result: null,
-		winner: null
+		// result: null,
+		// winner: null
 	};
 	let deleteEventId = '';
 

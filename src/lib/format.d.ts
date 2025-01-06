@@ -43,17 +43,17 @@ export type Event = {
 	 * If the event is concluded, the result field will be filled with the result of the event.
 	 * Otherwise, the result field will be null.
 	 */
-	result: {
+	result?: {
 		albemarle: number;
 		hobler: number;
 		lambert: number;
 		ettl: number;
-	}?;
+	};
 
 	/**
 	 * If the event is concluded, the winner field will be filled with the name of the winner.
 	 */
-	winner: string?;
+	winner?: string[];
 };
 
 export type House = {
@@ -66,5 +66,6 @@ export type Member = {
 	email: string;
 	name: string;
 	house: string;
+	eventsWon?: string[]; // as the name indicates, an array of events won by the person
 	role: "student" | "teacher" | "admin";
 };
