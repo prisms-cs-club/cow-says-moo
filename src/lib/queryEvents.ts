@@ -3,7 +3,7 @@ import { getMember } from '$lib/queryMember';
 import { page } from '$app/state';
 import { error } from 'console';
 
-async function ifAdmin() { let a = await getMember(); return (a !== undefined && a.role == "admin"); }
+async function ifAdmin() { let a = await getMember(); return (a !== undefined && a.role === "admin"); }
 
 export async function queryEvents(id: string): Promise<Event[]> {
     const response = await fetch(`/api/event?id=${id}`, {
@@ -48,7 +48,8 @@ export async function fetchEventById(id: string) {
 
 export async function createEvent(newEvent: Event) {
     if (!await ifAdmin()) {
-        throw error("Unfortunately, you are not an admin.");
+        console.error("Unfortunately, You are not an admin");
+        throw new Error("Unfortunately, you are not an admin.");
     }
 
     try {
@@ -71,7 +72,8 @@ export async function createEvent(newEvent: Event) {
 
 export async function updateEvent(updateEvent: Event) {
     if (!await ifAdmin()) {
-        throw error("Unfortunately, You are not an admin");
+        console.error("Unfortunately, You are not an admin");
+        throw new Error("Unfortunately, You are not an admin");
     }
 
     try {
@@ -93,6 +95,11 @@ export async function updateEvent(updateEvent: Event) {
 }
 
 export async function deleteEvent(deleteEventId: String) {
+    if (!await ifAdmin()) {
+        console.error("Unfortunately, You are not an admin");
+        throw new Error("Unfortunately, you are not an admin.");
+    }
+
     try {
         const response = await fetch(`/api/event?id=${deleteEventId}`, {
             method: 'DELETE'
