@@ -1,9 +1,7 @@
-import type { Event, Member } from '$lib/format';
+import type { Event } from '$lib/format';
 import { getMember } from '$lib/queryMember';
-import { page } from '$app/state';
-import { error } from 'console';
 
-async function ifAdmin() { let a = await getMember(); return (a !== undefined && a.role === "admin"); }
+async function ifAdmin() { const a = await getMember(); return (a !== undefined && a.role === "admin"); }
 
 export async function queryEvents(id: string): Promise<Event[]> {
     const response = await fetch(`/api/event?id=${id}`, {
@@ -47,9 +45,9 @@ export async function fetchEventById(id: string) {
 }
 
 export async function createEvent(newEvent: Event) {
-    if (!await ifAdmin()) {
+    if (!await ifAdmin()) { // temporary solution
         console.error("Unfortunately, You are not an admin");
-        throw new Error("Unfortunately, you are not an admin.");
+        throw new Error("Unfortunately, you are not an admin."); 
     }
 
     try {
