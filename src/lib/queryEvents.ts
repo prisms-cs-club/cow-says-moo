@@ -1,4 +1,9 @@
-import type { Event } from '$lib/format.d.ts';
+import type { Event, Member } from '$lib/format';
+import { getMember } from '$lib/queryMember';
+import { page } from '$app/state';
+import { error } from 'console';
+
+async function ifAdmin() { let a = await getMember(); return (a !== undefined && a.role == "admin"); }
 
 export async function queryEvents(id: string): Promise<Event[]> {
     const response = await fetch(`/api/event?id=${id}`, {
@@ -42,6 +47,10 @@ export async function fetchEventById(id: string) {
 }
 
 export async function createEvent(newEvent: Event) {
+    if (!await ifAdmin()) {
+        throw error("Unfortunately, you are not an admin.");
+    }
+
     try {
         const response = await fetch('/api/event', {
             method: 'POST',
@@ -61,6 +70,10 @@ export async function createEvent(newEvent: Event) {
 }
 
 export async function updateEvent(updateEvent: Event) {
+    if (!await ifAdmin()) {
+        throw error("Unfortunately, You are not an admin");
+    }
+
     try {
         const response = await fetch('/api/event', {
             method: 'PUT',
@@ -77,13 +90,6 @@ export async function updateEvent(updateEvent: Event) {
         console.error(error);
         return false;
     }
-}
-
-// Example function to update local event cache
-function updateLocalEventCache(updatedEvent: Event) {
-    // Implementation to update the local state or cache with the updated event
-    // This is just a placeholder and should be replaced with actual logic
-    console.log('Event updated locally:', updatedEvent);
 }
 
 export async function deleteEvent(deleteEventId: String) {

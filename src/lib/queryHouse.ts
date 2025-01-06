@@ -1,4 +1,4 @@
-import type { House } from '$lib/format.d.ts';
+import type { House } from '$lib/format';
 
 export async function queryHouse(id: string): Promise<House> {
     id = id.toLowerCase();
