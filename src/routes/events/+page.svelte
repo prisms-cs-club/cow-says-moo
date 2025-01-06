@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import type { Event, Member } from '$lib/format';
 	import { page } from '$app/state';
 	import { getMember } from '$lib/queryMember';
+	import { fetchEvents, fetchEventById, updateEvent, createEvent, deleteEvent } from '$lib/queryEvents';
 
 	let events: Event[] = [];
 	let displayEventEditor = false; // Only display event editor if the user's role is admin
@@ -15,7 +16,7 @@
 		// result: null,
 		// winner: null
 	};
-	let updateEvent: Event = {
+	let eventToUpdate: Event = {
 		title: '',
 		dateStart: '',
 		dateEnd: '',
@@ -26,97 +27,27 @@
 	};
 	let deleteEventId = '';
 
+	async function loadEvents() {
+        events = [...await fetchEvents()];
+    }
+
 	// Fetch all events on component mount
 	onMount(async () => {
-		await fetchEvents();
+		await loadEvents();
 		let member = await getMember();
 
 		if (member && member.role === 'admin') {
 			displayEventEditor = true;
 		}
+
+		const interval = setInterval(loadEvents, 1000);
+
+        onDestroy(() => {
+            clearInterval(interval);
+        });
 	});
 
-	async function fetchEvents() {
-		try {
-			const response = await fetch('/api/event', {
-				method: 'GET'
-			});
-			if (!response.ok) {
-				throw new Error('Failed to fetch events');
-			}
-			const data: Event[] = await response.json();
-			events = [...data]; // Reassign to trigger reactivity
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	async function fetchEventById(id: string) {
-		try {
-			const response = await fetch(`/api/event?id=${id}`, {
-				method: 'GET'
-			});
-			if (!response.ok) {
-				throw new Error('Failed to fetch event');
-			}
-			const event: Event = await response.json();
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	async function createEvent() {
-		try {
-			const response = await fetch('/api/event', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(newEvent)
-			});
-			if (!response.ok) {
-				throw new Error('Failed to create event');
-			}
-			const result: Event = await response.json();
-			await fetchEvents();
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	async function updateEventById() {
-		try {
-			const response = await fetch('/api/event', {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(updateEvent)
-			});
-			if (!response.ok) {
-				throw new Error('Failed to update event');
-			}
-			const result: Event = await response.json();
-			await fetchEvents();
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	async function deleteEventById() {
-		try {
-			const response = await fetch(`/api/event?id=${deleteEventId}`, {
-				method: 'DELETE'
-			});
-			if (!response.ok) {
-				throw new Error('Failed to delete event');
-			}
-			const result = await response.json();
-			await fetchEvents();
-		} catch (error) {
-			console.error(error);
-		}
-	}
+	
 </script>
 
 <div>
@@ -135,18 +66,18 @@
 		<input type="date" bind:value={newEvent.dateEnd} placeholder="End Date" />
 		<input type="text" bind:value={newEvent.description} placeholder="Description" />
 		<input type="number" bind:value={newEvent.tier} placeholder="Tier" />
-		<button on:click={createEvent}>Create</button>
+		<button on:click={() => createEvent(newEvent)}>Create</button>
 
 		<h2>Update Event</h2>
-		<input type="text" bind:value={updateEvent.title} placeholder="Event Title" />
-		<input type="date" bind:value={updateEvent.dateStart} placeholder="Start Date" />
-		<input type="date" bind:value={updateEvent.dateEnd} placeholder="End Date" />
-		<input type="text" bind:value={updateEvent.description} placeholder="Description" />
-		<input type="number" bind:value={updateEvent.tier} placeholder="Tier" />
-		<button on:click={updateEventById}>Update</button>
+		<input type="text" bind:value={eventToUpdate.title} placeholder="Event Title" />
+		<input type="date" bind:value={eventToUpdate.dateStart} placeholder="Start Date" />
+		<input type="date" bind:value={eventToUpdate.dateEnd} placeholder="End Date" />
+		<input type="text" bind:value={eventToUpdate.description} placeholder="Description" />
+		<input type="number" bind:value={eventToUpdate.tier} placeholder="Tier" />
+		<button on:click={() => updateEvent(eventToUpdate)}>Update</button>
 
 		<h2>Delete Event</h2>
 		<input type="text" bind:value={deleteEventId} placeholder="Event ID" />
-		<button on:click={deleteEventById}>Delete</button>
+		<button on:click={() => deleteEvent(deleteEventId)}>Delete</button>
 	{/if}
 </div>
