@@ -1,7 +1,7 @@
 <!-- Author: Addison Steen -->
 
 <script lang="ts">
-	import RedirectButton from '$lib/RedirectButton.svelte';
+	import RedirectButton from '$lib/redirectButton.svelte';
 	import { page } from '$app/stores';
 	import SignInIcon from "$lib/icon/SignIn.svelte";
 	import SignOutIcon from "$lib/icon/SignOut.svelte";

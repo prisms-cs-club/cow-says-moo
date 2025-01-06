@@ -1,25 +1,26 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Event, Member } from '$lib/format.d.ts';
+	import type { Event, Member } from '$lib/format';
 	import { page } from '$app/state';
+	import { getMember } from '$lib/queryMember';
 
 	let events: Event[] = [];
-	let displayEventEditor = false;   // Only display event editor if the user's role is admin
-	let newEvent: Partial<Event> = {
+	let displayEventEditor = false; // Only display event editor if the user's role is admin
+	let newEvent: Event = {
 		title: '',
 		dateStart: '',
 		dateEnd: '',
 		description: '',
-		tier: 0,
+		tier: 0
 		// result: null,
 		// winner: null
 	};
-	let updateEvent: Partial<Event> = {
+	let updateEvent: Event = {
 		title: '',
 		dateStart: '',
 		dateEnd: '',
 		description: '',
-		tier: 0,
+		tier: 0
 		// result: null,
 		// winner: null
 	};
@@ -28,11 +29,10 @@
 	// Fetch all events on component mount
 	onMount(async () => {
 		await fetchEvents();
-		if(page.data.session && page.data.session.user) {
-			let member: Member | null = await (await fetch("/api/member?email=" + page.data.session.user.email)).json();
-			if(member && member.role === "admin") {
-				displayEventEditor = true;
-			}
+		let member = await getMember();
+
+		if (member && member.role === 'admin') {
+			displayEventEditor = true;
 		}
 	});
 
