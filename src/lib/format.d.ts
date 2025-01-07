@@ -68,4 +68,4 @@ export type Member = {
 	house: string;
 	eventsWon?: string[]; // as the name indicates, an array of events won by the person
 	role: "student" | "teacher" | "admin";
-};
+} | undefined;

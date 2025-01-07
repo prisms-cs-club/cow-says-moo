@@ -29,8 +29,8 @@
 			/>
 			<RedirectButton
 				className="btn bg-navbarColor text-white"
-				name="Activity Suggestions"
-				target="/"
+				name="Activity Signup"
+				target="/signup"
 			/>
 			<RedirectButton className="btn bg-navbarColor text-white" name="Houses" target="/houses" />
 		</ul>
