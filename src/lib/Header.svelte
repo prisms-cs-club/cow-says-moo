@@ -14,8 +14,8 @@
 			<RedirectButton className="btn bg-navbarColor text-white" name="Home" target="/" />
 			<RedirectButton
 				className="btn bg-navbarColor text-white"
-				name="House Rankings"
-				target="/ranking"
+				name="Houses & Rankings"
+				target="/houses"
 			/>
 			<RedirectButton
 				className="btn bg-navbarColor text-white"
@@ -32,7 +32,6 @@
 				name="Activity Signup"
 				target="/signup"
 			/>
-			<RedirectButton className="btn bg-navbarColor text-white" name="Houses" target="/houses" />
 		</ul>
 		<ul style="float:right; height: 100%">
 			<!-- signin message -->
