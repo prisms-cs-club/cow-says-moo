@@ -3,7 +3,6 @@
 	import Header from '$lib/Header.svelte';
 	import Footer from '$lib/Footer.svelte';
 	let { children } = $props();
-	import { page } from '$app/stores';
 </script>
 
 <svelte:head>
@@ -31,6 +30,7 @@
 
 	#content {
 		flex: 1;
+		margin: 1% 8%;
 	}
 
 	#footer {

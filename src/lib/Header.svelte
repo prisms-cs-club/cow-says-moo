@@ -113,6 +113,7 @@
 		grid-row-start: 1;
 		grid-row-end: 2;
 		background-color: #a61618;
+		border-radius: 5px;
 	}
 
 	/*image*/
