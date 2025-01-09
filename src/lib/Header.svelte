@@ -1,7 +1,6 @@
 <!-- Author: Addison Steen -->
 
 <script lang="ts">
-	import RedirectButton from '$lib/redirectButton.svelte';
 	import { page } from '$app/stores';
 	import SignInIcon from "$lib/icon/SignIn.svelte";
 	import SignOutIcon from "$lib/icon/SignOut.svelte";
@@ -10,39 +9,23 @@
 <div id="wrapper">
 	<div class="parallax"></div>
 	<div id="navbar">
-		<ul style="display: inline-block; margin: auto">
-			<RedirectButton className="btn bg-navbarColor text-white" name="Home" target="/" />
-			<RedirectButton
-				className="btn bg-navbarColor text-white"
-				name="Houses & Rankings"
-				target="/houses"
-			/>
-			<RedirectButton
-				className="btn bg-navbarColor text-white"
-				name="Upcoming Events"
-				target="/events"
-			/>
-			<RedirectButton
-				className="btn bg-navbarColor text-white"
-				name="Calendar"
-				target="/calendar"
-			/>
-			<RedirectButton
-				className="btn bg-navbarColor text-white"
-				name="Activity Signup"
-				target="/signup"
-			/>
+		<ul style="display: inline-block; margin-left: 5%;">
+			<li><a class="button-primary" href="/">Home</a></li>
+			<li><a class="button-primary" href="/houses">Houses & Rankings</a></li>
+			<li><a class="button-primary" href="/events">Upcoming Events</a></li>
+			<li><a class="button-primary" href="/calendar">Calendar</a></li>
+			<li><a class="button-primary" href="/signup">Activity Signup</a></li>
 		</ul>
-		<ul style="float:right; height: 100%">
+		<ul style="float:right; height: 100%; margin-right: 5%;">
 			<!-- signin message -->
 			{#if $page.data.session}
 				{#if $page.data.session.user?.image}
 					<li><img src="{$page.data.session.user.image}" alt="avatar" class="avatar" /></li>
 				{/if}
-				<li><a href="/auth/signout" class="button-primary" data-sveltekit-preload-data="off"> Sign out <SignOutIcon class="inline-svg" size="1em" /> </a></li>
+				<li><a href="/auth/signout" class="button-primary" data-sveltekit-preload-data="off"> Sign Out <SignOutIcon class="inline-svg" size="1em" /> </a></li>
 			{:else}
 				<li>
-					<a href="/auth/signin" class="button-primary" data-sveltekit-preload-data="off"> Sign in <SignInIcon class="inline-svg" size="1em"/></a>
+					<a href="/auth/signin" class="button-primary" data-sveltekit-preload-data="off"> Sign In <SignInIcon class="inline-svg" size="1em"/></a>
 				</li>
 			{/if}
 		</ul>
@@ -50,6 +33,10 @@
 </div>
 
 <style>
+	:root {
+		--color-nav-bar-bg: #a61618;
+		--color-nav-bar-fg: #facec5;
+	}
 	/*parallax extra credit*/
 	.parallax {
 		/*Image Source: cntraveler.com/hotels/thailand/ang-thong/four-seasons-resort-koh-samui*/
@@ -79,41 +66,34 @@
 	/*Nav Bar*/
 
 	#navbar ul {
-		font-size: medium;
-		font-family: Times;
 		list-style-type: none;
 		margin: 0px;
-		padding: 10px;
+		padding: 0px;
 		text-align: center;
 	}
 
 	#navbar ul li {
-		font-family: Times;
 		display: inline;
 	}
 
 	#navbar li a {
-		font-family: Times;
 		text-decoration: none;
-		padding: 10px;
-		color: #facec5;
-		background-color: #a61618;
+		padding: 18px 15px;
+		color: var(--color-nav-bar-fg);
+		background-color: var(--color-nav-bar-bg);
 	}
 
 	#navbar a:hover {
-		font-family: Times;
-		color: #a61618;
-		background-color: #facec5;
+		color: var(--color-nav-bar-bg);
+		background-color: var(--color-nav-bar-fg);
 	}
 
 	#navbar {
-		font-family: Times;
 		grid-column-start: 1;
 		grid-column-end: 9;
 		grid-row-start: 1;
 		grid-row-end: 2;
-		background-color: #a61618;
-		border-radius: 5px;
+		background-color: var(--color-nav-bar-bg);
 	}
 
 	/*image*/

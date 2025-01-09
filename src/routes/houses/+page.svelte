@@ -25,7 +25,7 @@
 <RedirectButton name="Albemarle" target="houses/albemarle" />
 <RedirectButton name="Lambert" target="houses/lambert" />
 
-<p> --------------------------------------------------------------------------------- </p>
+<hr />
 
 <h1>House Rankings</h1>
 {#if loaded}

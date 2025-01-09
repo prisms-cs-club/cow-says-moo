@@ -92,7 +92,7 @@ export async function updateEvent(updateEvent: Event) {
     }
 }
 
-export async function deleteEvent(deleteEventId: String) {
+export async function deleteEvent(deleteEventId: string) {
     if (!await ifAdmin()) {
         console.error("Unfortunately, You are not an admin");
         throw new Error("Unfortunately, you are not an admin.");

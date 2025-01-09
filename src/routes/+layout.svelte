@@ -30,7 +30,7 @@
 
 	#content {
 		flex: 1;
-		margin: 1% 8%;
+		margin: 1% 12%;
 	}
 
 	#footer {
