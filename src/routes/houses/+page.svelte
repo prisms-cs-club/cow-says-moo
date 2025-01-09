@@ -8,13 +8,14 @@
 	let ettl = 0;
 	let hobler = 0;
 	let lambert = 0;
-	let shown = false;
+	let loaded = false;
 	onMount(async () => {
 		albemarle = (await queryHouse('albemarle')).points;
 		ettl = (await queryHouse('ettl')).points;
 		hobler = (await queryHouse('hobler')).points;
 		lambert = (await queryHouse('lambert')).points;
-		shown = true;
+		loaded = true;
+		console.log("loaded");
 	});
 </script>
 
@@ -27,7 +28,7 @@
 <p> --------------------------------------------------------------------------------- </p>
 
 <h1>House Rankings</h1>
-{#if shown}
+{#if loaded}
 	<RankBar albemarle={albemarle} ettl={ettl} lambert={lambert} hobler={hobler}  />
 {:else}
 	<span class="loading loading-bars loading-lg"></span>
