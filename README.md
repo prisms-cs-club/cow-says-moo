@@ -1,10 +1,3 @@
-# Cow Says Moo
+# UwU
 
-                 (__)
-                 (oo)
-           /------\/
-          / |    ||
-         *  /\---/\
-            ~~   ~~
-
-..."Have you mooed today?"...
+UwU UwU UwU UwU UwU
