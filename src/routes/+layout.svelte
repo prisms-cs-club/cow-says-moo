@@ -16,9 +16,7 @@
 	<div id="content">
 		{@render children()}
 	</div>
-	<div id="footer">
-		<Footer />
-	</div>
+	<Footer />
 </div>
 
 <style>
@@ -31,11 +29,5 @@
 	#content {
 		flex: 1;
 		margin: 1% 12%;
-	}
-
-	#footer {
-		background-color: #f8f8f8;
-		padding: 10px;
-		text-align: center;
 	}
 </style>

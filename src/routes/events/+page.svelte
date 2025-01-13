@@ -57,9 +57,13 @@
 			{#each events as event}
 				<li><a href="/events/{event.title}">{event.title}</a> - {event.dateStart}</li>
 			{/each}
+			{#if events.length === 0}
+				<p>There is no events yet :&#41;</p>
+			{/if}
 		</ul>
 
 		{#if displayEventEditor}
+			<hr />
 			<h2>Create Event</h2>
 			<input type="text" bind:value={newEvent.title} placeholder="Event Title" />
 			<input type="date" bind:value={newEvent.dateStart} placeholder="Start Date" />
