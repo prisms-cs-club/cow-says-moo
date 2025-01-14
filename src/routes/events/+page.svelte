@@ -64,7 +64,7 @@
 
 		{#if displayEventEditor}
 			<hr />
-			<h2>Create Event</h2>
+			<h3>Create Event</h3>
 			<input type="text" bind:value={newEvent.title} placeholder="Event Title" />
 			<input type="date" bind:value={newEvent.dateStart} placeholder="Start Date" />
 			<input type="date" bind:value={newEvent.dateEnd} placeholder="End Date" />
@@ -72,7 +72,7 @@
 			<input type="number" bind:value={newEvent.tier} placeholder="Tier" />
 			<button on:click={() => createEvent(newEvent)}>Create</button>
 
-			<h2>Update Event</h2>
+			<h3>Update Event</h3>
 			<input type="text" bind:value={eventToUpdate.title} placeholder="Event Title" />
 			<input type="date" bind:value={eventToUpdate.dateStart} placeholder="Start Date" />
 			<input type="date" bind:value={eventToUpdate.dateEnd} placeholder="End Date" />
@@ -80,7 +80,7 @@
 			<input type="number" bind:value={eventToUpdate.tier} placeholder="Tier" />
 			<button on:click={() => updateEvent(eventToUpdate)}>Update</button>
 
-			<h2>Delete Event</h2>
+			<h3>Delete Event</h3>
 			<input type="text" bind:value={deleteEventId} placeholder="Event ID" />
 			<button on:click={() => deleteEvent(deleteEventId)}>Delete</button>
 		{:else}

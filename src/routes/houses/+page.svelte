@@ -2,7 +2,6 @@
 	import { queryHouse } from '$lib/queryHouse';
 	import RankBar from '$lib/RankBar.svelte';
 	import { onMount } from 'svelte';
-	import RedirectButton from '$lib/redirectButton.svelte';
 	
 	let albemarle = 0;
 	let ettl = 0;
@@ -30,7 +29,7 @@
 
 <h1>Houses</h1>
 
-<div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
 	{#each ['Ettl', 'Hobler', 'Albemarle', 'Lambert'] as house}
 	<a class="card bg-base-100 shadow-xl m-4" style="width: 20%" href="/houses/{house.toLowerCase()}">
 		<figure>
@@ -40,7 +39,7 @@
 			<!-- TODO: sizes of the 4 images are different. Need to make them the same. -->
 		</figure>
 		<div class="card-body">
-			<h2>{house}</h2>
+			<h3 class="algerian text-center">{house}</h3>
 		  	<p>House introduction TBD</p>
 		</div>
 	  </a>

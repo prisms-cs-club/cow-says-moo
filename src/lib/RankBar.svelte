@@ -28,7 +28,7 @@
 {#each houses as house}
 	<div class="na">
 		<p class="text">{house.name}</p>
-		<progress class="progress-{house.name.toLowerCase()} progress w-56" value={house.points} max={maxPoints}></progress>
+		<progress class="progress-{house.name.toLowerCase()} progress" value={house.points} max={maxPoints}></progress>
 	</div>
 {/each}
 

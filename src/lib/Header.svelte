@@ -4,10 +4,22 @@
 	import { page } from '$app/stores';
 	import SignInIcon from "$lib/icon/SignIn.svelte";
 	import SignOutIcon from "$lib/icon/SignOut.svelte";
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		let header = document.getElementById("wrapper")!;
+		let headerStickyOffset = header.offsetTop;
+		window.onscroll = () => {
+			if (window.scrollY > headerStickyOffset) {
+				header.classList.add("sticky");   // TODO: 'sticky' is compiled to a different name in svelte
+			} else {
+				header.classList.remove("sticky");
+			}
+		};
+	});
 </script>
 
 <div id="wrapper">
-	<div class="parallax"></div>
 	<div id="navbar">
 		<ul style="display: inline-block; margin-left: 5%;">
 			<li><a class="button-primary" href="/">Home</a></li>
@@ -37,30 +49,19 @@
 		--color-nav-bar-bg: #a61618;
 		--color-nav-bar-fg: #facec5;
 	}
-	/*parallax extra credit*/
-	.parallax {
-		/*Image Source: cntraveler.com/hotels/thailand/ang-thong/four-seasons-resort-koh-samui*/
-		/* background-image: url('bg.png'); */
-		grid-column-start: 1;
-		grid-column-end: 9;
-		grid-row-start: 1;
-		grid-row-end: 6;
-		text-align: center;
-
-		min-height: 20px;
-		min-width: 100px;
-
-		background-attachment: fixed;
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: cover;
-	}
 
 	#wrapper {
 		display: grid;
 		grid-gap: 5px;
 		grid-template-columns: 1fr 1fr 1fr 1fr;
 		grid-template-rows: auto auto auto;
+	}
+
+	#wrapper.sticky {
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 1000;
 	}
 
 	/*Nav Bar*/
