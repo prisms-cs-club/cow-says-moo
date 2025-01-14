@@ -7,19 +7,11 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		let header = document.getElementById("wrapper")!;
-		let headerStickyOffset = header.offsetTop;
-		window.onscroll = () => {
-			if (window.scrollY > headerStickyOffset) {
-				header.classList.add("sticky");   // TODO: 'sticky' is compiled to a different name in svelte
-			} else {
-				header.classList.remove("sticky");
-			}
-		};
+		
 	});
 </script>
 
-<div id="wrapper">
+<div id="wrapper" class="sticky">
 	<div id="navbar">
 		<ul style="display: inline-block; margin-left: 5%;">
 			<li><a class="button-primary" href="/">Home</a></li>
