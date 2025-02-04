@@ -2,17 +2,17 @@
 	import type { DataType } from './+page.ts';
 	export let data: DataType;
 	import RankBar from '$lib/RankBar.svelte';
-	let url = new URL(window.location.href);
-	let event_title = url.searchParams.get('event_title');
-	let event_text = url.searchParams.get('event_text');
+	// let url = new URL(window.location.href);
+	// let event_title = url.searchParams.get('event_title');
+	// let event_text = url.searchParams.get('event_text');
 </script>
 
 <div id="frame">
 	<div id="title_frame">
-		<h1 id="title">{event_title}</h1>
+		<h1 id="title">{data.eventBody.title}</h1>
 	</div>
 	<div id="text_frame">
-		<p id="text">{event_text}</p>
+		<p id="text">{data.eventBody.description}</p>
 	</div>
 	<div id="leaderboard">
 		<!--
