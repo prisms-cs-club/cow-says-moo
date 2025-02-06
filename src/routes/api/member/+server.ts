@@ -25,6 +25,13 @@ const sampleDatabase: Member[] = [
         "email": "andy.han@prismsus.org",
         "house": "Hobler",
         "role": "admin",
+    },
+    {
+        "name": "Addison Steen",
+        "email": "addison.steen@prismsus.org",
+        "house": "Albemarle",
+        "role": "admin",
+
     }
 ];
 

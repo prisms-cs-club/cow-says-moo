@@ -1,93 +1,156 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import type { Event } from '$lib/format';
-	import { getMember } from '$lib/queryMember';
-	import { fetchEvents, updateEvent, createEvent, deleteEvent } from '$lib/queryEvents';
+    import { onMount, onDestroy } from 'svelte';
+    import type { Event } from '$lib/format';
+    import { getMember } from '$lib/queryMember';
+    import { fetchEvents, updateEvent, createEvent, deleteEvent } from '$lib/queryEvents';
 
-	let events: Event[] = [];
-	let displayEventEditor = false; // Only display event editor if the user's role is admin
-	let newEvent: Event = {
-		title: '',
-		dateStart: '',
-		dateEnd: '',
-		description: '',
-		tier: 0
-		// result: null,
-		// winner: null
-	};
-	let eventToUpdate: Event = {
-		title: '',
-		dateStart: '',
-		dateEnd: '',
-		description: '',
-		tier: 0
-		// result: null,
-		// winner: null
-	};
-	let deleteEventId = '';
+    let events: Event[] = [];
+    let displayEventEditor = false; // Only display event editor if the user's role is admin
+    let newEvent: Event = {
+        title: '',
+        dateStart: '',
+        dateEnd: '',
+        description: '',
+        tier: 0
+    };
 
-	async function loadEvents() {
-        events = [...await fetchEvents()];
-    }
+    let eventToUpdate: Event = {
+        title: '',
+        dateStart: '',
+        dateEnd: '',
+        description: '',
+        tier: 0
+    };
 
-	let loaded = false;
+    let deleteEventId = '';
+    let loaded = false;
 
-	// Fetch all events on component mount
-	onMount(async () => {
-		await loadEvents();
-		let member = await getMember();
+    // Fetch all events on component mount
+    onMount(async () => {
+        await loadEvents();
+        let member = await getMember();
 
-		if (member && member.role === 'admin') {
-			displayEventEditor = true;
-		}
-		loaded = true;
-		const interval = setInterval(loadEvents, 5000);
+        if (member && member.role === 'admin') {
+            displayEventEditor = true;
+        }
+        loaded = true;
+
+        // Auto-refresh events every 5 seconds
+        const interval = setInterval(loadEvents, 5000);
         onDestroy(() => {
             clearInterval(interval);
         });
-	});
+    });
 
-	
+    async function loadEvents() {
+        events = [...await fetchEvents()];
+    }
 </script>
 
 <div>
-	<h1>Events</h1>
-	{#if loaded}
-		<ul>
-			{#each events as event}
-				<li><a href="/events/{event.title}">{event.title}</a> - {event.dateStart}</li>
-			{/each}
-			{#if events.length === 0}
-				<p>There is no events yet :&#41;</p>
-			{/if}
-		</ul>
+    <h1>Events</h1>
+    {#if loaded}
+        <!-- Display the events list -->
+        <ul>
+            {#each events as event}
+                <li>
+                    <a href="/events/{event.title}">{event.title}</a> - {event.dateStart}
+                    <!-- Display the event description below the event title -->
+                    <p>{event.description}</p>
+                </li>
+            {/each}
+            {#if events.length === 0}
+                <p>There are no events yet. :(</p>
+            {/if}
+        </ul>
 
-		{#if displayEventEditor}
-			<hr />
-			<h3>Create Event</h3>
-			<input type="text" bind:value={newEvent.title} placeholder="Event Title" />
-			<input type="date" bind:value={newEvent.dateStart} placeholder="Start Date" />
-			<input type="date" bind:value={newEvent.dateEnd} placeholder="End Date" />
-			<input type="text" bind:value={newEvent.description} placeholder="Description" />
-			<input type="number" bind:value={newEvent.tier} placeholder="Tier" />
-			<button on:click={() => createEvent(newEvent)}>Create</button>
+        <!-- Admin event editor section -->
+        {#if displayEventEditor}
+            <hr />
+            <h3>Create Event</h3>
+            <input type="text" bind:value={newEvent.title} placeholder="Event Title" />
+            <input type="date" bind:value={newEvent.dateStart} placeholder="Start Date" />
+            <input type="date" bind:value={newEvent.dateEnd} placeholder="End Date" />
+            <input type="text" bind:value={newEvent.description} placeholder="Description" />
+            <input type="number" bind:value={newEvent.tier} placeholder="Tier" />
+            <button on:click={() => createEvent(newEvent)}>Create</button>
 
-			<h3>Update Event</h3>
-			<input type="text" bind:value={eventToUpdate.title} placeholder="Event Title" />
-			<input type="date" bind:value={eventToUpdate.dateStart} placeholder="Start Date" />
-			<input type="date" bind:value={eventToUpdate.dateEnd} placeholder="End Date" />
-			<input type="text" bind:value={eventToUpdate.description} placeholder="Description" />
-			<input type="number" bind:value={eventToUpdate.tier} placeholder="Tier" />
-			<button on:click={() => updateEvent(eventToUpdate)}>Update</button>
+            <h3>Update Event</h3>
+            <input type="text" bind:value={eventToUpdate.title} placeholder="Event Title" />
+            <input type="date" bind:value={eventToUpdate.dateStart} placeholder="Start Date" />
+            <input type="date" bind:value={eventToUpdate.dateEnd} placeholder="End Date" />
+            <input type="text" bind:value={eventToUpdate.description} placeholder="Description" />
+            <input type="number" bind:value={eventToUpdate.tier} placeholder="Tier" />
+            <button on:click={() => updateEvent(eventToUpdate)}>Update</button>
 
-			<h3>Delete Event</h3>
-			<input type="text" bind:value={deleteEventId} placeholder="Event ID" />
-			<button on:click={() => deleteEvent(deleteEventId)}>Delete</button>
-		{:else}
-			<p>you need to be an admin to access the editor</p>
-		{/if}
-	{:else}
-		<p>loading...</p>
-		<span class="loading loading-bars loading-lg"></span>
-	{/if}
+            <h3>Delete Event</h3>
+            <input type="text" bind:value={deleteEventId} placeholder="Event ID" />
+            <button on:click={() => deleteEvent(deleteEventId)}>Delete</button>
+        {:else}
+            <p>You need to be an admin to access the event editor.</p>
+        {/if}
+    {:else}
+        <p>Loading...</p>
+        <span class="loading loading-bars loading-lg"></span>
+    {/if}
 </div>
+
+<style>
+    /* Using the provided color scheme */
+    :root {
+        --color-nav-bar-bg: #a61618;
+        --color-nav-bar-fg: #facec5;
+    }
+
+    /* Updated loading color */
+    .loading {
+        color: var(--color-nav-bar-bg);
+    }
+
+    h1 {
+        color: var(--color-nav-bar-bg);
+    }
+
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 1px solid var(--color-nav-bar-bg);
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+    }
+
+    li a {
+        color: var(--color-nav-bar-bg);
+        text-decoration: none;
+    }
+
+    li a:hover {
+        text-decoration: underline;
+    }
+
+    .input {
+        margin: 5px 0;
+    }
+
+    button {
+        background-color: var(--color-nav-bar-bg);
+        color: var(--color-nav-bar-fg);
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #811b1c; /* Slightly darker shade */
+    }
+</style>
