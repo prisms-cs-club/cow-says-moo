@@ -7,7 +7,7 @@ export type DataType = {
 };
 
 export function load({ params }: { params: { house: string } }): DataType {
-    if (['albemarle', 'hobler', 'lambert', 'ettl'].includes(params.house)) {
+    if (['Albemarle', 'Hobler', 'Lambert', 'Ettl'].includes(params.house)) {
         return {
             house: params.house
         };

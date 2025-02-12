@@ -1,7 +1,6 @@
 import type { House } from '$lib/format';
 
 export async function queryHouse(id: string): Promise<House> {
-    id = id.toLowerCase();
     const response = await fetch(`/api/house?id=${id}`, {
         method: 'GET'
     });

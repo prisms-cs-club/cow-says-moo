@@ -5,30 +5,38 @@
 	export let ettl: number;
 	export let hobler: number;
 	export let lambert: number;
-	export let sortby: string = "points";
+	export let sortby: string = 'points';
 	export let increasing: boolean = false;
 
-	let houses: {name: string, points: number}[]  = [
+	let houses: { name: string; points: number }[] = [
 		{ name: 'Albemarle', points: albemarle },
 		{ name: 'Ettl', points: ettl },
 		{ name: 'Hobler', points: hobler },
 		{ name: 'Lambert', points: lambert }
 	];
-	switch(sortby) {
-		case "points":
-			increasing ? houses.sort((a, b) => a.points - b.points) : houses.sort((a, b) => b.points - a.points);
+	switch (sortby) {
+		case 'points':
+			increasing
+				? houses.sort((a, b) => a.points - b.points)
+				: houses.sort((a, b) => b.points - a.points);
 			break;
-		case "name":
-			increasing ? houses.sort((a, b) => a.name.localeCompare(b.name)) : houses.sort((a, b) => b.name.localeCompare(a.name));
+		case 'name':
+			increasing
+				? houses.sort((a, b) => a.name.localeCompare(b.name))
+				: houses.sort((a, b) => b.name.localeCompare(a.name));
 			break;
 	}
-	let maxPoints = Math.max(...houses.map(house => house.points)) * 1.1;
+	let maxPoints = Math.max(...houses.map((house) => house.points)) * 1.1;
 </script>
 
 {#each houses as house}
 	<div class="na">
 		<p class="text">{house.name}</p>
-		<progress class="progress-{house.name.toLowerCase()} progress" value={house.points} max={maxPoints}></progress>
+		<progress
+			class="progress-{house.name.toLocaleLowerCase()} progress"
+			value={house.points}
+			max={maxPoints}
+		></progress>
 	</div>
 {/each}
 
