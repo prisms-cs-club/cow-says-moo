@@ -1,8 +1,9 @@
 <!-- Author: Ivey Wang -->
 
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { Motion } from 'svelte-motion';
+
+	let windowWidth: number;
 
 	export let albemarle: number;
 	export let ettl: number;
@@ -29,13 +30,18 @@
 				: houses.sort((a, b) => b.name.localeCompare(a.name));
 			break;
 	}
-	let maxPoints = Math.max(...houses.map((house) => house.points)) * 1.1;
+	let maxPoints = Math.max(...houses.map((house) => house.points)) * 1.5;
 </script>
 
+<svelte:window bind:innerWidth={windowWidth} />
 {#each houses as house}
 	<div class="na">
 		<p class="text">{house.name}</p>
-		<Motion animate={{ width: [0, house.points] }} transition={{ duration: 0.75 }} let:motion>
+		<Motion
+			animate={{ width: [0, house.points * (windowWidth / maxPoints)] }}
+			transition={{ duration: 0.75 }}
+			let:motion
+		>
 			<div class="progress-{house.name.toLocaleLowerCase()} progress" use:motion></div>
 		</Motion>
 	</div>
