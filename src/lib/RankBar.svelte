@@ -1,6 +1,9 @@
 <!-- Author: Ivey Wang -->
 
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { Motion } from 'svelte-motion';
+
 	export let albemarle: number;
 	export let ettl: number;
 	export let hobler: number;
@@ -32,11 +35,9 @@
 {#each houses as house}
 	<div class="na">
 		<p class="text">{house.name}</p>
-		<progress
-			class="progress-{house.name.toLocaleLowerCase()} progress"
-			value={house.points}
-			max={maxPoints}
-		></progress>
+		<Motion animate={{ width: [0, house.points] }} transition={{ duration: 0.75 }} let:motion>
+			<div class="progress-{house.name.toLocaleLowerCase()} progress" use:motion></div>
+		</Motion>
 	</div>
 {/each}
 
@@ -50,68 +51,21 @@
 		position: relative;
 		width: 80%;
 		left: 10%;
-		height: 2rem /* 8px */;
+		height: 2rem;
 		border-radius: var(--rounded-box, 1rem);
-		background-color: var(--fallback-bc, oklch(var(--bc) / 0.2));
+		/* Default fallback background */
+		background-color: oklch(var(--bc) / 0.2);
 	}
-	.progress::-moz-progress-bar {
-		border-radius: var(--rounded-box, 1rem /* 16px */);
-		--tw-bg-opacity: 1;
-		background-color: var(--fallback-bc, oklch(var(--bc) / var(--tw-bg-opacity)));
-	}
-	.progress-ettl::-moz-progress-bar {
-		border-radius: var(--rounded-box, 1rem);
-		--tw-bg-opacity: 1;
+	.progress-ettl {
 		background-color: var(--color-ettl);
 	}
-	.progress-ettl:indeterminate {
-		--progress-color: var(--color-ettl);
-	}
-	.progress-ettl::-webkit-progress-value {
-		--tw-bg-opacity: 1;
-		background-color: var(--color-ettl);
-	}
-
-	.progress-albemarle::-moz-progress-bar {
-		border-radius: var(--rounded-box, 1rem);
-		--tw-bg-opacity: 1;
+	.progress-albemarle {
 		background-color: var(--color-albemarle);
 	}
-	.progress-albemarle:indeterminate {
-		--progress-color: var(--color-albemarle);
-	}
-	.progress-albemarle::-webkit-progress-value {
-		--tw-bg-opacity: 1;
-		background-color: var(--color-albemarle);
-	}
-	.progress-lambert::-moz-progress-bar {
-		border-radius: var(--rounded-box, 1rem);
-		--tw-bg-opacity: 1;
+	.progress-lambert {
 		background-color: var(--color-lambert);
 	}
-	.progress-lambert:indeterminate {
-		--progress-color: var(--color-lambert);
-	}
-	.progress-lambert::-webkit-progress-value {
-		--tw-bg-opacity: 1;
-		background-color: var(--color-lambert);
-	}
-	.progress-hobler::-moz-progress-bar {
-		border-radius: var(--rounded-box, 1rem);
-		--tw-bg-opacity: 1;
+	.progress-hobler {
 		background-color: var(--color-hobler);
-	}
-	.progress-hobler:indeterminate {
-		--progress-color: var(--color-hobler);
-	}
-	.progress-hobler::-webkit-progress-value {
-		--tw-bg-opacity: 1;
-		background-color: var(--color-hobler);
-	}
-	.loading-bars {
-		display: block;
-		width: 80px;
-		height: 80px;
-		position: relative;
 	}
 </style>
