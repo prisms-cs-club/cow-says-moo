@@ -34,7 +34,7 @@
 				break;
 		}
 
-		maxPoints = Math.max(...houses.map((house) => house.points)) * 2.0;
+		maxPoints = Math.max(Math.max(...houses.map((house) => house.points)) * 1.05, 1);
 	}
 </script>
 
@@ -46,7 +46,7 @@
 			<div class="house-name">{house.name}</div>
 			<div class="progress-container">
 				<Motion
-					animate={{ width: [0, house.points * (windowWidth / maxPoints)] }}
+					animate={{ width: [`0%`, `${(house.points / maxPoints) * 100}%`] }}
 					transition={{ duration: 1.0 }}
 					let:motion
 				>
