@@ -28,6 +28,6 @@
 
 	#content {
 		flex: 1;
-		margin: 5% 12%;
+		margin: 6% 12%;
 	}
 </style>

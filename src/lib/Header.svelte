@@ -1,35 +1,85 @@
-<!-- Author: Addison Steen -->
-
 <script lang="ts">
 	import { page } from '$app/stores';
-	import SignInIcon from "$lib/icon/SignIn.svelte";
-	import SignOutIcon from "$lib/icon/SignOut.svelte";
+	import SignInIcon from '$lib/icon/SignIn.svelte';
+	import SignOutIcon from '$lib/icon/SignOut.svelte';
 	import { onMount } from 'svelte';
 
+	let scrollY = 0;
+	let innerWidth = 0;
+	let mobile = false;
+	let menuOpen = false;
+
 	onMount(() => {
-		
+		// Check initial screen size
+		checkScreenSize();
 	});
+
+	function checkScreenSize() {
+		mobile = innerWidth < 768;
+	}
+
+	function toggleMenu() {
+		menuOpen = !menuOpen;
+	}
 </script>
 
-<div id="wrapper" class="sticky">
-	<div id="navbar">
-		<ul style="display: inline-block; margin-left: 5%;">
-			<li><a class="button-primary" href="/">Home</a></li>
-			<li><a class="button-primary" href="/houses">Houses & Rankings</a></li>
-			<li><a class="button-primary" href="/events">Upcoming Events</a></li>
-			<li><a class="button-primary" href="/calendar">Calendar</a></li>
-			<li><a class="button-primary" href="/signup">Activity Signup</a></li>
+<svelte:window bind:scrollY bind:innerWidth on:resize={checkScreenSize} />
+
+<div id="wrapper" class={scrollY > 20 ? 'floating' : ''}>
+	<div id="navbar" class="blur-effect">
+		{#if mobile}
+			<button
+				type="button"
+				class="mobile-menu-toggle"
+				on:click={toggleMenu}
+				aria-label="Toggle mobile navigation"
+			>
+				<span class="hamburger"></span>
+			</button>
+		{/if}
+
+		<ul class="nav-links {mobile ? 'mobile' : ''} {menuOpen ? 'open' : ''}">
+			<li>
+				<a class="button-primary" href="/" on:click={() => mobile && (menuOpen = false)}>Home</a>
+			</li>
+			<li>
+				<a class="button-primary" href="/houses" on:click={() => mobile && (menuOpen = false)}
+					>Houses & Rankings</a
+				>
+			</li>
+			<li>
+				<a class="button-primary" href="/events" on:click={() => mobile && (menuOpen = false)}
+					>Upcoming Events</a
+				>
+			</li>
+			<li>
+				<a class="button-primary" href="/calendar" on:click={() => mobile && (menuOpen = false)}
+					>Calendar</a
+				>
+			</li>
+			<li>
+				<a class="button-primary" href="/signup" on:click={() => mobile && (menuOpen = false)}
+					>Activity Signup</a
+				>
+			</li>
 		</ul>
-		<ul style="float:right; height: 100%; margin-right: 5%;">
+
+		<ul class="auth-links {mobile ? 'mobile' : ''} {menuOpen ? 'open' : ''}">
 			<!-- signin message -->
 			{#if $page.data.session}
 				{#if $page.data.session.user?.image}
-					<li><img src="{$page.data.session.user.image}" alt="avatar" class="avatar" /></li>
+					<li><img src={$page.data.session.user.image} alt="avatar" class="avatar" /></li>
 				{/if}
-				<li><a href="/auth/signout" class="button-primary" data-sveltekit-preload-data="off"> Sign Out <SignOutIcon class="inline-svg" size="1em" /> </a></li>
+				<li>
+					<a href="/auth/signout" class="button-primary" data-sveltekit-preload-data="off">
+						Sign Out <SignOutIcon class="inline-svg" size="1em" />
+					</a>
+				</li>
 			{:else}
 				<li>
-					<a href="/auth/signin" class="button-primary" data-sveltekit-preload-data="off"> Sign In <SignInIcon class="inline-svg" size="1em"/></a>
+					<a href="/auth/signin" class="button-primary" data-sveltekit-preload-data="off">
+						Sign In <SignInIcon class="inline-svg" size="1em" /></a
+					>
 				</li>
 			{/if}
 		</ul>
@@ -38,42 +88,99 @@
 
 <style>
 	:root {
-		--color-nav-bar-bg: #a61618;
+		--color-nav-bar-bg: rgba(166, 22, 24, 0.85); /* Added transparency */
 		--color-nav-bar-fg: #facec5;
+		--header-height: 50px;
+		--header-padding: 10px;
 	}
 
 	#wrapper {
-		display: grid;
-		grid-gap: 5px;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
-		grid-template-rows: auto auto auto;
-	}
-
-	#wrapper.sticky {
+		width: 100%;
 		position: fixed;
 		top: 0;
-		width: 100%;
+		left: 0;
+		right: 0;
+		padding: 10px 20px;
+		box-sizing: border-box;
+		transition: all 0.3s ease;
 		z-index: 1000;
+		background-color: transparent;
+	}
+
+	#wrapper.floating {
+		top: 15px;
+		left: 15px;
+		right: 15px;
+		width: calc(100% - 30px);
+		border-radius: 8px;
 	}
 
 	/*Nav Bar*/
+	#navbar {
+		background-color: var(--color-nav-bar-bg);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-radius: 8px;
+		padding: 0 15px;
+		height: var(--header-height);
+		position: relative;
+		overflow: hidden;
+	}
+
+	/* Blur effect */
+	.blur-effect {
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+	}
+
+	.blur-effect::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: var(--color-nav-bar-bg);
+		z-index: -1;
+	}
 
 	#navbar ul {
 		list-style-type: none;
-		margin: 0px;
-		padding: 0px;
-		text-align: center;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		position: relative;
+		z-index: 2;
+	}
+
+	.nav-links {
+		flex-grow: 1;
+		justify-content: flex-start;
+		margin-left: 5%;
+	}
+
+	.auth-links {
+		justify-content: flex-end;
+		margin-right: 5%;
 	}
 
 	#navbar ul li {
-		display: inline;
+		margin: 0 3px;
 	}
 
 	#navbar li a {
 		text-decoration: none;
-		padding: 18px 15px;
+		padding: 8px 12px;
 		color: var(--color-nav-bar-fg);
-		background-color: var(--color-nav-bar-bg);
+		background-color: transparent; /* Changed from solid bg to transparent */
+		border-radius: 4px;
+		display: inline-block;
+		transition: all 0.2s ease;
+		font-size: 0.95em;
+		position: relative; /* Add for hover effect */
+		z-index: 2;
 	}
 
 	#navbar a:hover {
@@ -81,25 +188,123 @@
 		background-color: var(--color-nav-bar-fg);
 	}
 
-	#navbar {
-		grid-column-start: 1;
-		grid-column-end: 9;
-		grid-row-start: 1;
-		grid-row-end: 2;
-		background-color: var(--color-nav-bar-bg);
-	}
-
 	/*image*/
 	img.avatar {
 		border-radius: 50%;
+		height: 1.8em;
+		width: 1.8em;
 		display: inline-block;
-		height: 2.1em;
-		width: 2.1em;
-		vertical-align: center;
+		vertical-align: middle;
+		margin-right: 8px;
+		border: 2px solid var(--color-nav-bar-fg); /* Added border */
 	}
 
 	a.button-primary {
-		display: inline-block;
-		vertical-align: center;
+		display: inline-flex;
+		align-items: center;
+	}
+
+	.inline-svg {
+		margin-left: 5px;
+	}
+
+	/* Mobile menu */
+	.mobile-menu-toggle {
+		display: none;
+		cursor: pointer;
+		width: 24px;
+		height: 24px;
+		position: relative;
+		z-index: 10;
+	}
+
+	.hamburger {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		transform: translateY(-50%);
+		width: 24px;
+		height: 2px;
+		background-color: var(--color-nav-bar-fg);
+		transition: all 0.3s ease;
+	}
+
+	.hamburger::before,
+	.hamburger::after {
+		content: '';
+		position: absolute;
+		width: 24px;
+		height: 2px;
+		background-color: var(--color-nav-bar-fg);
+		transition: all 0.3s ease;
+	}
+
+	.hamburger::before {
+		top: -8px;
+	}
+
+	.hamburger::after {
+		top: 8px;
+	}
+
+	/* Responsive styles */
+	@media (max-width: 768px) {
+		.mobile-menu-toggle {
+			display: block;
+		}
+
+		#navbar {
+			padding: 0 10px;
+		}
+
+		#navbar ul.mobile {
+			position: absolute;
+			top: calc(var(--header-height) + var(--header-padding));
+			left: 0;
+			width: 100%;
+			flex-direction: column;
+			background-color: var(--color-nav-bar-bg);
+			backdrop-filter: blur(8px);
+			-webkit-backdrop-filter: blur(8px);
+			display: none;
+			padding: 10px 0;
+			border-radius: 0 0 8px 8px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		#navbar ul.mobile.open {
+			display: flex;
+		}
+
+		#navbar ul.mobile li {
+			width: 100%;
+			margin: 5px 0;
+			text-align: center;
+		}
+
+		#navbar ul.mobile li a {
+			width: 80%;
+			padding: 8px 0;
+		}
+
+		.auth-links.mobile {
+			margin-top: 8px;
+			border-top: 1px solid rgba(250, 206, 197, 0.3);
+			padding-top: 8px;
+		}
+
+		#wrapper.floating {
+			top: 10px;
+			left: 10px;
+			right: 10px;
+			width: calc(100% - 20px);
+		}
+	}
+
+	@media (min-width: 769px) and (max-width: 1024px) {
+		#navbar li a {
+			padding: 8px 8px;
+			font-size: 0.85em;
+		}
 	}
 </style>
