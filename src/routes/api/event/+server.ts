@@ -1,10 +1,10 @@
-import type { Event } from "$lib/format.js";
+import type { HouseEvent } from "$lib/format.js";
 import type { RequestEvent } from '@sveltejs/kit';
 
 // handle request of information of an event
 
-/** @type {Event} */
-let events: Event[] = [];
+/** @type {HouseEvent} */
+let events: HouseEvent[] = [];
 
 export async function GET({ url } : RequestEvent) {
     const id = url.searchParams.get('id');

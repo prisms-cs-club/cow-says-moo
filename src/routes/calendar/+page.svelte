@@ -4,9 +4,9 @@
 	import interactionPlugin from '@fullcalendar/interaction';
 	import { onMount } from 'svelte';
 
-	import type { Event } from '$lib/format.d.ts';
+	import type { HouseEvent } from '$lib/format.d.ts';
 
-	let events: Event[] = [];
+	let events: HouseEvent[] = [];
 	let calendarEvents: { title: string; date: string }[] = [];
 
 	onMount(async () => {

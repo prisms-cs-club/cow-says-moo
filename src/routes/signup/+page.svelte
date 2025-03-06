@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { Member, Event } from '$lib/format';
+    import type { Member, HouseEvent } from '$lib/format';
     import { onMount } from 'svelte';
     import { getMember } from '$lib/queryMember';
     import { fetchEvents } from '$lib/queryEvents';
 
     let user: Member = undefined;
-    let events: Event[] = [];
+    let events: HouseEvent[] = [];
     let loaded = false;
 
     onMount(async () => {
