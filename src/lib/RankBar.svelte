@@ -7,8 +7,8 @@
 	export let ettl: number;
 	export let hobler: number;
 	export let lambert: number;
-	export let sortby: string = 'points';
-	export let increasing: boolean = false;
+	// export let sortby: string = 'points';
+	// export let increasing: boolean = false;
 
 	let houses: { name: string; points: number }[] = [];
 	let maxPoints: number;
