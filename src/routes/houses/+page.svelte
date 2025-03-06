@@ -19,11 +19,7 @@
 </script>
 
 <h1>House Rankings</h1>
-{#if loaded}
-	<RankBar {albemarle} {ettl} {lambert} {hobler} />
-{:else}
-	<span class="loading loading-bars loading-lg"></span>
-{/if}
+<RankBar {albemarle} {ettl} {lambert} {hobler} />
 
 <hr />
 

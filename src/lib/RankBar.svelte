@@ -21,18 +21,18 @@
 			{ name: 'Lambert', points: lambert }
 		];
 
-		switch (sortby) {
-			case 'points':
-				increasing
-					? houses.sort((a, b) => a.points - b.points)
-					: houses.sort((a, b) => b.points - a.points);
-				break;
-			case 'name':
-				increasing
-					? houses.sort((a, b) => a.name.localeCompare(b.name))
-					: houses.sort((a, b) => b.name.localeCompare(a.name));
-				break;
-		}
+		// switch (sortby) {
+		// 	case 'points':
+		// 		increasing
+		// 			? houses.sort((a, b) => a.points - b.points)
+		// 			: houses.sort((a, b) => b.points - a.points);
+		// 		break;
+		// 	case 'name':
+		// 		increasing
+		// 			? houses.sort((a, b) => a.name.localeCompare(b.name))
+		// 			: houses.sort((a, b) => b.name.localeCompare(a.name));
+		// 		break;
+		// }
 
 		maxPoints = Math.max(Math.max(...houses.map((house) => house.points)) * 1.05, 1);
 	}
