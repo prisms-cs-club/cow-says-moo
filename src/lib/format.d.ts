@@ -1,3 +1,5 @@
+import type { Timestamp } from "firebase/firestore";
+
 /**
  * Type definition of the news.
  */
@@ -11,23 +13,23 @@ export type News = {
 /**
  * Type definition of the event.
  */
-export type Event = {
+export type HouseEvent = {
 	/**
 	 * Title of the event
 	 */
 	title: string;
 
 	/**
-	 * Starting date of the event, in format "YYYY-MM-DD"
+	 * Starting date of the event
 	 */
-	dateStart: string;
+	dateStart: Timestamp;
 
 	/**
-	 * Ending date of the event, in format "YYYY-MM-DD"
+	 * Ending date of the event
 	 *
 	 * If the event is a one-day event, the dateEnd field will be the same as the dateStart field.
 	 */
-	dateEnd: string;
+	dateEnd: Timestamp;
 
 	/**
 	 * a detailed description of the event, in Markdown format
@@ -53,7 +55,7 @@ export type Event = {
 	/**
 	 * If the event is concluded, the winner field will be filled with the name of the winner.
 	 */
-	winner?: string[];
+	winner?: string;
 };
 
 export type House = {

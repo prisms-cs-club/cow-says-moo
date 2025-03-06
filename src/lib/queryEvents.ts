@@ -1,113 +1,44 @@
-import type { Event } from '$lib/format';
+import type { HouseEvent } from '$lib/format';
 import { getMember } from '$lib/queryMember';
+import { initializeApp } from 'firebase/app';
+import { collection, getDocs, getFirestore, orderBy, query, where } from 'firebase/firestore';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyA_u-dNDgYCkl-Sh7FW-bj42m9hoW_GRcs",
+    authDomain: "cow-says-moo.firebaseapp.com",
+    databaseURL: "https://cow-says-moo-default-rtdb.firebaseio.com",
+    projectId: "cow-says-moo",
+    storageBucket: "cow-says-moo.firebasestorage.app",
+    messagingSenderId: "930455928110",
+    appId: "1:930455928110:web:fb911ef83dc61712f24ebf"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
 
 async function ifAdmin() { const a = await getMember(); return (a !== undefined && a.role === "admin"); }
 
-export async function queryEvents(id: string): Promise<Event[]> {
-    const response = await fetch(`/api/event?id=${id}`, {
-        method: 'GET'
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch events');
-    }
-    return await response.json();
-}
-
 export async function fetchEvents() {
-    try {
-        const response = await fetch('/api/event', {
-            method: 'GET'
-        });
-        if (!response.ok) {
-            throw new Error('Failed to fetch events');
-        }
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
+    // query the database ordered by the start date
+    const q = query(collection(db, 'events'), orderBy('dateStart', 'desc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => doc.data() as HouseEvent);
 }
 
 export async function fetchEventById(id: string) {
-    try {
-        const response = await fetch(`/api/event?id=${id}`, {
-            method: 'GET'
-        });
-        if (!response.ok) {
-            throw new Error('Failed to fetch event');
-        }
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        return null;
-    }
+    const q = query(collection(db, 'events'), where('id', '==', id));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => doc.data() as HouseEvent);
 }
 
-export async function createEvent(newEvent: Event) {
-    if (!await ifAdmin()) { // temporary solution
-        console.error("Unfortunately, You are not an admin");
-        throw new Error("Unfortunately, you are not an admin."); 
-    }
-
-    try {
-        const response = await fetch('/api/event', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newEvent)
-        });
-        if (!response.ok) {
-            throw new Error('Failed to create event');
-        }
-        return true;
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
+export async function createEvent(newEvent: HouseEvent) {
+    // TODO
 }
 
-export async function updateEvent(updateEvent: Event) {
-    if (!await ifAdmin()) {
-        console.error("Unfortunately, You are not an admin");
-        throw new Error("Unfortunately, You are not an admin");
-    }
-
-    try {
-        const response = await fetch('/api/event', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updateEvent)
-        });
-        if (!response.ok) {
-            throw new Error('Failed to update event');
-        }
-        return true;
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
+export async function updateEvent(updateEvent: HouseEvent) {
+    // TODO
 }
 
 export async function deleteEvent(deleteEventId: string) {
-    if (!await ifAdmin()) {
-        console.error("Unfortunately, You are not an admin");
-        throw new Error("Unfortunately, you are not an admin.");
-    }
-
-    try {
-        const response = await fetch(`/api/event?id=${deleteEventId}`, {
-            method: 'DELETE'
-        });
-        if (!response.ok) {
-            throw new Error('Failed to delete event');
-        }
-        return true;
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
+    // TODO
 }

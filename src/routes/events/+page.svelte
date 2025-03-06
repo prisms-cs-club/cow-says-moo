@@ -1,23 +1,25 @@
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
-    import type { Event } from '$lib/format';
+    import type { HouseEvent } from '$lib/format';
     import { getMember } from '$lib/queryMember';
     import { fetchEvents, updateEvent, createEvent, deleteEvent } from '$lib/queryEvents';
+	import { Timestamp } from 'firebase/firestore';
+	import { formatDate } from '$lib/utils';
 
-    let events: Event[] = [];
+    let events: HouseEvent[] = [];
     let displayEventEditor = false; // Only display event editor if the user's role is admin
-    let newEvent: Event = {
+    let newEvent: HouseEvent = {
         title: '',
-        dateStart: '',
-        dateEnd: '',
+        dateStart: new Timestamp(0, 0),
+        dateEnd: new Timestamp(0, 0),
         description: '',
         tier: 0
     };
 
-    let eventToUpdate: Event = {
+    let eventToUpdate: HouseEvent = {
         title: '',
-        dateStart: '',
-        dateEnd: '',
+        dateStart: new Timestamp(0, 0),
+        dateEnd: new Timestamp(0, 0),
         description: '',
         tier: 0
     };
@@ -54,7 +56,7 @@
         <ul>
             {#each events as event}
                 <li>
-                    <a href="/events/{event.title}">{event.title}</a> - {event.dateStart}
+                    <a href="/events/{event.title}">{event.title}</a> - { formatDate(event) } (Tier {event.tier})
                     <!-- Display the event description below the event title -->
                     <p>{event.description}</p>
                 </li>
