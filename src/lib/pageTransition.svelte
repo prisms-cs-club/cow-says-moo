@@ -1,7 +1,5 @@
 <script>
-	import { fade, fly } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
-
+	import { Motion } from 'svelte-motion';
 	export let url = '';
 
 	// This key will change when the URL changes, causing a re-render
@@ -9,13 +7,29 @@
 </script>
 
 {#key key}
-	<div
-		class="transition-container"
-		in:fly={{ y: 50, duration: 500, delay: 100, easing: cubicOut }}
-		out:fade={{ duration: 0 }}
+	<Motion
+		animate={{
+			y: [50, 0],
+			opacity: [0, 1]
+		}}
+		initial={{
+			y: 50,
+			opacity: 0
+		}}
+		exit={{
+			opacity: 0,
+			transition: { duration: 1.0 }
+		}}
+		transition={{
+			duration: 0.5,
+			delay: 0.1
+		}}
+		let:motion
 	>
-		<slot></slot>
-	</div>
+		<div class="transition-container" use:motion>
+			<slot></slot>
+		</div>
+	</Motion>
 {/key}
 
 <style>
