@@ -57,11 +57,6 @@
 					>Calendar</a
 				>
 			</li>
-			<li>
-				<a class="button-primary" href="/signup" on:click={() => mobile && (menuOpen = false)}
-					>Activity Signup</a
-				>
-			</li>
 		</ul>
 
 		<ul class="auth-links {mobile ? 'mobile' : ''} {menuOpen ? 'open' : ''}">

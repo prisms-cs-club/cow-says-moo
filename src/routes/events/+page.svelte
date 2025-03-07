@@ -2,9 +2,9 @@
     import { onMount, onDestroy } from 'svelte';
     import type { HouseEvent } from '$lib/format';
     import { getMember } from '$lib/queryMember';
-    import { fetchEvents, updateEvent, createEvent, deleteEvent } from '$lib/queryEvents';
+    import { fetchEvents, updateEvent, createEvent, deleteEvent } from '$lib/firebase';
 	import { Timestamp } from 'firebase/firestore';
-	import { formatDate } from '$lib/utils';
+	import { formatDate, numberToRoman } from '$lib/utils';
     import { page } from '$app/stores';
 
     let events: HouseEvent[] = [];
@@ -58,14 +58,17 @@
         <!-- Display the events list -->
         {#each events.slice((eventsPage - 1) * EVENTS_PER_PAGE, eventsPage * EVENTS_PER_PAGE) as event}
             <div class={(event.dateStart.seconds - 432000) * 1000 > Date.now() ? 'activity upcoming' : `activity ${event.winner?.toLowerCase() ?? ''}`}>
-                <h3 class={(event.tier >= 3) ? "font-bold" : ""}>{event.title}</h3>
+                <h3 class={(event.tier <= 2) ? "font-bold" : ""}>{event.title}</h3>
                 <p>{event.description}</p>
-                <p>{formatDate(event)}</p>
+                <p>{formatDate(event)}, Tier {numberToRoman(event.tier)}</p>
                 <button 
                     class="btn" 
                     on:click={() => window.location.href = '/events/' + event.id}>
                     See More
                 </button>
+                {#if event.signupLink}
+                    <button class="btn" on:click={() => window.open(event.signupLink!)}>Sign Up</button>
+                {/if}
             </div>
         {/each}
         <div class="flex">
@@ -188,6 +191,7 @@
         padding: 20px;
         background-color: var(--color-event-bg);
         color: var(--color-event-fg);
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;

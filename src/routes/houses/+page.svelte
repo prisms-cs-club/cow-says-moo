@@ -1,25 +1,25 @@
 <script>
+	import { queryScoreSummary } from '$lib/firebase';
 	import { queryHouse } from '$lib/queryHouse';
 	import RankBar from '$lib/RankBar.svelte';
 	import { onMount } from 'svelte';
-
-	let albemarle = 0;
-	let ettl = 0;
-	let hobler = 0;
-	let lambert = 0;
+	
+	let scores = {
+		albemarle: 0,
+		ettl: 0,
+		hobler: 0,
+		lambert: 0
+	};
 	let loaded = false;
 	onMount(async () => {
-		albemarle = (await queryHouse('Albemarle')).points;
-		ettl = (await queryHouse('Ettl')).points;
-		hobler = (await queryHouse('Hobler')).points;
-		lambert = (await queryHouse('Lambert')).points;
+		scores = await queryScoreSummary();
 		loaded = true;
 		console.log('loaded');
 	});
 </script>
 
 <h1>House Rankings</h1>
-<RankBar {albemarle} {ettl} {lambert} {hobler} />
+<RankBar albemarle={scores.albemarle} ettl={scores.ettl} lambert={scores.lambert} hobler={scores.hobler} />
 
 <hr />
 

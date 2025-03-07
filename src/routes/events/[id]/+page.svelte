@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import RankBar from '$lib/RankBar.svelte';
-	export let data;
+	import type { DataType } from './+page';
+	import { formatDate, numberToRoman } from '$lib/utils';
+	const { data }: { data: DataType } = $props();
 
 	onMount(async () => {});
 </script>
@@ -10,13 +12,23 @@
 	<div id="title_frame">
 		<h1 id="title">{data.event.title}</h1>
 	</div>
-	<div id="text_frame">
-		<p id="text">{data.event.description}</p>
-	</div>
-	<div id="leaderboard">
-		<!-- TODO urgent: set up API to query the score each house get in each event -->
-		<RankBar albemarle={0} lambert={0} hobler={0} ettl={0} />
-	</div>
+	<p>{formatDate(data.event)}, Tier {numberToRoman(data.event.tier)}</p>
+	<p id="text">{data.event.description}</p>
+	{#if data.event.result &&
+		data.event.result.albemarle &&
+		data.event.result.lambert &&
+		data.event.result.hobler &&
+		data.event.result.ettl}
+		<div id="leaderboard">
+			<RankBar
+				albemarle={data.event.result.albemarle}
+				lambert={data.event.result.lambert}
+				hobler={data.event.result.hobler}
+				ettl={data.event.result.ettl} />
+		</div>
+	{:else}
+		<p>There's no results for this event yet.</p>
+	{/if}
 </div>
 
 <style>
@@ -34,16 +46,7 @@
 		text-align: left;
 	}
 	#frame {
-		background-color: #f8f8f8;
-		overflow: auto;
 		height: 100vh;
-		width: 100%;
-		border-top-width: 2px;
-	}
-	#text_frame {
-		display: flex;
-		justify-content: left;
-		align-items: left;
 	}
 	#text {
 		color: black;

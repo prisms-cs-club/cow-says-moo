@@ -61,6 +61,11 @@ export type HouseEvent = {
 	 * If the event is concluded, the winner field will be filled with the name of the winner.
 	 */
 	winner?: string;
+
+	/**
+	 * The event's sign up link, if any.
+	 */
+	signupLink?: string;
 };
 
 export type House = {

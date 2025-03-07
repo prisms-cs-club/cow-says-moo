@@ -3,13 +3,13 @@
 	import DayGrid from '@event-calendar/day-grid';
 	import TimeGrid from '@event-calendar/time-grid'; // Add this for better time display
 	import Interaction from '@event-calendar/interaction'; // Add for better interaction
-	import { fetchEvents } from '$lib/queryEvents';
+	import { fetchEvents } from '$lib/firebase';
 	import { onMount } from 'svelte';
 	import type { HouseEvent } from '$lib/format.d.ts';
 
 	let calendarEvents = [];
 	let plugins = [DayGrid, TimeGrid, Interaction];
-	let options;
+	let options: object;
 
 	onMount(async () => {
 		let events = await fetchEvents();
@@ -22,7 +22,7 @@
 				tier: event.tier,
 				result: event.result,
 				winner: event.winner,
-				url: `/events/${event.title.toLowerCase().replace(/\s+/g, '-')}`
+				url: `/events/${event.id}`
 			}
 		}));
 
@@ -34,7 +34,7 @@
 				center: 'title',
 				end: 'dayGridMonth,timeGridWeek'
 			},
-			eventClick: function (info) {
+			eventClick: function (info: any) {
 				if (info.event.extendedProps.url) {
 					window.location.href = info.event.extendedProps.url;
 				}

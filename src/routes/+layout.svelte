@@ -12,19 +12,15 @@
 	<title>PRISMS House Info</title>
 </svelte:head>
 
-<div id="wrapper">
-	<div id="header">
-		<Header />
-	</div>
+<Header />
 
-	<div id="content">
-		<PageTransition url={$page.url.pathname}>
-			{@render children()}
-		</PageTransition>
-	</div>
-
-	<Footer />
+<div id="content">
+	<PageTransition url={$page.url.pathname}>
+		{@render children()}
+	</PageTransition>
 </div>
+
+<Footer />
 
 <style>
 	#wrapper {

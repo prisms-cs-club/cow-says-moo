@@ -50,3 +50,9 @@ export async function updateEvent(updateEvent: HouseEvent) {
 export async function deleteEvent(deleteEventId: string) {
     // TODO
 }
+
+export async function queryScoreSummary(): Promise<{ [key: string]: number }> {
+    const response = doc(db, 'summary', 'scores');
+    const docRef = await getDoc(response);
+    return docRef.data() as { [key: string]: number };
+}

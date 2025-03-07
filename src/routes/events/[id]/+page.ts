@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { HouseEvent } from '$lib/format.d.ts';
-import { fetchEventById } from '$lib/queryEvents';
+import { fetchEventById } from '$lib/firebase';
 
 export type DataType = {
     event: HouseEvent;
