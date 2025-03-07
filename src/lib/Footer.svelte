@@ -2,63 +2,80 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
-	let clickCount = 0;
-	let show = false;
+	let _a = 0;
+	let _b = false;
 
-	const qwq = [
-		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-01-26_19-15-33.png?raw=true',
-		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/0bf06dd97ad1f1fc9ef5ecb6302d48d11340190821.png?raw=true',
-		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-02-11_17-44-59.png?raw=true',
-		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-02-11_17-46-07.png?raw=true',
-		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/350c54e33c3a1ce8a8a86369343d4bed286431045.jpg?raw=true',
-		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-01-26_19-16-35.png?raw=true',
-		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-01-26_19-16-43.png?raw=true'
-	];
-	let randomImage = qwq[0];
+	const _d = (i: number) => {
+		const _e = [
+			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAxLTI2XzE5LTE1LTMzLnBuZz9yYXc9dHJ1ZQ==',
+			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluLzBiZjA2ZGQ5N2FkMWYxZmM5ZWY1ZWNiNjMwMmQ0OGQxMTM0MDE5MDgyMS5wbmc/cmF3PXRydWU=',
+			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAyLTExXzE3LTQ0LTU5LnBuZz9yYXc9dHJ1ZQoK',
+			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAyLTExXzE3LTQ2LTA3LnBuZz9yYXc9dHJ1ZQ==',
+			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluLzM1MGM1NGUzM2MzYTFjZThhOGE4NjM2OTM0M2Q0YmVkMjg2NDMxMDQ1LmpwZz9yYXc9dHJ1ZQ==',
+			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAxLTI2XzE5LTE2LTM1LnBuZz9yYXc9dHJ1ZQo=',
+			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAxLTI2XzE5LTE2LTQzLnBuZz9yYXc9dHJ1ZQ=='
+		];
+		return atob(_e[i]);
+	};
 
-	function handleFooterClick() {
-		clickCount++;
-		if (clickCount === 6) {
-			show = true;
-			clickCount = 0;
-			randomImage = qwq[Math.floor(Math.random() * qwq.length)];
-		}
+	let _f = '';
+
+	const _g = () => {
+		return {
+			track: (evt: string) => {
+				if (evt === 'footer') {
+					_a = (_a + 1) % 7;
+					if (_a === 6) {
+						_b = true;
+						_f = _d(Math.floor(Math.random() * 7));
+					}
+				}
+			}
+		};
+	};
+
+	const analytics = _g();
+
+	let _h = 0;
+
+	function _i(event: MouseEvent) {
+		const now = Date.now();
+		if (now - _h < 100) return;
+		_h = now;
+		analytics.track('footer');
 	}
 
-	function handleDocumentClick(event: MouseEvent) {
+	function _j(event: MouseEvent) {
 		const target = event.target as Element;
-		if (show && target && !target.closest('footer')) {
-			show = false;
+		if (_b && target && !target.closest('footer')) {
+			_b = false;
 		}
 	}
 
 	onMount(() => {
 		if (browser) {
-			document.addEventListener('click', handleDocumentClick);
+			document.addEventListener('click', _j);
 		}
 	});
 
 	onDestroy(() => {
 		if (browser) {
-			document.removeEventListener('click', handleDocumentClick);
+			document.removeEventListener('click', _j);
 		}
 	});
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<footer
-	class="no-select footer bg-base-200 p-10 text-base-content"
-	on:click|stopPropagation={handleFooterClick}
->
+<footer class="no-select footer bg-base-200 p-10 text-base-content" on:click|stopPropagation={_i}>
 	<aside class="grid-flow-col items-center">
 		<p>Copyright © PRISMS CS Club {new Date().getFullYear()} - All right reserved</p>
 	</aside>
 </footer>
 
-{#if show}
+{#if _b}
 	<div class="special no-select">
-		<img class="no-select" src={randomImage} alt=":)" />
+		<img class="no-select" src={_f} alt=":)" />
 	</div>
 {/if}
 
