@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
@@ -12,8 +12,9 @@
 		}
 	}
 
-	function handleDocumentClick(event) {
-		if (show && !event.target.closest('footer')) {
+	function handleDocumentClick(event: MouseEvent) {
+		const target = event.target as Element;
+		if (show && target && !target.closest('footer')) {
 			show = false;
 			clickCount = 0;
 		}
@@ -35,6 +36,8 @@
 		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-01-26_19-15-33.png?raw=true';
 </script>
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <footer
 	class="no-select footer bg-base-200 p-10 text-base-content"
 	on:click|stopPropagation={handleFooterClick}
