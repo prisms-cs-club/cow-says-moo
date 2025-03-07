@@ -14,17 +14,14 @@
 	</div>
 	<p>{formatDate(data.event)}, Tier {numberToRoman(data.event.tier)}</p>
 	<p id="text">{data.event.description}</p>
-	{#if data.event.result &&
-		data.event.result.albemarle &&
-		data.event.result.lambert &&
-		data.event.result.hobler &&
-		data.event.result.ettl}
+	{#if data.event.result && data.event.result.albemarle && data.event.result.lambert && data.event.result.hobler && data.event.result.ettl}
 		<div id="leaderboard">
 			<RankBar
 				albemarle={data.event.result.albemarle}
 				lambert={data.event.result.lambert}
 				hobler={data.event.result.hobler}
-				ettl={data.event.result.ettl} />
+				ettl={data.event.result.ettl}
+			/>
 		</div>
 	{:else}
 		<p>There's no results for this event yet.</p>
@@ -51,9 +48,11 @@
 	#text {
 		color: black;
 		font-size: 16px;
-		width: 60%;
+		width: 100%;
 		border-color: black;
 		border-width: 2px;
 		text-align: left;
+		margin-top: 1%;
+		margin-bottom: 1%;
 	}
 </style>
