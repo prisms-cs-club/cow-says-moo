@@ -17,6 +17,7 @@
 	"devDependencies": {
 		"@event-calendar/core": "^3.10.0",
 		"@event-calendar/day-grid": "^3.10.0",
+		"@event-calendar/interaction": "^3.10.0",
 		"@event-calendar/time-grid": "^3.10.0",
 		"@fullcalendar/core": "^6.1.15",
 		"@fullcalendar/daygrid": "^6.1.15",
@@ -29,6 +30,8 @@
 		"@types/eslint": "^9.6.0",
 		"@types/event-calendar__core": "^3.7.0",
 		"@types/event-calendar__day-grid": "^3.4.1",
+		"@types/event-calendar__interaction": "^3.4.1",
+		"@types/event-calendar__time-grid": "^3.4.1",
 		"@types/node": "^22.10.2",
 		"autoprefixer": "^10.4.20",
 		"daisyui": "^4.12.13",

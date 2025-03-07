@@ -1,40 +1,22 @@
 <script lang="ts">
 	import Calendar from '@event-calendar/core';
 	import DayGrid from '@event-calendar/day-grid';
+	import TimeGrid from '@event-calendar/time-grid'; // Add this for better time display
+	import Interaction from '@event-calendar/interaction'; // Add for better interaction
 	import { fetchEvents } from '$lib/queryEvents';
 	import { onMount } from 'svelte';
-	import type { Event } from '$lib/format.d.ts';
+	import type { HouseEvent } from '$lib/format.d.ts';
 
-	let myEvents: Event[];
-
-	type calendarEvent = {
-		title: string;
-		start: string;
-		end: string;
-		extendedProps: {
-			description: string;
-			tier: number;
-			result: string;
-			winner: string;
-			url: string;
-		};
-	};
-
-	let calendarEvents: calendarEvent[];
-
-	let plugins = [DayGrid];
-	let options: {
-		view: string;
-		events: calendarEvent[];
-		eventClick: (info: any) => void;
-	};
+	let calendarEvents = [];
+	let plugins = [DayGrid, TimeGrid, Interaction];
+	let options;
 
 	onMount(async () => {
 		let events = await fetchEvents();
-		calendarEvents = events.map((event: Event) => ({
+		calendarEvents = events.map((event: HouseEvent) => ({
 			title: event.title,
-			start: event.dateStart,
-			end: event.dateEnd,
+			start: event.dateStart.toDate().toISOString(), // Convert Timestamp to Date first
+			end: event.dateEnd.toDate().toISOString(), // Convert Timestamp to Date first
 			extendedProps: {
 				description: event.description,
 				tier: event.tier,
@@ -47,19 +29,39 @@
 		options = {
 			view: 'dayGridMonth',
 			events: calendarEvents,
-			// Make the event clickable: redirect to the URL defined in extendedProps.
+			headerToolbar: {
+				start: 'prev,next today',
+				center: 'title',
+				end: 'dayGridMonth,timeGridWeek'
+			},
 			eventClick: function (info) {
 				if (info.event.extendedProps.url) {
 					window.location.href = info.event.extendedProps.url;
 				}
+			},
+			eventDisplay: 'block', // Makes events more visible
+			eventTimeFormat: {
+				hour: 'numeric',
+				minute: '2-digit',
+				meridiem: 'short'
 			}
 		};
-
-		// force re-render
-		// @ts-ignore
-		options = options;
 	});
 </script>
 
-<!-- Render the Calendar component with the defined plugins and options -->
-<Calendar {plugins} {options} />
+<div class="calendar-container">
+	{#if options}
+		<Calendar {plugins} {options} />
+	{:else}
+		<p>Loading calendar...</p>
+	{/if}
+</div>
+
+<style>
+	.calendar-container {
+		height: 800px;
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 1rem;
+	}
+</style>
