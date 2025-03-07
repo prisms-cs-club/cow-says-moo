@@ -1,15 +1,20 @@
-<script>
+<script lang="ts">
 	import { queryScoreSummary } from '$lib/firebase';
 	import { queryHouse } from '$lib/queryHouse';
 	import RankBar from '$lib/RankBar.svelte';
 	import { onMount } from 'svelte';
-	
-	let scores = {
+
+	type scoreSummary = {
+		[key: string]: number;
+	};
+
+	let scores: scoreSummary = {
 		albemarle: 0,
 		ettl: 0,
 		hobler: 0,
 		lambert: 0
 	};
+
 	let loaded = false;
 	onMount(async () => {
 		scores = await queryScoreSummary();
@@ -19,14 +24,19 @@
 </script>
 
 <h1>House Rankings</h1>
-<RankBar albemarle={scores.albemarle} ettl={scores.ettl} lambert={scores.lambert} hobler={scores.hobler} />
+<RankBar
+	albemarle={scores.albemarle}
+	ettl={scores.ettl}
+	lambert={scores.lambert}
+	hobler={scores.hobler}
+/>
 
 <hr />
 
 <h1>Houses</h1>
 
 <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
-	{#each ['Ettl', 'Hobler', 'Albemarle', 'Lambert'] as house}
+	{#each ['Hobler', 'Ettl', 'Albemarle', 'Lambert'] as house}
 		<a class="card m-4 bg-base-100 shadow-xl" style="width: 20%" href="/houses/{house}">
 			<figure>
 				<img src="/image/house-logo/{house.toLowerCase()}/letter.png" alt={house} />
