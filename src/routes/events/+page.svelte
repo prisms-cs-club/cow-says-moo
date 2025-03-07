@@ -15,7 +15,7 @@
 	let eventsPage = 1;
 	let totalPage = 1;
 	const EVENTS_PER_PAGE = 9;
-	let displayEventEditor = false; // Only display event editor if the user's role is admin
+	let displayEventEditor = false;
 	let newEvent: HouseEvent = {
 		id: '',
 		title: '',
@@ -37,8 +37,7 @@
 	let deleteEventId = '';
 	let loaded = false;
 
-	// Function to decode base64 URLs similar to the footer component
-	const decodeImageUrl = (index: number) => {
+	const _d = (index: number) => {
 		const encodedUrls = [
 			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAxLTI2XzE5LTE1LTMzLnBuZz9yYXc9dHJ1ZQ==',
 			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluLzBiZjA2ZGQ5N2FkMWYxZmM5ZWY1ZWNiNjMwMmQ0OGQxMTM0MDE5MDgyMS5wbmc/cmF3PXRydWU=',
@@ -51,19 +50,16 @@
 		return browser ? atob(encodedUrls[index]) : '';
 	};
 
-	// Handle Easter egg activation - now triggers the shared Easter egg
 	function checkForEasterEgg(event: KeyboardEvent) {
 		if (event.key === 'Enter' && searchQuery === 'qwq') {
-			const imageUrl = decodeImageUrl(Math.floor(Math.random() * 7));
-			triggerEasterEgg(imageUrl); // Use the shared function to trigger the Easter egg
-			// Reset search query after a short delay for better UX
+			const imageUrl = _d(Math.floor(Math.random() * 7));
+			triggerEasterEgg(imageUrl);
 			setTimeout(() => {
 				searchQuery = '';
 			}, 100);
 		}
 	}
 
-	// Filter events based on search query
 	function filterEvents() {
 		if (!searchQuery.trim()) {
 			filteredEvents = [...events];
@@ -287,7 +283,6 @@
 		font-size: 18px;
 	}
 
-	/* Updated loading color */
 	.loading {
 		color: var(--color-nav-bar-bg);
 	}
@@ -328,10 +323,9 @@
 		border-radius: 8px;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 		margin-bottom: 20px;
-		padding: 16px; /* Added padding to ensure space between content and borders */
+		padding: 16px;
 	}
 
-	/* Striped background patterns for current events */
 	.activity.current-event.stripe-0 {
 		background: linear-gradient(
 			135deg,
@@ -392,7 +386,6 @@
 		background-size: 100% 100%;
 	}
 
-	/* Add a content container for better text readability over striped background */
 	.activity.current-event p,
 	.activity.current-event h3 {
 		background-color: rgba(255, 255, 255, 0);
@@ -401,8 +394,8 @@
 	}
 
 	.activity.upcoming {
-		background-color: var(--color-event-upcoming-bg); /* Light gray background */
-		color: var (--color-event-upcoming-fg-1); /* gray text */
+		background-color: var(--color-event-upcoming-bg);
+		color: var (--color-event-upcoming-fg-1);
 	}
 
 	.activity.albemarle {
@@ -472,14 +465,13 @@
 	}
 
 	.activity button:hover {
-		background-color: #811b1c; /* Slightly darker red */
+		background-color: #811b1c;
 	}
 
 	.activity button:focus {
 		outline: none;
 	}
 
-	/* Grid layout for events */
 	.events-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -492,12 +484,11 @@
 		display: flex;
 		gap: 0.5rem;
 		flex-wrap: wrap;
-		justify-content: center; /* Center the buttons horizontally */
-		padding: 10px 0; /* Add vertical padding */
-		margin-bottom: 8px; /* Add some bottom margin */
+		justify-content: center;
+		padding: 10px 0;
+		margin-bottom: 8px;
 	}
 
-	/* Make sure the grid is responsive */
 	@media (max-width: 640px) {
 		.events-grid {
 			grid-template-columns: 1fr;
@@ -516,7 +507,6 @@
 		}
 	}
 
-	/* Responsive adjustments for search bar */
 	@media (max-width: 640px) {
 		.header-container {
 			flex-direction: column;
@@ -531,6 +521,6 @@
 
 	.main-content {
 		position: relative;
-		min-height: 400px; /* Ensure there's enough height for content */
+		min-height: 400px;
 	}
 </style>

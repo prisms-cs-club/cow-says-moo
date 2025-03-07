@@ -4,7 +4,7 @@
 	import { showEasterEgg, easterEggImage, hideEasterEgg } from '$lib/stores/strs';
 
 	let _a = 0;
-	// Keep existing easter egg implementation for footer clicks
+
 	let _b = false;
 
 	const _d = (i: number) => {
@@ -49,7 +49,6 @@
 
 	function _j(event: MouseEvent) {
 		const target = event.target as Element;
-		// Handle both the local and store-based Easter egg
 		if (
 			(_b || $showEasterEgg) &&
 			target &&
@@ -116,7 +115,6 @@
 		max-height: 80%;
 	}
 
-	/* Prevent text selection */
 	.no-select {
 		-webkit-user-select: none;
 		-moz-user-select: none;
