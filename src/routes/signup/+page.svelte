@@ -3,6 +3,7 @@
     import { onMount } from 'svelte';
     import { getMember } from '$lib/queryMember';
     import { fetchEvents } from '$lib/queryEvents';
+	import { formatDate } from '$lib/utils';
 
     let user: Member = undefined;
     let events: HouseEvent[] = [];
@@ -29,7 +30,7 @@
                     <h3>{event.title}</h3>
                     <!-- Display the event description -->
                     <p>{event.description}</p>
-                    <p>Date: {event.dateStart}</p>
+                    <p>Date: {formatDate(event)}</p>
                     <button 
                         class="btn btn-primary" 
                         on:click={() => window.location.href = 'https://www.signupgenius.com/pricing?utm_medium=cpc&utm_source=google&utm_campaign=Search_Branded_US_Purchases_JG_PricingLP-g-ads&utm_content=sign%20up%20genius_e_c&utm_term=sign%20up%20genius&hsa_acc=9701405886&hsa_cam=21353676888&hsa_grp=161908450966&hsa_ad=701634338084&hsa_src=g&hsa_tgt=kwd-24305469124&hsa_kw=sign%20up%20genius&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gclid=CjwKCAiA2JG9BhAuEiwAH_zf3kjpVeB8oZ4U0vq1XVLmIwQHmEzbRTwHEHIqX9e_sW0Gm2PGJW-ujRoCnS0QAvD_BwE'}>

@@ -1,7 +1,7 @@
 import type { HouseEvent } from '$lib/format';
 import { getMember } from '$lib/queryMember';
 import { initializeApp } from 'firebase/app';
-import { collection, getDocs, getFirestore, orderBy, query, where } from 'firebase/firestore';
+import { collection, doc, endBefore, getCountFromServer, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryConstraint, startAfter } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyA_u-dNDgYCkl-Sh7FW-bj42m9hoW_GRcs",
@@ -18,17 +18,25 @@ const db = getFirestore(firebaseApp);
 
 async function ifAdmin() { const a = await getMember(); return (a !== undefined && a.role === "admin"); }
 
-export async function fetchEvents() {
+export async function fetchEvents(): Promise<HouseEvent[]> {
     // query the database ordered by the start date
     const q = query(collection(db, 'events'), orderBy('dateStart', 'desc'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => doc.data() as HouseEvent);
+    return querySnapshot.docs.map(doc => {
+        const data = doc.data() as HouseEvent;
+        data.id = doc.id;
+        return data;
+    });
 }
 
-export async function fetchEventById(id: string) {
-    const q = query(collection(db, 'events'), where('id', '==', id));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => doc.data() as HouseEvent);
+export async function fetchEventById(id: string): Promise<HouseEvent | undefined> {
+    const docRef = await getDoc(doc(db, 'events', id));
+    if (docRef.exists()) {
+        const data = docRef.data() as HouseEvent;
+        data.id = docRef.id;
+        return data;
+    }
+    return undefined;
 }
 
 export async function createEvent(newEvent: HouseEvent) {
