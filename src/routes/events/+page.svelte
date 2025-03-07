@@ -108,7 +108,9 @@
 				on:keydown={checkForEasterEgg}
 			/>
 			{#if searchQuery}
-				<button class="clear-search" on:click={() => (searchQuery = '')}>×</button>
+				<button class="btn btn-circle btn-ghost btn-xs" on:click={() => (searchQuery = '')}
+					>×</button
+				>
 			{/if}
 		</div>
 	</div>
@@ -128,11 +130,13 @@
 					<p>{event.description}</p>
 					<p>{formatDate(event)}, Tier {numberToRoman(event.tier)}</p>
 					<div class="event-buttons">
-						<button class="btn" on:click={() => (window.location.href = '/events/' + event.id)}>
-							See More
+						<button class="event-btn btn btn-sm">
+							<a href={'/events/' + event.id}>See More</a>
 						</button>
 						{#if event.signupLink}
-							<button class="btn" on:click={() => window.open(event.signupLink!)}>Sign Up</button>
+							<button class="event-btn btn btn-sm" on:click={() => window.open(event.signupLink!)}
+								>Sign Up</button
+							>
 						{/if}
 					</div>
 				</div>
@@ -180,24 +184,79 @@
 		{#if displayEventEditor}
 			<hr />
 			<h3>Create Event</h3>
-			<input type="text" bind:value={newEvent.title} placeholder="Event Title" />
-			<input type="date" bind:value={newEvent.dateStart} placeholder="Start Date" />
-			<input type="date" bind:value={newEvent.dateEnd} placeholder="End Date" />
-			<input type="text" bind:value={newEvent.description} placeholder="Description" />
-			<input type="number" bind:value={newEvent.tier} placeholder="Tier" />
-			<button on:click={() => createEvent(newEvent)}>Create</button>
+			<input
+				type="text"
+				bind:value={newEvent.title}
+				placeholder="Event Title"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<input
+				type="date"
+				bind:value={newEvent.dateStart}
+				placeholder="Start Date"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<input
+				type="date"
+				bind:value={newEvent.dateEnd}
+				placeholder="End Date"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<input
+				type="text"
+				bind:value={newEvent.description}
+				placeholder="Description"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<input
+				type="number"
+				bind:value={newEvent.tier}
+				placeholder="Tier"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<button class="btn btn-primary" on:click={() => createEvent(newEvent)}>Create</button>
 
 			<h3>Update Event</h3>
-			<input type="text" bind:value={eventToUpdate.title} placeholder="Event Title" />
-			<input type="date" bind:value={eventToUpdate.dateStart} placeholder="Start Date" />
-			<input type="date" bind:value={eventToUpdate.dateEnd} placeholder="End Date" />
-			<input type="text" bind:value={eventToUpdate.description} placeholder="Description" />
-			<input type="number" bind:value={eventToUpdate.tier} placeholder="Tier" />
-			<button on:click={() => updateEvent(eventToUpdate)}>Update</button>
+			<input
+				type="text"
+				bind:value={eventToUpdate.title}
+				placeholder="Event Title"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<input
+				type="date"
+				bind:value={eventToUpdate.dateStart}
+				placeholder="Start Date"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<input
+				type="date"
+				bind:value={eventToUpdate.dateEnd}
+				placeholder="End Date"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<input
+				type="text"
+				bind:value={eventToUpdate.description}
+				placeholder="Description"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<input
+				type="number"
+				bind:value={eventToUpdate.tier}
+				placeholder="Tier"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<button class="btn btn-secondary" on:click={() => updateEvent(eventToUpdate)}>Update</button>
 
 			<h3>Delete Event</h3>
-			<input type="text" bind:value={deleteEventId} placeholder="Event ID" />
-			<button on:click={() => deleteEvent(deleteEventId)}>Delete</button>
+			<input
+				type="text"
+				bind:value={deleteEventId}
+				placeholder="Event ID"
+				class="input input-bordered mb-2 w-full max-w-xs"
+			/>
+			<button class="btn btn-error" on:click={() => deleteEvent(deleteEventId)}>Delete</button>
 		{:else}
 			<p>You need to be an admin to access the event editor.</p>
 		{/if}
@@ -262,18 +321,8 @@
 		right: 10px;
 		top: 50%;
 		transform: translateY(-50%);
-		background: none;
-		border: none;
-		color: var(--color-nav-bar-bg);
-		font-size: 20px;
-		cursor: pointer;
-		padding: 0 5px;
 		min-width: auto;
-	}
-
-	.clear-search:hover {
-		color: #811b1c;
-		background: transparent;
+		font-size: 20px;
 	}
 
 	.no-results {
@@ -297,17 +346,6 @@
 		border: 1px solid var(--color-nav-bar-bg);
 	}
 
-	button {
-		background-color: var(--color-nav-bar-bg);
-		color: var(--color-nav-bar-fg);
-		padding: 8px 16px;
-		border: none;
-		border-radius: 6px;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
-	}
-
-	button:hover,
 	button.btn-active {
 		background-color: #811b1c; /* Slightly darker shade */
 	}
@@ -428,48 +466,56 @@
 	}
 
 	.activity button {
-		background-color: var(--color-event-fg-2);
-		color: var(--color-event-bg);
-		padding: 10px 15px;
-		border: none;
-		border-radius: 6px;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
-		min-width: 100px; /* Ensure buttons have consistent width */
-		text-align: center; /* Center text within buttons */
+		min-width: 100px;
+		text-align: center;
 	}
 
-	.activity.upcoming button {
+	.activity button.event-btn {
+		min-width: 100px;
+		text-align: center;
+		box-shadow: 0 3px 4px rgba(0, 0, 0, 0);
+		transition: all 0.2s ease;
+		border: none;
+	}
+
+	.activity button.event-btn:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 6px rgba(110, 110, 110, 0.4);
+	}
+
+	.activity button.event-btn:active {
+		transform: translateY(1px);
+		box-shadow: 0 2px 3px rgba(110, 110, 110, 0.2);
+	}
+
+	.activity.upcoming button.event-btn {
 		background-color: var(--color-event-upcoming-fg-2);
 		color: var(--color-event-upcoming-bg);
 	}
 
-	.activity.albemarle button {
+	.activity.albemarle button.event-btn {
 		background-color: var(--color-event-albemarle-fg);
 		color: var(--color-event-albemarle-bg);
 	}
 
-	.activity.lambert button {
+	.activity.lambert button.event-btn {
 		background-color: var(--color-event-lambert-fg);
 		color: var(--color-event-lambert-bg);
 	}
 
-	.activity.ettl button {
+	.activity.ettl button.event-btn {
 		background-color: var(--color-event-ettl-fg);
-		color: var (--color-event-ettl-bg);
+		color: var(--color-event-ettl-bg);
 	}
 
-	.activity.hobler button {
+	.activity.hobler button.event-btn {
 		background-color: var(--color-event-hobler-fg);
 		color: var(--color-event-hobler-bg);
 	}
 
-	.activity button:hover {
-		background-color: #811b1c;
-	}
-
-	.activity button:focus {
-		outline: none;
+	.activity.current-event button.event-btn {
+		background-color: var(--color-event-fg-2);
+		color: white;
 	}
 
 	.events-grid {

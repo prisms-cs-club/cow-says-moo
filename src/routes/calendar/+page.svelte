@@ -59,9 +59,7 @@
 
 <style>
 	.calendar-container {
-		height: 800px;
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 1rem;
+		height: 80%;
+		max-width: 200%;
 	}
 </style>

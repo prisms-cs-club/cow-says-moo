@@ -28,14 +28,13 @@
 <div id="wrapper" class={scrollY > 20 ? 'floating' : ''}>
 	<div id="navbar" class="blur-effect">
 		{#if mobile}
-			<button
-				type="button"
-				class="mobile-menu-toggle"
-				on:click={toggleMenu}
-				aria-label="Toggle mobile navigation"
-			>
-				<span class="hamburger"></span>
-			</button>
+			<details class="mobile-menu-toggle dropdown">
+				<summary class="btn m-1">=</summary>
+				<ul class="z-1 menu dropdown-content w-52 rounded-box bg-base-100 p-2 shadow-sm">
+					<li><a>Item 1</a></li>
+					<li><a>Item 2</a></li>
+				</ul>
+			</details>
 		{/if}
 
 		<ul class="nav-links {mobile ? 'mobile' : ''} {menuOpen ? 'open' : ''}">
@@ -169,12 +168,12 @@
 		text-decoration: none;
 		padding: 8px 12px;
 		color: var(--color-nav-bar-fg);
-		background-color: transparent; /* Changed from solid bg to transparent */
+		background-color: transparent;
 		border-radius: 4px;
 		display: inline-block;
 		transition: all 0.2s ease;
 		font-size: 0.95em;
-		position: relative; /* Add for hover effect */
+		position: relative;
 		z-index: 2;
 	}
 
@@ -183,7 +182,6 @@
 		background-color: var(--color-nav-bar-fg);
 	}
 
-	/*image*/
 	img.avatar {
 		border-radius: 50%;
 		height: 1.8em;
@@ -191,7 +189,7 @@
 		display: inline-block;
 		vertical-align: middle;
 		margin-right: 8px;
-		border: 2px solid var(--color-nav-bar-fg); /* Added border */
+		border: 2px solid var(--color-nav-bar-fg);
 	}
 
 	a.button-primary {
@@ -199,50 +197,15 @@
 		align-items: center;
 	}
 
-	.inline-svg {
-		margin-left: 5px;
-	}
-
-	/* Mobile menu */
 	.mobile-menu-toggle {
 		display: none;
 		cursor: pointer;
 		width: 24px;
 		height: 24px;
 		position: relative;
-		z-index: 10;
+		z-index: 1000;
 	}
 
-	.hamburger {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		transform: translateY(-50%);
-		width: 24px;
-		height: 2px;
-		background-color: var(--color-nav-bar-fg);
-		transition: all 0.3s ease;
-	}
-
-	.hamburger::before,
-	.hamburger::after {
-		content: '';
-		position: absolute;
-		width: 24px;
-		height: 2px;
-		background-color: var(--color-nav-bar-fg);
-		transition: all 0.3s ease;
-	}
-
-	.hamburger::before {
-		top: -8px;
-	}
-
-	.hamburger::after {
-		top: 8px;
-	}
-
-	/* Responsive styles */
 	@media (max-width: 768px) {
 		.mobile-menu-toggle {
 			display: block;

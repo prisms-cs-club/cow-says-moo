@@ -31,7 +31,7 @@
 
 	#content {
 		flex: 1;
-		margin: 6% 12%;
+		margin: 11% 11%;
 		will-change: transform, opacity; /* Optimize for animations */
 	}
 </style>
