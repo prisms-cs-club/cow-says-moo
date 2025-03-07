@@ -347,7 +347,7 @@
 	}
 
 	button.btn-active {
-		background-color: #811b1c; /* Slightly darker shade */
+		background-color: #9b2a24e8; /* Slightly darker shade */
 	}
 
 	.activity {
