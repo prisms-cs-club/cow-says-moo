@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
+	import { showEasterEgg, easterEggImage, hideEasterEgg } from '$lib/stores/strs';
 
 	let _a = 0;
+	// Keep existing easter egg implementation for footer clicks
 	let _b = false;
 
 	const _d = (i: number) => {
@@ -47,20 +49,36 @@
 
 	function _j(event: MouseEvent) {
 		const target = event.target as Element;
-		if (_b && target && !target.closest('footer')) {
+		// Handle both the local and store-based Easter egg
+		if (
+			(_b || $showEasterEgg) &&
+			target &&
+			!target.closest('footer') &&
+			!target.closest('.special')
+		) {
 			_b = false;
+			hideEasterEgg();
+		}
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape' && ($showEasterEgg || _b)) {
+			_b = false;
+			hideEasterEgg();
 		}
 	}
 
 	onMount(() => {
 		if (browser) {
 			document.addEventListener('click', _j);
+			document.addEventListener('keydown', handleKeydown);
 		}
 	});
 
 	onDestroy(() => {
 		if (browser) {
 			document.removeEventListener('click', _j);
+			document.removeEventListener('keydown', handleKeydown);
 		}
 	});
 </script>
@@ -73,9 +91,9 @@
 	</aside>
 </footer>
 
-{#if _b}
+{#if _b || $showEasterEgg}
 	<div class="special no-select">
-		<img class="no-select" src={_f} alt=":)" />
+		<img class="no-select" src={_b ? _f : $easterEggImage} alt=":)" />
 	</div>
 {/if}
 

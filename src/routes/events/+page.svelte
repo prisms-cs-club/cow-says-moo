@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import type { HouseEvent } from '$lib/format';
 	import { getMember } from '$lib/queryMember';
 	import { fetchEvents, updateEvent, createEvent, deleteEvent } from '$lib/firebase';
@@ -7,6 +7,7 @@
 	import { formatDate, numberToRoman } from '$lib/utils';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
+	import { triggerEasterEgg } from '$lib/stores/strs';
 
 	let events: HouseEvent[] = [];
 	let filteredEvents: HouseEvent[] = [];
@@ -36,10 +37,6 @@
 	let deleteEventId = '';
 	let loaded = false;
 
-	// Easter egg state
-	let showEasterEgg = false;
-	let easterEggImage = '';
-
 	// Function to decode base64 URLs similar to the footer component
 	const decodeImageUrl = (index: number) => {
 		const encodedUrls = [
@@ -54,22 +51,15 @@
 		return browser ? atob(encodedUrls[index]) : '';
 	};
 
-	// Handle Easter egg activation
+	// Handle Easter egg activation - now triggers the shared Easter egg
 	function checkForEasterEgg(event: KeyboardEvent) {
 		if (event.key === 'Enter' && searchQuery === 'qwq') {
-			showEasterEgg = true;
-			easterEggImage = decodeImageUrl(Math.floor(Math.random() * 7));
+			const imageUrl = decodeImageUrl(Math.floor(Math.random() * 7));
+			triggerEasterEgg(imageUrl); // Use the shared function to trigger the Easter egg
 			// Reset search query after a short delay for better UX
 			setTimeout(() => {
 				searchQuery = '';
 			}, 100);
-		}
-	}
-
-	// Close Easter egg when clicking outside
-	function handleDocumentClick(event: MouseEvent) {
-		if (showEasterEgg && event.target instanceof Element && !event.target.closest('.easter-egg')) {
-			showEasterEgg = false;
 		}
 	}
 
@@ -107,20 +97,10 @@
 			displayEventEditor = true;
 		}
 		loaded = true;
-
-		if (browser) {
-			document.addEventListener('click', handleDocumentClick);
-		}
-	});
-
-	onDestroy(() => {
-		if (browser) {
-			document.removeEventListener('click', handleDocumentClick);
-		}
 	});
 </script>
 
-<div>
+<div class="main-content">
 	<div class="header-container">
 		<h1>Events</h1>
 		<div class="search-container">
@@ -230,12 +210,6 @@
 		<span class="loading loading-bars loading-lg"></span>
 	{/if}
 </div>
-
-{#if showEasterEgg}
-	<div class="easter-egg no-select">
-		<img class="no-select" src={easterEggImage} alt=":)" />
-	</div>
-{/if}
 
 <style>
 	/* Using the provided color scheme */
@@ -489,7 +463,7 @@
 
 	.activity.ettl button {
 		background-color: var(--color-event-ettl-fg);
-		color: var(--color-event-ettl-bg);
+		color: var (--color-event-ettl-bg);
 	}
 
 	.activity.hobler button {
@@ -555,29 +529,8 @@
 		}
 	}
 
-	/* Easter egg styles */
-	.easter-egg {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: rgba(0, 0, 0, 0.8);
-		z-index: 1000;
-	}
-
-	.easter-egg img {
-		max-width: 80%;
-		max-height: 80%;
-	}
-
-	.no-select {
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
+	.main-content {
+		position: relative;
+		min-height: 400px; /* Ensure there's enough height for content */
 	}
 </style>
