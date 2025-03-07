@@ -9,7 +9,10 @@
 		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-01-26_19-15-33.png?raw=true',
 		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/0bf06dd97ad1f1fc9ef5ecb6302d48d11340190821.png?raw=true',
 		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-02-11_17-44-59.png?raw=true',
-		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-02-11_17-46-07.png?raw=true'
+		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-02-11_17-46-07.png?raw=true',
+		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/350c54e33c3a1ce8a8a86369343d4bed286431045.jpg?raw=true',
+		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-01-26_19-16-35.png?raw=true',
+		'https://github.com/nyctivoe/afqueriqyriqbfas/blob/main/PixPin_2025-01-26_19-16-43.png?raw=true'
 	];
 	let randomImage = qwq[0];
 
@@ -54,8 +57,8 @@
 </footer>
 
 {#if show}
-	<div class="special">
-		<img src={randomImage} alt=":)" />
+	<div class="special no-select">
+		<img class="no-select" src={randomImage} alt=":)" />
 	</div>
 {/if}
 
