@@ -36,7 +36,7 @@
 <h1>Houses</h1>
 
 <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
-	{#each ['Hobler', 'Ettl', 'Albemarle', 'Lambert'] as house}
+	{#each ['Albemarle', 'Ettl', 'Hobler', 'Lambert'] as house}
 		<a class="card m-4 bg-base-100 shadow-xl" style="width: 20%" href="/houses/{house}">
 			<figure>
 				<img src="/image/house-logo/{house.toLowerCase()}/letter.png" alt={house} />

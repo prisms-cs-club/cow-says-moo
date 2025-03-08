@@ -15,9 +15,9 @@
 
 	$: {
 		houses = [
-			{ name: 'Hobler', points: hobler },
-			{ name: 'Ettl', points: ettl },
 			{ name: 'Albemarle', points: albemarle },
+			{ name: 'Ettl', points: ettl },
+			{ name: 'Hobler', points: hobler },
 			{ name: 'Lambert', points: lambert }
 		];
 
