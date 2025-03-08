@@ -8,6 +8,7 @@
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { triggerEasterEgg } from '$lib/stores/strs';
+	import EventGrid from '$lib/EventGrid.svelte';
 
 	let events: HouseEvent[] = [];
 	let filteredEvents: HouseEvent[] = [];
@@ -116,32 +117,7 @@
 	</div>
 
 	{#if loaded}
-		<!-- Display the events list in a grid layout -->
-		<div class="events-grid">
-			{#each filteredEvents.slice((eventsPage - 1) * EVENTS_PER_PAGE, eventsPage * EVENTS_PER_PAGE) as event, i}
-				<div
-					class={(event.dateStart.seconds - 432000) * 1000 > Date.now()
-						? 'activity upcoming'
-						: event.winner
-							? `activity ${event.winner.toLowerCase()}`
-							: `activity current-event stripe-${i % 4}`}
-				>
-					<h3 class={event.tier <= 2 ? 'font-bold' : ''}>{event.title}</h3>
-					<p>{event.description}</p>
-					<p>{formatDate(event)}, Tier {numberToRoman(event.tier)}</p>
-					<div class="event-buttons">
-						<button class="event-btn btn btn-sm">
-							<a href={'/events/' + event.id}>See More</a>
-						</button>
-						{#if event.signupLink}
-							<button class="event-btn btn btn-sm" on:click={() => window.open(event.signupLink!)}
-								>Sign Up</button
-							>
-						{/if}
-					</div>
-				</div>
-			{/each}
-		</div>
+		<EventGrid events={filteredEvents.slice((eventsPage - 1) * EVENTS_PER_PAGE, eventsPage * EVENTS_PER_PAGE)} />
 		<div class="flex">
 			<div class="join mx-auto">
 				<button
@@ -269,8 +245,6 @@
 <style>
 	/* Using the provided color scheme */
 	:root {
-		--color-nav-bar-bg: #a61618;
-		--color-nav-bar-fg: #facec5;
 		--light-beige-pink: #fae5e1;
 		--color-event-bg: #f8f8f8;
 		--color-event-fg: #3f361e;
@@ -303,7 +277,7 @@
 	}
 
 	.search-input {
-		border: 2px solid var(--color-nav-bar-bg);
+		border: 2px solid var(--color-theme-1);
 		border-radius: 20px;
 		padding: 8px 16px;
 		width: 100%;
@@ -328,22 +302,18 @@
 	.no-results {
 		text-align: center;
 		margin-top: 20px;
-		color: var(--color-nav-bar-bg);
+		color: var(--color-theme-1);
 		font-size: 18px;
 	}
 
 	.loading {
-		color: var(--color-nav-bar-bg);
-	}
-
-	h1 {
-		color: var(--color-nav-bar-bg);
+		color: var(--color-theme-1);
 	}
 
 	hr {
 		margin-top: 20px;
 		margin-bottom: 20px;
-		border: 1px solid var(--color-nav-bar-bg);
+		border: 1px solid var(--color-theme-1);
 	}
 
 	button.btn-active {
@@ -424,13 +394,6 @@
 		background-size: 100% 100%;
 	}
 
-	.activity.current-event p,
-	.activity.current-event h3 {
-		background-color: rgba(255, 255, 255, 0);
-		padding: 5px;
-		border-radius: 4px;
-	}
-
 	.activity.upcoming {
 		background-color: var(--color-event-upcoming-bg);
 		color: var (--color-event-upcoming-fg-1);
@@ -454,68 +417,6 @@
 	.activity.hobler {
 		background-color: var(--color-event-hobler-bg);
 		color: var(--color-event-hobler-fg);
-	}
-
-	.activity h3 {
-		font-size: 1.5rem;
-		margin-bottom: 10px;
-	}
-
-	.activity p {
-		margin-bottom: 10px;
-	}
-
-	.activity button {
-		min-width: 100px;
-		text-align: center;
-	}
-
-	.activity button.event-btn {
-		min-width: 100px;
-		text-align: center;
-		box-shadow: 0 3px 4px rgba(0, 0, 0, 0);
-		transition: all 0.2s ease;
-		border: none;
-	}
-
-	.activity button.event-btn:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 4px 6px rgba(110, 110, 110, 0.4);
-	}
-
-	.activity button.event-btn:active {
-		transform: translateY(1px);
-		box-shadow: 0 2px 3px rgba(110, 110, 110, 0.2);
-	}
-
-	.activity.upcoming button.event-btn {
-		background-color: var(--color-event-upcoming-fg-2);
-		color: var(--color-event-upcoming-bg);
-	}
-
-	.activity.albemarle button.event-btn {
-		background-color: var(--color-event-albemarle-fg);
-		color: var(--color-event-albemarle-bg);
-	}
-
-	.activity.lambert button.event-btn {
-		background-color: var(--color-event-lambert-fg);
-		color: var(--color-event-lambert-bg);
-	}
-
-	.activity.ettl button.event-btn {
-		background-color: var(--color-event-ettl-fg);
-		color: var(--color-event-ettl-bg);
-	}
-
-	.activity.hobler button.event-btn {
-		background-color: var(--color-event-hobler-fg);
-		color: var(--color-event-hobler-bg);
-	}
-
-	.activity.current-event button.event-btn {
-		background-color: var(--color-event-fg-2);
-		color: white;
 	}
 
 	.events-grid {

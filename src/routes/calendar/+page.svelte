@@ -40,11 +40,8 @@
 				}
 			},
 			eventDisplay: 'block',
-			eventTimeFormat: {
-				hour: 'numeric',
-				minute: '2-digit',
-				meridiem: 'short'
-			}
+			eventTimeFormat: () => '',
+			locale: 'en',
 		};
 	});
 </script>

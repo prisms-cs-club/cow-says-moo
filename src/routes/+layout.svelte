@@ -23,15 +23,9 @@
 <Footer />
 
 <style>
-	#wrapper {
-		display: flex;
-		flex-direction: column;
-		min-height: 96vh;
-	}
-
 	#content {
 		flex: 1;
-		margin: 11% 11%;
+		margin: 8% 11%;
 		will-change: transform, opacity; /* Optimize for animations */
 	}
 </style>

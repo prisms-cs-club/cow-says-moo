@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { queryScoreSummary } from '$lib/firebase';
-	import { queryHouse } from '$lib/queryHouse';
 	import RankBar from '$lib/RankBar.svelte';
 	import { onMount } from 'svelte';
 
@@ -15,10 +14,8 @@
 		lambert: 0
 	};
 
-	let loaded = false;
 	onMount(async () => {
 		scores = await queryScoreSummary();
-		loaded = true;
 		console.log('loaded');
 	});
 </script>

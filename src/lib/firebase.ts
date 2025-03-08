@@ -1,7 +1,7 @@
 import type { HouseEvent } from '$lib/format';
 import { getMember } from '$lib/queryMember';
 import { initializeApp } from 'firebase/app';
-import { collection, doc, endBefore, getCountFromServer, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryConstraint, startAfter } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryConstraint, where } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyA_u-dNDgYCkl-Sh7FW-bj42m9hoW_GRcs",
@@ -21,6 +21,29 @@ async function ifAdmin() { const a = await getMember(); return (a !== undefined 
 export async function fetchEvents(): Promise<HouseEvent[]> {
     // query the database ordered by the start date
     const q = query(collection(db, 'events'), orderBy('dateStart', 'desc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => {
+        const data = doc.data() as HouseEvent;
+        data.id = doc.id;
+        return data;
+    });
+}
+
+export async function fetchEventsBetween(end: Date, start?: Date, queryLimit?: number): Promise<HouseEvent[]> {
+    // query the events whose starting time is before now and ending time is after now
+    const conditions: QueryConstraint[] = [];
+    if (start !== undefined) {
+        conditions.push(where('dateStart', '>=', start));
+    }
+    conditions.push(where('dateStart', '<=', end));
+    if (queryLimit !== undefined) {
+        conditions.push(limit(queryLimit));
+    }
+    const q = query(
+        collection(db, 'events'),
+        orderBy('dateStart', 'desc'),
+        ...conditions
+    );
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => {
         const data = doc.data() as HouseEvent;

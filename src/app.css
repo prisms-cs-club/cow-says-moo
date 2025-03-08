@@ -7,12 +7,19 @@
 	--color-ettl: #26be3a;
 	--color-hobler: #fa4242;
 	--color-lambert: #4270fa;
+	--color-theme-1: #a61618;
+	--color-theme-2: #facec5;
 }
 
 body {
 	font-size: 14px;
 	font-family: 'Lato', sans-serif;
 	font-size: large;
+}
+
+p {
+	margin-top: 2px;
+	margin-bottom: 2px;
 }
 
 svg.inline-svg {
@@ -26,13 +33,16 @@ hr {
 
 h1 {
 	font-size: 2.5em;
+	color: var(--color-theme-1);
 }
 
 h2 {
+	margin-top: 8px;
 	font-size: 2em;
 }
 
 h3 {
+	margin-top: 8px;
 	font-size: 1.5em;
 }
 

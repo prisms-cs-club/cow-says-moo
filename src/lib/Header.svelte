@@ -48,7 +48,7 @@
 			</li>
 			<li>
 				<a class="button-primary" href="/events" on:click={() => mobile && (menuOpen = false)}
-					>Upcoming Events</a
+					>Events</a
 				>
 			</li>
 			<li>
