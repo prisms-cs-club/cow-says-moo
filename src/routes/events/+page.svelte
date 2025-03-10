@@ -9,6 +9,8 @@
 	import { browser } from '$app/environment';
 	import { triggerEasterEgg } from '$lib/stores/strs';
 	import EventGrid from '$lib/EventGrid.svelte';
+	import SearchIcon from '$lib/icon/Search.svelte';
+	import CancelIcon from '$lib/icon/Cancel.svelte';
 
 	let events: HouseEvent[] = [];
 	let filteredEvents: HouseEvent[] = [];
@@ -101,18 +103,19 @@
 	<div class="header-container">
 		<h1>Events</h1>
 		<div class="search-container">
-			<input
-				type="text"
-				bind:value={searchQuery}
-				placeholder="Search events..."
-				class="search-input"
-				on:keydown={checkForEasterEgg}
-			/>
-			{#if searchQuery}
-				<button class="btn btn-circle btn-ghost btn-xs" on:click={() => (searchQuery = '')}
-					>×</button
-				>
-			{/if}
+			<div class="join search-input">
+				<input
+					type="text"
+					bind:value={searchQuery}
+					placeholder="Search events..."
+					class="join"
+					on:keydown={checkForEasterEgg}
+				/>
+				<button class="join" style:display="inline"><SearchIcon class="inline-svg" size="1em" /></button>
+				{#if searchQuery}
+				<button class="join" style:display="inline-block" on:click={() => (searchQuery = '')}><CancelIcon class="inline-svg" size="1em" /></button>
+				{/if}
+			</div>
 		</div>
 	</div>
 
@@ -278,11 +281,25 @@
 
 	.search-input {
 		border: 2px solid var(--color-theme-1);
+		color: var(--color-theme-1);
 		border-radius: 20px;
-		padding: 8px 16px;
+		padding: 0 10px;
 		width: 100%;
 		font-size: 16px;
 		transition: all 0.3s ease;
+	}
+
+	.search-input input {
+		border: none;
+		padding: 8px;
+		margin: 0;
+		outline: none;
+		background: #00000000;
+		width: 100%;
+	}
+
+	.search-input button {
+		padding: 8px;
 	}
 
 	.search-input:focus {
