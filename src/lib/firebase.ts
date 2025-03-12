@@ -1,7 +1,7 @@
 import type { HouseEvent } from '$lib/format';
 import { getMember } from '$lib/queryMember';
 import { initializeApp } from 'firebase/app';
-import { collection, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryConstraint, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryConstraint, Timestamp, where } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyA_u-dNDgYCkl-Sh7FW-bj42m9hoW_GRcs",
@@ -16,21 +16,95 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 
+interface EventsCache {
+    events: HouseEvent[] | null;
+    timestamp: Timestamp | null;
+}
+
+const eventsCache: EventsCache = { events: null, timestamp: null };
+
+if (typeof window !== 'undefined') {
+    try {
+        const savedCache = localStorage.getItem('eventsCache');
+        if (savedCache) {
+            const parsed = JSON.parse(savedCache);
+            // Restore Timestamp objects which were serialized
+            if (parsed.timestamp) {
+                parsed.timestamp = new Timestamp(
+                    parsed.timestamp.seconds,
+                    parsed.timestamp.nanoseconds
+                );
+            }
+            // Restore date objects in events which were serialized
+            if (parsed.events) {
+                parsed.events.forEach((event: HouseEvent) => {
+                    event.dateStart = new Timestamp(
+                        event.dateStart.seconds,
+                        event.dateStart.nanoseconds
+                    );
+                    event.dateEnd = new Timestamp(
+                        event.dateEnd.seconds,
+                        event.dateEnd.nanoseconds
+                    );
+                });
+            }
+            Object.assign(eventsCache, parsed);
+            console.log('Loaded events cache from localStorage');
+        }
+    } catch (e) {
+        console.error('Failed to load events cache from localStorage:', e);
+    }
+}
+
 async function ifAdmin() { const a = await getMember(); return (a !== undefined && a.role === "admin"); }
 
 export async function fetchEvents(): Promise<HouseEvent[]> {
-    // query the database ordered by the start date
-    const q = query(collection(db, 'events'), orderBy('dateStart', 'desc'));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => {
-        const data = doc.data() as HouseEvent;
-        data.id = doc.id;
-        return data;
-    });
+    try {
+        const serverTimestamp = await fetchUpdateTime();
+        const localTimestamp = eventsCache.timestamp;
+
+        const isTimestampMatching = localTimestamp &&
+            serverTimestamp.seconds === localTimestamp.seconds &&
+            serverTimestamp.nanoseconds === localTimestamp.nanoseconds;
+
+        if (eventsCache.events && isTimestampMatching) {
+            console.log('Timestamps match - using cached events');
+            return eventsCache.events;
+        }
+
+        console.log('Timestamps different or no cache - fetching fresh events');
+        const q = query(collection(db, 'events'), orderBy('dateStart', 'desc'));
+        const querySnapshot = await getDocs(q);
+        const events = querySnapshot.docs.map(doc => {
+            const data = doc.data() as HouseEvent;
+            data.id = doc.id;
+            return data;
+        });
+
+        eventsCache.events = events;
+        eventsCache.timestamp = serverTimestamp;
+
+        if (typeof window !== 'undefined') {
+            try {
+                localStorage.setItem('eventsCache', JSON.stringify(eventsCache));
+                console.log('Updated localStorage cache with new events and timestamp');
+            } catch (e) {
+                console.error('Failed to save events cache to localStorage:', e);
+            }
+        }
+
+        return events;
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        if (eventsCache.events) {
+            console.log('Returning cached events after error');
+            return eventsCache.events;
+        }
+        throw error;
+    }
 }
 
 export async function fetchEventsBetween(end: Date, start?: Date, queryLimit?: number): Promise<HouseEvent[]> {
-    // query the events whose starting time is before now and ending time is after now
     const conditions: QueryConstraint[] = [];
     if (start !== undefined) {
         conditions.push(where('dateStart', '>=', start));
@@ -62,16 +136,31 @@ export async function fetchEventById(id: string): Promise<HouseEvent | undefined
     return undefined;
 }
 
-export async function createEvent(newEvent: HouseEvent) {
-    // TODO
-}
+export async function fetchUpdateTime(): Promise<Timestamp> {
+    try {
+        const docRef = await getDoc(doc(db, 'summary', 'timestamp'));
 
-export async function updateEvent(updateEvent: HouseEvent) {
-    // TODO
-}
+        if (!docRef.exists()) {
+            throw new Error('No timestamp document found');
+        }
 
-export async function deleteEvent(deleteEventId: string) {
-    // TODO
+        const data = docRef.data();
+        if (!data) {
+            throw new Error('Empty timestamp document');
+        }
+
+        const timestampField = Object.entries(data).find(([_, value]) => value instanceof Timestamp);
+        if (timestampField) {
+            return timestampField[1] as Timestamp;
+        } else if (data.date && data.date instanceof Timestamp) {
+            return data.date;
+        } else {
+            throw new Error('Invalid timestamp format in document');
+        }
+    } catch (error) {
+        console.error('Error fetching update time:', error);
+        throw error;
+    }
 }
 
 export async function queryScoreSummary(): Promise<{ [key: string]: number }> {

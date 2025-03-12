@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { HouseEvent } from '$lib/format';
 	import { getMember } from '$lib/queryMember';
-	import { fetchEvents, updateEvent, createEvent, deleteEvent } from '$lib/firebase';
+	import { fetchEvents, fetchUpdateTime } from '$lib/firebase';
 	import { Timestamp } from 'firebase/firestore';
 	import { formatDate, numberToRoman } from '$lib/utils';
 	import { page } from '$app/stores';
@@ -96,6 +96,10 @@
 			displayEventEditor = true;
 		}
 		loaded = true;
+
+		let updateTime = await fetchUpdateTime();
+		console.log(updateTime);
+		console.log(events);
 	});
 </script>
 
@@ -103,7 +107,7 @@
 	<div class="header-container">
 		<h1>Events</h1>
 		<div class="search-container">
-			<div class="join search-input">
+			<div class="search-input join">
 				<input
 					type="text"
 					bind:value={searchQuery}
@@ -111,16 +115,25 @@
 					class="join"
 					on:keydown={checkForEasterEgg}
 				/>
-				<button class="join" style:display="inline"><SearchIcon class="inline-svg" size="1em" /></button>
+				<button class="join" style:display="inline"
+					><SearchIcon class="inline-svg" size="1em" /></button
+				>
 				{#if searchQuery}
-				<button class="join" style:display="inline-block" on:click={() => (searchQuery = '')}><CancelIcon class="inline-svg" size="1em" /></button>
+					<button class="join" style:display="inline-block" on:click={() => (searchQuery = '')}
+						><CancelIcon class="inline-svg" size="1em" /></button
+					>
 				{/if}
 			</div>
 		</div>
 	</div>
 
 	{#if loaded}
-		<EventGrid events={filteredEvents.slice((eventsPage - 1) * EVENTS_PER_PAGE, eventsPage * EVENTS_PER_PAGE)} />
+		<EventGrid
+			events={filteredEvents.slice(
+				(eventsPage - 1) * EVENTS_PER_PAGE,
+				eventsPage * EVENTS_PER_PAGE
+			)}
+		/>
 		<div class="flex">
 			<div class="join mx-auto">
 				<button
@@ -157,87 +170,6 @@
 			<p class="no-results">
 				No matching events found. {#if searchQuery}Try a different search term.{/if}
 			</p>
-		{/if}
-
-		<!-- Admin event editor section -->
-		{#if displayEventEditor}
-			<hr />
-			<h3>Create Event</h3>
-			<input
-				type="text"
-				bind:value={newEvent.title}
-				placeholder="Event Title"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<input
-				type="date"
-				bind:value={newEvent.dateStart}
-				placeholder="Start Date"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<input
-				type="date"
-				bind:value={newEvent.dateEnd}
-				placeholder="End Date"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<input
-				type="text"
-				bind:value={newEvent.description}
-				placeholder="Description"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<input
-				type="number"
-				bind:value={newEvent.tier}
-				placeholder="Tier"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<button class="btn btn-primary" on:click={() => createEvent(newEvent)}>Create</button>
-
-			<h3>Update Event</h3>
-			<input
-				type="text"
-				bind:value={eventToUpdate.title}
-				placeholder="Event Title"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<input
-				type="date"
-				bind:value={eventToUpdate.dateStart}
-				placeholder="Start Date"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<input
-				type="date"
-				bind:value={eventToUpdate.dateEnd}
-				placeholder="End Date"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<input
-				type="text"
-				bind:value={eventToUpdate.description}
-				placeholder="Description"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<input
-				type="number"
-				bind:value={eventToUpdate.tier}
-				placeholder="Tier"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<button class="btn btn-secondary" on:click={() => updateEvent(eventToUpdate)}>Update</button>
-
-			<h3>Delete Event</h3>
-			<input
-				type="text"
-				bind:value={deleteEventId}
-				placeholder="Event ID"
-				class="input input-bordered mb-2 w-full max-w-xs"
-			/>
-			<button class="btn btn-error" on:click={() => deleteEvent(deleteEventId)}>Delete</button>
-		{:else}
-			<p>You need to be an admin to access the event editor.</p>
 		{/if}
 	{:else}
 		<p>Loading...</p>

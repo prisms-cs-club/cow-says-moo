@@ -41,7 +41,7 @@
 			</figure>
 			<div class="card-body">
 				<h3 class="algerian text-center">{house}</h3>
-				<p>House introduction TBD</p>
+				<!-- <p>House introduction TBD</p> -->
 			</div>
 		</a>
 	{/each}
