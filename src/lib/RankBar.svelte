@@ -7,8 +7,6 @@
 	export let ettl: number;
 	export let hobler: number;
 	export let lambert: number;
-	// export let sortby: string = 'points';
-	// export let increasing: boolean = false;
 
 	let houses: { name: string; points: number }[] = [];
 	let maxPoints: number;
@@ -21,25 +19,11 @@
 			{ name: 'Lambert', points: lambert }
 		];
 
-		// switch (sortby) {
-		// 	case 'points':
-		// 		increasing
-		// 			? houses.sort((a, b) => a.points - b.points)
-		// 			: houses.sort((a, b) => b.points - a.points);
-		// 		break;
-		// 	case 'name':
-		// 		increasing
-		// 			? houses.sort((a, b) => a.name.localeCompare(b.name))
-		// 			: houses.sort((a, b) => b.name.localeCompare(a.name));
-		// 		break;
-		// }
-
 		maxPoints = Math.max(Math.max(...houses.map((house) => house.points)) * 1.05, 1);
 	}
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
-
 <div class="rank-container">
 	{#each houses as house}
 		<div class="rank-item">

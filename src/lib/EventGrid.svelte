@@ -1,39 +1,37 @@
 <script lang="ts">
-    import type { HouseEvent } from '$lib/format';
-    import { formatDate, numberToRoman } from '$lib/utils';
-    
-    export let events: HouseEvent[];
+	import type { HouseEvent } from '$lib/format';
+	import { formatDate, numberToRoman } from '$lib/utils';
+
+	export let events: HouseEvent[];
 </script>
 
-<!-- Display the events list in a grid layout -->
 <div class="events-grid">
-    {#each events as event, i}
-        <div
-            class={(event.dateStart.seconds - 432000) * 1000 > Date.now()
-                ? 'activity upcoming'
-                : event.winner
-                    ? `activity ${event.winner.toLowerCase()}`
-                    : `activity current-event stripe-${i % 4}`}
-        >
-            <h3 class={event.tier <= 2 ? 'font-bold' : ''}>{event.title}</h3>
-            <p>{event.description}</p>
-            <p>{formatDate(event)}, Tier {numberToRoman(event.tier)}</p>
-            <div class="event-buttons">
-                <button class="event-btn btn btn-sm">
-                    <a href={'/events/' + event.id}>See More</a>
-                </button>
-                {#if event.signupLink}
-                    <button class="event-btn btn btn-sm" on:click={() => window.open(event.signupLink!)}
-                        >Sign Up</button
-                    >
-                {/if}
-            </div>
-        </div>
-    {/each}
+	{#each events as event, i}
+		<div
+			class={(event.dateStart.seconds - 432000) * 1000 > Date.now()
+				? 'activity upcoming'
+				: event.winner
+					? `activity ${event.winner.toLowerCase()}`
+					: `activity current-event stripe-${i % 4}`}
+		>
+			<h3 class={event.tier <= 2 ? 'font-bold' : ''}>{event.title}</h3>
+			<p>{event.description}</p>
+			<p>{formatDate(event)}, Tier {numberToRoman(event.tier)}</p>
+			<div class="event-buttons">
+				<button class="event-btn btn btn-sm">
+					<a href={'/events/' + event.id} data-sveltekit-preload-data>See More</a>
+				</button>
+				{#if event.signupLink}
+					<button class="event-btn btn btn-sm" on:click={() => window.open(event.signupLink!)}
+						>Sign Up</button
+					>
+				{/if}
+			</div>
+		</div>
+	{/each}
 </div>
 
 <style>
-	/* Using the provided color scheme */
 	:root {
 		--light-beige-pink: #fae5e1;
 		--color-event-bg: #f8f8f8;

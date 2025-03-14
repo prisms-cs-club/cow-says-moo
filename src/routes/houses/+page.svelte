@@ -34,7 +34,12 @@
 
 <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
 	{#each ['Albemarle', 'Ettl', 'Hobler', 'Lambert'] as house}
-		<a class="card m-4 bg-base-100 shadow-xl" style="width: 20%" href="/houses/{house}">
+		<a
+			class="card m-4 bg-base-100 shadow-xl"
+			style="width: 20%"
+			href="/houses/{house}"
+			data-sveltekit-preload-data
+		>
 			<figure>
 				<img src="/image/house-logo/{house.toLowerCase()}/letter.png" alt={house} />
 				<!-- TODO: sizes of the 4 images are different. Need to make them the same. -->

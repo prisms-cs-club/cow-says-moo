@@ -39,20 +39,20 @@
 
 		<ul class="nav-links {mobile ? 'mobile' : ''} {menuOpen ? 'open' : ''}">
 			<li>
-				<a class="button-primary" href="/" on:click={() => mobile && (menuOpen = false)}>Home</a>
+				<a class="button-primary" href="/" data-sveltekit-preload-data on:click={() => mobile && (menuOpen = false)}>Home</a>
 			</li>
 			<li>
-				<a class="button-primary" href="/houses" on:click={() => mobile && (menuOpen = false)}
+				<a class="button-primary" href="/houses" data-sveltekit-preload-data on:click={() => mobile && (menuOpen = false)}
 					>Houses & Rankings</a
 				>
 			</li>
 			<li>
-				<a class="button-primary" href="/events" on:click={() => mobile && (menuOpen = false)}
+				<a class="button-primary" href="/events" data-sveltekit-preload-data on:click={() => mobile && (menuOpen = false)}
 					>Events</a
 				>
 			</li>
 			<li>
-				<a class="button-primary" href="/calendar" on:click={() => mobile && (menuOpen = false)}
+				<a class="button-primary" href="/calendar" data-sveltekit-preload-data on:click={() => mobile && (menuOpen = false)}
 					>Calendar</a
 				>
 			</li>
