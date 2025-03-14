@@ -4,13 +4,13 @@ import { initializeApp } from 'firebase/app';
 import { collection, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryConstraint, Timestamp, where } from 'firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA_u-dNDgYCkl-Sh7FW-bj42m9hoW_GRcs",
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: "cow-says-moo.firebaseapp.com",
     databaseURL: "https://cow-says-moo-default-rtdb.firebaseio.com",
     projectId: "cow-says-moo",
     storageBucket: "cow-says-moo.firebasestorage.app",
-    messagingSenderId: "930455928110",
-    appId: "1:930455928110:web:fb911ef83dc61712f24ebf"
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
