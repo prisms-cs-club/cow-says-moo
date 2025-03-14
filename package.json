@@ -63,6 +63,7 @@
 			"rollup": "npm:@rollup/wasm-node"
 		}
 	},
+	"prepare": "svelte-kit sync",
 	"resolutions": {
 		"rollup": "npm:@rollup/wasm-node"
 	},
