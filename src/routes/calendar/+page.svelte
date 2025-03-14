@@ -7,7 +7,7 @@
 	import { onMount } from 'svelte';
 	import type { HouseEvent } from '$lib/format.d.ts';
 	import { numberToRoman } from '$lib/utils';
-	import { goto } from '$app/navigation'; // Import SvelteKit's navigation function
+	import { goto } from '$app/navigation';
 
 	let calendarEvents = [];
 	let plugins = [DayGrid, TimeGrid, Interaction];
