@@ -60,5 +60,8 @@
 			"cookie": "^0.7.0"
 		}
 	},
+	"engines": {
+		"node": ">=23.0.0"
+	},
 	"type": "module"
 }
