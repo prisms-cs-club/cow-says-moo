@@ -60,8 +60,5 @@
 			"cookie": "^0.7.0"
 		}
 	},
-	"engines": {
-  		"node": ">=18.18.0"
-	},
 	"type": "module"
 }
