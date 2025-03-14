@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 	import type { HouseEvent } from '$lib/format.d.ts';
 	import { numberToRoman } from '$lib/utils';
+	import { goto } from '$app/navigation'; // Import SvelteKit's navigation function
 
 	let calendarEvents = [];
 	let plugins = [DayGrid, TimeGrid, Interaction];
@@ -24,7 +25,9 @@
 		},
 		eventClick: function (info: any) {
 			if (info.event.extendedProps.url) {
-				window.location.href = info.event.extendedProps.url;
+				goto(info.event.extendedProps.url);
+			} else if (info.event.url) {
+				goto(info.event.url);
 			}
 		},
 
@@ -36,48 +39,9 @@
 			let winner = '',
 				points = 0;
 
-			if (props.result !== null) {
-				if (
-					Math.max(
-						props.result.albemarle,
-						props.result.ettl,
-						props.result.hobler,
-						props.result.lambert
-					) == props.result.albemarle
-				) {
-					winner = 'Albemarle';
-					points = props.result.albemarle;
-				} else if (
-					Math.max(
-						props.result.albemarle,
-						props.result.ettl,
-						props.result.hobler,
-						props.result.lambert
-					) == props.result.ettl
-				) {
-					winner = 'Ettl';
-					points = props.result.ettl;
-				} else if (
-					Math.max(
-						props.result.albemarle,
-						props.result.ettl,
-						props.result.hobler,
-						props.result.lambert
-					) == props.result.hobler
-				) {
-					winner = 'Hobler';
-					points = props.result.hobler;
-				} else if (
-					Math.max(
-						props.result.albemarle,
-						props.result.ettl,
-						props.result.hobler,
-						props.result.lambert
-					) == props.result.lambert
-				) {
-					winner = 'Lambert';
-					points = props.result.lambert;
-				}
+			if (props.winner !== null) {
+				winner = props.winner;
+				points = props.result?.[props.winner.toLowerCase()] || 0;
 			} else {
 				winner = 'Not available';
 				points = 0;
@@ -128,13 +92,13 @@
 			let eventColor = '';
 
 			if (event.winner?.toLocaleLowerCase() === 'albemarle') {
-				eventColor = 'var(--color-event-albemarle-fg)';
+				eventColor = 'var(--color-albemarle)';
 			} else if (event.winner?.toLowerCase() === 'lambert') {
-				eventColor = 'var(--color-event-lambert-fg)';
+				eventColor = 'var(--color-lambert)';
 			} else if (event.winner?.toLowerCase() === 'ettl') {
-				eventColor = 'var(--color-event-ettl-fg)';
+				eventColor = 'var(--color-ettl)';
 			} else if (event.winner?.toLowerCase() === 'hobler') {
-				eventColor = 'var(--color-event-hobler-fg)';
+				eventColor = 'var(--color-hobler)';
 			} else {
 				eventColor = 'var(--color-event-upcoming-fg-2)';
 			}
@@ -193,9 +157,9 @@
 	}
 
 	.calendar-container {
-		height: 700px;
+		align-self: center;
+		height: 100%;
 		width: 100%;
-		max-width: 1200px;
 		margin: 0 auto;
 		padding: 1rem;
 		border-radius: 8px;
@@ -257,21 +221,21 @@
 
 	:global(.tooltip-result-albemarle) {
 		font-size: 0.9em;
-		color: var(--color-event-albemarle-fg);
+		color: var(--color-albemarle);
 	}
 
 	:global(.tooltip-result-lambert) {
 		font-size: 0.9em;
-		color: var(--color-event-lambert-fg);
+		color: var(--color-lambert);
 	}
 
 	:global(.tooltip-result-ettl) {
 		font-size: 0.9em;
-		color: var(--color-event-ettl-fg);
+		color: var(--color-ettl);
 	}
 
 	:global(.tooltip-result-hobler) {
 		font-size: 0.9em;
-		color: var(--color-event-hobler-fg);
+		color: var(--color-hobler);
 	}
 </style>

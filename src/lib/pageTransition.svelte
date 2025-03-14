@@ -33,12 +33,10 @@
 {/key}
 
 <style>
-	/* Hide initial state before transition starts */
 	.transition-container {
 		position: relative;
 	}
 
-	/* Ensure content doesn't show before animation starts */
 	:global(.transition-pending) {
 		opacity: 0;
 	}
