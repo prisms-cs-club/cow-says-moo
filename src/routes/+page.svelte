@@ -1,10 +1,10 @@
 <script lang="ts">
-	import EventGrid from "$lib/EventGrid.svelte";
-	import { fetchEventsBetween, queryScoreSummary } from "$lib/firebase";
-	import type { HouseEvent } from "$lib/format";
-	import { formatDate, numberToRoman } from "$lib/utils";
+	import EventGrid from '$lib/EventGrid.svelte';
+	import { fetchEventsBetween, queryScoreSummary } from '$lib/firebase';
+	import type { HouseEvent } from '$lib/format';
+	import { formatDate, numberToRoman } from '$lib/utils';
 	import RankBar from '$lib/RankBar.svelte';
-	import { onMount } from "svelte";
+	import { onMount } from 'svelte';
 
 	type scoreSummary = {
 		[key: string]: number;
@@ -20,9 +20,9 @@
 	let recentEvents: HouseEvent[] = [];
 
 	onMount(async () => {
-    	const now = new Date();
-    	const oneDayAgo = new Date();
-    	oneDayAgo.setDate(now.getDate() - 1);
+		const now = new Date();
+		const oneDayAgo = new Date();
+		oneDayAgo.setDate(now.getDate() - 1);
 		recentEvents = await fetchEventsBetween(oneDayAgo, undefined, 3);
 		ongoingEvents = await fetchEventsBetween(now, oneDayAgo);
 		scores = await queryScoreSummary();
@@ -32,8 +32,8 @@
 
 <h1>PRISMS International News - Homepage</h1>
 <p>
-	Welcome to the PRISMS International News homepage. You will be able to see information about house
-	events.
+	Welcome to the PRISMS International News homepage. Here, you will be able to see information about
+	house events.
 </p>
 
 <RankBar
