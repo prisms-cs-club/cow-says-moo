@@ -59,8 +59,8 @@
 		"@sveltejs/kit": {
 			"cookie": "^0.7.0"
 		},
-		"rollup": {
-			"@rollup/rollup-linux-x64-gnu": "4.9.0"
+		"vite": {
+			"rollup": "npm:@rollup/wasm-node"
 		}
 	},
 	"type": "module"
