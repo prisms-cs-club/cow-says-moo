@@ -1,13 +1,13 @@
 import { SvelteKitAuth } from "@auth/sveltekit"
 import Google from "@auth/core/providers/google";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, AUTH_SECRET } from '$env/static/private';
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
   providers: [Google({
-    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    clientId: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
     authorization: 'https://accounts.google.com/o/oauth2/auth?response_type=code&hd=prismsus.org',
   })],
-  // You can customize other options here, for example:
-  secret: process.env.AUTH_SECRET,
+  secret: AUTH_SECRET,
   trustHost: true,
 });

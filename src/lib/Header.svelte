@@ -3,11 +3,12 @@
 	import SignInIcon from '$lib/icon/SignIn.svelte';
 	import SignOutIcon from '$lib/icon/SignOut.svelte';
 	import { onMount } from 'svelte';
+	import { Motion } from 'svelte-motion';
 
-	let scrollY = 0;
 	let innerWidth = 0;
 	let mobile = false;
-	let menuOpen = false;
+	let mobileMenuOpen = false;
+	let animating = false;
 
 	onMount(() => {
 		// Check initial screen size
@@ -16,253 +17,243 @@
 
 	function checkScreenSize() {
 		mobile = innerWidth < 768;
+		// Close mobile menu when switching to desktop
+		if (!mobile) mobileMenuOpen = false;
 	}
 
-	function toggleMenu() {
-		menuOpen = !menuOpen;
+	async function toggleMobileMenu() {
+		if (animating) return;
+		animating = true;
+
+		if (mobileMenuOpen) {
+			mobileMenuOpen = false;
+			await delay(500); // Increased delay for 0.5s collapse animation
+		} else {
+			mobileMenuOpen = true;
+		}
+		animating = false;
 	}
+
+	function closeMobileMenu() {
+		if (animating) return;
+		mobileMenuOpen = false;
+	}
+
+	// Delay function for animation
+	function delay(ms) {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	}
+
+	// Animation variants for dropdown menu
+	const dropdownVariants = {
+		open: {
+			scaleY: 1,
+			opacity: 1,
+			transition: { duration: 0.3, ease: 'easeOut' }
+		},
+		closed: {
+			scaleY: 1,
+			opacity: 0,
+			transition: { duration: 0.3, ease: 'easeIn' }
+		}
+	};
 </script>
 
-<svelte:window bind:scrollY bind:innerWidth on:resize={checkScreenSize} />
+<svelte:window bind:innerWidth on:resize={checkScreenSize} />
 
-<div id="wrapper" class={scrollY > 20 ? 'floating' : ''}>
-	<div id="navbar" class="blur-effect">
-		{#if mobile}
-			<details class="mobile-menu-toggle dropdown">
-				<summary class="btn m-1">=</summary>
-				<ul class="z-1 menu dropdown-content w-52 rounded-box bg-base-100 p-2 shadow-sm">
-					<li><a>Item 1</a></li>
-					<li><a>Item 2</a></li>
-				</ul>
-			</details>
-		{/if}
-
-		<ul class="nav-links {mobile ? 'mobile' : ''} {menuOpen ? 'open' : ''}">
-			<li>
-				<a class="button-primary" href="/" data-sveltekit-preload-data on:click={() => mobile && (menuOpen = false)}>Home</a>
-			</li>
-			<li>
-				<a class="button-primary" href="/houses" data-sveltekit-preload-data on:click={() => mobile && (menuOpen = false)}
-					>Houses & Rankings</a
-				>
-			</li>
-			<li>
-				<a class="button-primary" href="/events" data-sveltekit-preload-data on:click={() => mobile && (menuOpen = false)}
-					>Events</a
-				>
-			</li>
-			<li>
-				<a class="button-primary" href="/calendar" data-sveltekit-preload-data on:click={() => mobile && (menuOpen = false)}
-					>Calendar</a
-				>
-			</li>
-		</ul>
-
-		<ul class="auth-links {mobile ? 'mobile' : ''} {menuOpen ? 'open' : ''}">
-			<!-- signin message -->
-			{#if $page.data.session}
-				{#if $page.data.session.user?.image}
-					<li><img src={$page.data.session.user.image} alt="avatar" class="avatar" /></li>
-				{/if}
-				<li>
-					<a href="/auth/signout" class="button-primary" data-sveltekit-preload-data="off">
-						Sign Out <SignOutIcon class="inline-svg" size="1em" />
-					</a>
-				</li>
-			{:else}
-				<li>
-					<a href="/auth/signin" class="button-primary" data-sveltekit-preload-data="off">
-						Sign In <SignInIcon class="inline-svg" size="1em" /></a
+<div class="fixed left-0 right-0 top-0 z-50 w-full px-4 py-2">
+	<div class="custom-navbar navbar rounded-lg shadow-lg backdrop-blur-md">
+		<!-- Mobile menu -->
+		<div class="navbar-start">
+			{#if mobile}
+				<div class="dropdown">
+					<button
+						class="btn btn-ghost text-accent-content lg:hidden"
+						aria-label="Toggle mobile menu"
+						class:active={mobileMenuOpen}
+						on:click={toggleMobileMenu}
+						disabled={animating}
 					>
-				</li>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M4 6h16M4 12h8m-8 6h16"
+							/>
+						</svg>
+					</button>
+
+					<Motion
+						animate={mobileMenuOpen ? 'open' : 'closed'}
+						variants={dropdownVariants}
+						initial="closed"
+					>
+						<ul
+							class="custom-navbar-dropdown menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box p-2 shadow"
+						>
+							<li>
+								<a href="/" class="nav-link text-lg font-medium" on:click={closeMobileMenu}>Home</a>
+							</li>
+							<li>
+								<a href="/houses" class="nav-link text-lg font-medium" on:click={closeMobileMenu}
+									>Houses & Rankings</a
+								>
+							</li>
+							<li>
+								<a href="/events" class="nav-link text-lg font-medium" on:click={closeMobileMenu}
+									>Events</a
+								>
+							</li>
+							<li>
+								<a href="/calendar" class="nav-link text-lg font-medium" on:click={closeMobileMenu}
+									>Calendar</a
+								>
+							</li>
+						</ul>
+					</Motion>
+				</div>
 			{/if}
-		</ul>
+		</div>
+
+		<!-- Desktop nav links -->
+		<div class="navbar-center hidden lg:flex">
+			<ul class="menu menu-horizontal gap-2 px-1">
+				<li>
+					<a href="/" class="nav-link px-5 py-3 text-lg font-medium">Home</a>
+				</li>
+				<li>
+					<a href="/houses" class="nav-link px-5 py-3 text-lg font-medium">Houses & Rankings</a>
+				</li>
+				<li>
+					<a href="/events" class="nav-link px-5 py-3 text-lg font-medium">Events</a>
+				</li>
+				<li>
+					<a href="/calendar" class="nav-link px-5 py-3 text-lg font-medium">Calendar</a>
+				</li>
+			</ul>
+		</div>
+
+		<!-- Auth links -->
+		<div class="navbar-end">
+			{#if $page.data.session}
+				<div class="flex items-center">
+					{#if $page.data.session.user?.image}
+						<img
+							src={$page.data.session.user.image}
+							alt="avatar"
+							class="mr-3 h-10 w-10 rounded-full border-2 border-accent-content"
+						/>
+					{/if}
+					<a
+						href="/auth/signout"
+						class="auth-btn btn btn-ghost px-5 py-2 text-lg font-medium"
+						data-sveltekit-preload-data="off"
+					>
+						Sign Out <SignOutIcon class="ml-2" size="1em" />
+					</a>
+				</div>
+			{:else}
+				<a
+					href="/auth/signin"
+					class="auth-btn btn btn-ghost px-5 py-2 text-lg font-medium"
+					data-sveltekit-preload-data="off"
+				>
+					Sign In <SignInIcon class="ml-2" size="1em" />
+				</a>
+			{/if}
+		</div>
 	</div>
 </div>
 
 <style>
-	:root {
-		--color-nav-bar-bg: rgba(166, 22, 24, 0.85); /* Added transparency */
-		--color-nav-bar-fg: #facec5;
-		--header-height: 50px;
-		--header-padding: 10px;
+	.custom-navbar {
+		background-color: rgba(166, 22, 24, 0.85);
 	}
 
-	#wrapper {
-		width: 100%;
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		padding: 10px 20px;
-		box-sizing: border-box;
-		transition: all 0.3s ease;
-		z-index: 1000;
-		background-color: transparent;
-	}
-
-	#wrapper.floating {
-		top: 15px;
-		left: 15px;
-		right: 15px;
-		width: calc(100% - 30px);
-		border-radius: 8px;
-	}
-
-	/*Nav Bar*/
-	#navbar {
-		background-color: var(--color-nav-bar-bg);
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		border-radius: 8px;
-		padding: 0 15px;
-		height: var(--header-height);
-		position: relative;
+	.custom-navbar-dropdown {
+		background-color: rgba(166, 22, 24, 0.95);
 		overflow: hidden;
 	}
 
-	/* Blur effect */
-	.blur-effect {
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
+	:global(.custom-navbar .text-accent-content) {
+		color: #facec5 !important;
 	}
 
-	.blur-effect::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: var(--color-nav-bar-bg);
-		z-index: -1;
+	:global(.nav-link) {
+		color: #facec5 !important;
+		transition: all 0.3s ease !important;
+		position: relative !important;
+		overflow: hidden !important;
 	}
 
-	#navbar ul {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-		display: flex;
-		align-items: center;
-		position: relative;
-		z-index: 2;
+	:global(.nav-link:hover) {
+		color: rgba(166, 22, 24) !important;
+		background-color: #facec5 !important;
+		transform: translateY(-2px) !important;
 	}
 
-	.nav-links {
-		flex-grow: 1;
-		justify-content: flex-start;
-		margin-left: 5%;
+	:global(.nav-link:active) {
+		transform: translateY(0) !important;
 	}
 
-	.auth-links {
-		justify-content: flex-end;
-		margin-right: 5%;
+	/* Create underline animation effect */
+	:global(.nav-link::after) {
+		content: '' !important;
+		position: absolute !important;
+		bottom: 0 !important;
+		left: 50% !important;
+		width: 0 !important;
+		height: 2px !important;
+		background-color: #facec5 !important;
+		transition: all 0.3s ease !important;
+		transform: translateX(-50%) !important;
 	}
 
-	#navbar ul li {
-		margin: 0 3px;
+	:global(.nav-link:hover::after) {
+		width: 80% !important;
 	}
 
-	#navbar li a {
-		text-decoration: none;
-		padding: 8px 12px;
-		color: var(--color-nav-bar-fg);
-		background-color: transparent;
-		border-radius: 4px;
-		display: inline-block;
-		transition: all 0.2s ease;
-		font-size: 0.95em;
-		position: relative;
-		z-index: 2;
+	/* Auth button animations */
+	:global(.auth-btn) {
+		color: #facec5 !important;
+		transition: all 0.3s ease !important;
+		border: 1px solid transparent !important;
 	}
 
-	#navbar a:hover {
-		color: var(--color-nav-bar-bg);
-		background-color: var(--color-nav-bar-fg);
+	:global(.auth-btn:hover) {
+		border-color: #facec5 !important;
+		box-shadow: 0 0 8px rgba(250, 206, 197, 0.5) !important;
+		transform: scale(1.05) !important;
 	}
 
-	img.avatar {
-		border-radius: 50%;
-		height: 1.8em;
-		width: 1.8em;
-		display: inline-block;
-		vertical-align: middle;
-		margin-right: 8px;
-		border: 2px solid var(--color-nav-bar-fg);
+	:global(.auth-btn:active) {
+		transform: scale(0.98) !important;
 	}
 
-	a.button-primary {
-		display: inline-flex;
-		align-items: center;
+	/* Enhanced navigation link spacing */
+	:global(.menu-horizontal) {
+		gap: 0.5rem !important;
 	}
 
-	.mobile-menu-toggle {
-		display: none;
-		cursor: pointer;
-		width: 24px;
-		height: 24px;
-		position: relative;
-		z-index: 1000;
+	:global(.dropdown-content li) {
+		margin-bottom: 0.5rem !important;
 	}
 
-	@media (max-width: 768px) {
-		.mobile-menu-toggle {
-			display: block;
-		}
-
-		#navbar {
-			padding: 0 10px;
-		}
-
-		#navbar ul.mobile {
-			position: absolute;
-			top: calc(var(--header-height) + var(--header-padding));
-			left: 0;
-			width: 100%;
-			flex-direction: column;
-			background-color: var(--color-nav-bar-bg);
-			backdrop-filter: blur(8px);
-			-webkit-backdrop-filter: blur(8px);
-			display: none;
-			padding: 10px 0;
-			border-radius: 0 0 8px 8px;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-		}
-
-		#navbar ul.mobile.open {
-			display: flex;
-		}
-
-		#navbar ul.mobile li {
-			width: 100%;
-			margin: 5px 0;
-			text-align: center;
-		}
-
-		#navbar ul.mobile li a {
-			width: 80%;
-			padding: 8px 0;
-		}
-
-		.auth-links.mobile {
-			margin-top: 8px;
-			border-top: 1px solid rgba(250, 206, 197, 0.3);
-			padding-top: 8px;
-		}
-
-		#wrapper.floating {
-			top: 10px;
-			left: 10px;
-			right: 10px;
-			width: calc(100% - 20px);
-		}
+	:global(.dropdown-content li a) {
+		padding: 0.75rem 1rem !important;
 	}
 
-	@media (min-width: 769px) and (max-width: 1024px) {
-		#navbar li a {
-			padding: 8px 8px;
-			font-size: 0.85em;
-		}
+	/* Hamburger button active state */
+	:global(.btn.active) {
+		background-color: rgba(250, 206, 197, 0.2) !important;
 	}
+
+	/* Remove old animation classes as we're using Motion component now */
 </style>

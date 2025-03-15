@@ -56,7 +56,7 @@ if (typeof window !== 'undefined') {
     }
 }
 
-async function ifAdmin() { const a = await getMember(); return (a !== undefined && a.role === "admin"); }
+// async function ifAdmin() { const a = await getMember(); return (a !== undefined && a.role === "admin"); }
 
 export async function fetchEvents(): Promise<HouseEvent[]> {
     try {
