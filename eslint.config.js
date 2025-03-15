@@ -28,5 +28,10 @@ export default ts.config(
 	},
 	{
 		ignores: ['build/', '.svelte-kit/', 'dist/']
+	},
+	{
+		rules: {
+			'@typescript-eslint/no-explicit-any': 'off'
+		}
 	}
 );
