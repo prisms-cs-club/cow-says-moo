@@ -104,7 +104,27 @@ export async function fetchEvents(): Promise<HouseEvent[]> {
     }
 }
 
+export async function fetchEventsWonBy(house: string): Promise<HouseEvent[]> {
+    const events = await fetchEvents();
+    return events.filter(event => event.winner === house);
+}
+
 export async function fetchEventsBetween(end: Date, start?: Date, queryLimit?: number): Promise<HouseEvent[]> {
+    const serverTimestamp = await fetchUpdateTime();
+    const localTimestamp = eventsCache.timestamp;
+
+    const isTimestampMatching = localTimestamp &&
+        serverTimestamp.seconds === localTimestamp.seconds &&
+        serverTimestamp.nanoseconds === localTimestamp.nanoseconds;
+
+    if (eventsCache.events && isTimestampMatching) {
+        console.log('Timestamps match - using cached events');
+        return eventsCache.events.filter(event => {
+            const eventDate = event.dateStart.toDate();
+            return eventDate <= end && (!start || eventDate >= start);
+        }).slice(0, queryLimit);
+    }
+
     const conditions: QueryConstraint[] = [];
     if (start !== undefined) {
         conditions.push(where('dateStart', '>=', start));

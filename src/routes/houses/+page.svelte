@@ -33,7 +33,7 @@
 <h1>Houses</h1>
 
 <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
-	{#each ['Albemarle', 'Ettl', 'Hobler', 'Lambert'] as house}
+	{#each ['albemarle', 'ettl', 'hobler', 'lambert'] as house}
 		<a
 			class="card m-4 bg-base-100 shadow-xl"
 			style="width: 20%"
@@ -41,11 +41,10 @@
 			data-sveltekit-preload-data
 		>
 			<figure>
-				<img src="/image/house-logo/{house.toLowerCase()}/letter.png" alt={house} />
-				<!-- TODO: sizes of the 4 images are different. Need to make them the same. -->
+				<img src="/image/house-logo/{house}/letter.png" alt={house} />
 			</figure>
 			<div class="card-body">
-				<h3 class="algerian text-center">{house}</h3>
+				<h3 class="algerian text-center">{house.toUpperCase()}</h3>
 				<!-- <p>House introduction TBD</p> -->
 			</div>
 		</a>
