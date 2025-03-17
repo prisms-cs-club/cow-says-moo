@@ -36,7 +36,7 @@
 					transition={{ duration: 1.0 }}
 					let:motion
 				>
-					<div class="progress-{house.name.toLocaleLowerCase()} progress" use:motion></div>
+					<div class="progress" style:background-color={`var(--color-${house.name.toLowerCase()})`} use:motion></div>
 				</Motion>
 			</div>
 			<Motion
@@ -121,18 +121,5 @@
 		width: 60px;
 		font-weight: bold;
 		text-align: right;
-	}
-
-	.progress-ettl {
-		background-color: var(--color-ettl);
-	}
-	.progress-albemarle {
-		background-color: var(--color-albemarle);
-	}
-	.progress-lambert {
-		background-color: var(--color-lambert);
-	}
-	.progress-hobler {
-		background-color: var(--color-hobler);
 	}
 </style>

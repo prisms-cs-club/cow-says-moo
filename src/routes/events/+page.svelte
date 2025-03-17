@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { HouseEvent } from '$lib/format';
-	import { getMember } from '$lib/queryMember';
 	import { fetchEvents, fetchUpdateTime } from '$lib/firebase';
 	import { Timestamp } from 'firebase/firestore';
 	import { formatDate, numberToRoman } from '$lib/utils';
@@ -18,26 +17,6 @@
 	let eventsPage = 1;
 	let totalPage = 1;
 	const EVENTS_PER_PAGE = 9;
-	let displayEventEditor = false;
-	let newEvent: HouseEvent = {
-		id: '',
-		title: '',
-		dateStart: new Timestamp(0, 0),
-		dateEnd: new Timestamp(0, 0),
-		description: '',
-		tier: 0
-	};
-
-	let eventToUpdate: HouseEvent = {
-		id: '',
-		title: '',
-		dateStart: new Timestamp(0, 0),
-		dateEnd: new Timestamp(0, 0),
-		description: '',
-		tier: 0
-	};
-
-	let deleteEventId = '';
 	let loaded = false;
 
 	const _d = (index: number) => {
@@ -90,11 +69,6 @@
 		events = await fetchEvents();
 		filteredEvents = [...events];
 		totalPage = Math.ceil(events.length / EVENTS_PER_PAGE);
-		let member = await getMember();
-
-		if (member && member.role === 'admin') {
-			displayEventEditor = true;
-		}
 		loaded = true;
 
 		let updateTime = await fetchUpdateTime();
@@ -179,23 +153,6 @@
 
 <style>
 	/* Using the provided color scheme */
-	:root {
-		--light-beige-pink: #fae5e1;
-		--color-event-bg: #f8f8f8;
-		--color-event-fg: #3f361e;
-		--color-event-fg-2: #5c5445;
-		--color-event-upcoming-bg: #e5e5e5;
-		--color-event-upcoming-fg-1: #0b0a0a;
-		--color-event-upcoming-fg-2: #9a9a9a;
-		--color-event-albemarle-bg: #fff9ba;
-		--color-event-albemarle-fg: #6e6503;
-		--color-event-lambert-bg: #dae4f8;
-		--color-event-lambert-fg: #194c7c;
-		--color-event-ettl-bg: #e6f7d2;
-		--color-event-ettl-fg: #0a6a0a;
-		--color-event-hobler-bg: #f5cccc;
-		--color-event-hobler-fg: #800f11;
-	}
 
 	/* Header with search bar */
 	.header-container {
@@ -259,148 +216,8 @@
 		color: var(--color-theme-1);
 	}
 
-	hr {
-		margin-top: 20px;
-		margin-bottom: 20px;
-		border: 1px solid var(--color-theme-1);
-	}
-
 	button.btn-active {
 		background-color: #9b2a24e8; /* Slightly darker shade */
-	}
-
-	.activity {
-		margin-top: 0;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		background-color: var(--color-event-bg);
-		color: var(--color-event-fg);
-		font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', 'sans-serif';
-		border-radius: 8px;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-		margin-bottom: 20px;
-		padding: 16px;
-	}
-
-	.activity.current-event.stripe-0 {
-		background: linear-gradient(
-			135deg,
-			var(--color-event-albemarle-bg) 0%,
-			var(--color-event-albemarle-bg) 25%,
-			var(--color-event-hobler-bg) 25%,
-			var(--color-event-hobler-bg) 50%,
-			var(--color-event-lambert-bg) 50%,
-			var(--color-event-lambert-bg) 75%,
-			var(--color-event-ettl-bg) 75%,
-			var(--color-event-ettl-bg) 100%
-		);
-		background-size: 100% 100%;
-	}
-
-	.activity.current-event.stripe-1 {
-		background: linear-gradient(
-			135deg,
-			var(--color-event-hobler-bg) 0%,
-			var(--color-event-hobler-bg) 25%,
-			var (--color-event-lambert-bg) 25%,
-			var(--color-event-lambert-bg) 50%,
-			var(--color-event-ettl-bg) 50%,
-			var(--color-event-ettl-bg) 75%,
-			var(--color-event-albemarle-bg) 75%,
-			var(--color-event-albemarle-bg) 100%
-		);
-		background-size: 100% 100%;
-	}
-
-	.activity.current-event.stripe-2 {
-		background: linear-gradient(
-			135deg,
-			var(--color-event-lambert-bg) 0%,
-			var(--color-event-lambert-bg) 25%,
-			var(--color-event-ettl-bg) 25%,
-			var(--color-event-ettl-bg) 50%,
-			var(--color-event-albemarle-bg) 50%,
-			var(--color-event-albemarle-bg) 75%,
-			var(--color-event-hobler-bg) 75%,
-			var(--color-event-hobler-bg) 100%
-		);
-		background-size: 100% 100%;
-	}
-
-	.activity.current-event.stripe-3 {
-		background: linear-gradient(
-			135deg,
-			var(--color-event-ettl-bg) 0%,
-			var(--color-event-ettl-bg) 25%,
-			var(--color-event-albemarle-bg) 25%,
-			var(--color-event-albemarle-bg) 50%,
-			var(--color-event-hobler-bg) 50%,
-			var(--color-event-hobler-bg) 75%,
-			var(--color-event-lambert-bg) 75%,
-			var(--color-event-lambert-bg) 100%
-		);
-		background-size: 100% 100%;
-	}
-
-	.activity.upcoming {
-		background-color: var(--color-event-upcoming-bg);
-		color: var (--color-event-upcoming-fg-1);
-	}
-
-	.activity.albemarle {
-		background-color: var(--color-event-albemarle-bg);
-		color: var(--color-event-albemarle-fg);
-	}
-
-	.activity.lambert {
-		background-color: var(--color-event-lambert-bg);
-		color: var(--color-event-lambert-fg);
-	}
-
-	.activity.ettl {
-		background-color: var(--color-event-ettl-bg);
-		color: var(--color-event-ettl-fg);
-	}
-
-	.activity.hobler {
-		background-color: var(--color-event-hobler-bg);
-		color: var(--color-event-hobler-fg);
-	}
-
-	.events-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		gap: 1.5rem;
-		margin-bottom: 2rem;
-	}
-
-	.event-buttons {
-		margin-top: auto;
-		display: flex;
-		gap: 0.5rem;
-		flex-wrap: wrap;
-		justify-content: center;
-		padding: 10px 0;
-		margin-bottom: 8px;
-	}
-
-	@media (max-width: 640px) {
-		.events-grid {
-			grid-template-columns: 1fr;
-		}
-	}
-
-	@media (min-width: 641px) and (max-width: 1024px) {
-		.events-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (min-width: 1025px) {
-		.events-grid {
-			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		}
 	}
 
 	@media (max-width: 640px) {
