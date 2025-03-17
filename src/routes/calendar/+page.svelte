@@ -23,6 +23,8 @@
 			center: 'title',
 			end: 'dayGridMonth,timeGridWeek'
 		},
+ 		eventTimeFormat: () => '',
+ 		locale: 'en',
 		eventClick: function (info: any) {
 			if (info.event.extendedProps.url) {
 				goto(info.event.extendedProps.url);
@@ -80,9 +82,7 @@
 	function formatDateTime(date: Date): string {
 		return date.toLocaleString('en-US', {
 			month: 'short',
-			day: 'numeric',
-			hour: 'numeric',
-			minute: '2-digit'
+			day: 'numeric'
 		});
 	}
 

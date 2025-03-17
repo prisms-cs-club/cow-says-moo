@@ -27,7 +27,9 @@
 <div class="rank-container">
 	{#each houses as house}
 		<div class="rank-item">
-			<div class="house-name">{house.name}</div>
+			<div class="house-name">
+				{(windowWidth <= 480) ? house.name[0] : house.name}
+			</div>
 			<div class="progress-container">
 				<Motion
 					animate={{ width: [`0%`, `${(house.points / maxPoints) * 100}%`] }}
@@ -65,7 +67,6 @@
 	}
 
 	.house-name {
-		width: 100px;
 		text-align: right;
 		padding-right: 1rem;
 		font-weight: 600;
@@ -80,6 +81,23 @@
 		overflow: hidden;
 		margin: 0 1rem;
 		position: relative;
+	}
+
+	@media screen and (max-width: 480px) {
+		.rank-item {
+			height: 2rem;
+			font-size: 0.8rem;
+		}
+		.progress-container {
+			height: 1.6rem;
+			margin: 0 0.5rem;
+		}
+	}
+
+	@media screen and (min-width: 480px) {
+		.house-name {
+			width: 100px;
+		}
 	}
 
 	.progress {

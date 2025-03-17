@@ -1,5 +1,4 @@
 import type { HouseEvent } from '$lib/format';
-import { getMember } from '$lib/queryMember';
 import { initializeApp } from 'firebase/app';
 import { collection, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryConstraint, Timestamp, where } from 'firebase/firestore';
 
