@@ -3,10 +3,15 @@
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
+
+		interface Locals {
+			session: import('@auth/core').Session | null
+		  }
+		  interface PageData {
+			session: import('@auth/core').Session | null
+		  }
 	}
 }
 
