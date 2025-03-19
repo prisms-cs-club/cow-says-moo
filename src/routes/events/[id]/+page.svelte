@@ -14,7 +14,7 @@
 	</div>
 	<p>{formatDate(data.event)}, Tier {numberToRoman(data.event.tier)}</p>
 	<p id="text">{data.event.description}</p>
-	{#if data.event.result && data.event.result.albemarle && data.event.result.lambert && data.event.result.hobler && data.event.result.ettl}
+	{#if data.event.result && data.event.result.albemarle !== undefined && data.event.result.lambert !== undefined && data.event.result.hobler !== undefined && data.event.result.ettl !== undefined}
 		<div id="leaderboard">
 			<RankBar
 				albemarle={data.event.result.albemarle}
