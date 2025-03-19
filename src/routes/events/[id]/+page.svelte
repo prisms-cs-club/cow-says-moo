@@ -10,7 +10,7 @@
 
 <div id="frame">
 	<div id="title_frame">
-		<h1 id="title">{data.event.title}</h1>
+		<h1 id="textbf">{data.event.title}</h1>
 	</div>
 	<p>{formatDate(data.event)}, Tier {numberToRoman(data.event.tier)}</p>
 	<p id="text">{data.event.description}</p>
