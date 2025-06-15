@@ -2,6 +2,9 @@ import type { HouseEvent } from '$lib/format';
 import { initializeApp } from 'firebase/app';
 import { collection, doc, getDoc, getDocs, getFirestore, limit, orderBy, query, QueryConstraint, Timestamp, where } from 'firebase/firestore';
 
+/**
+ * Firebase configuration.
+ */
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: "cow-says-moo.firebaseapp.com",
