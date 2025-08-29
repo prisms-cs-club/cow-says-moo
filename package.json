@@ -29,7 +29,7 @@
 		"@event-calendar/time-grid": "^3.10.0",
 		"@playwright/test": "^1.45.3",
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.19.0",
+		"@sveltejs/kit": "^2.37.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@types/eslint": "^9.6.0",
 		"@types/event-calendar__core": "^3.7.0",
