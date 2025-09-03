@@ -1,0 +1,12 @@
+{
+	"$schema": "https://biomejs.dev/schemas/latest/schema.json",
+	"linter": {
+		"enabled": true
+	},
+	"formatter": {
+		"enabled": true
+	},
+	"files": {
+		"ignores": ["**/*.svelte", ".svelte-kit/**", "build/**", "dist/**"]
+	}
+}
