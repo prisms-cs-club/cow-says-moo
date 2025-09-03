@@ -57,6 +57,24 @@
 			transition: { duration: 0.3, ease: 'easeIn' }
 		}
 	};
+
+	// Normalize Google avatar URLs and ensure a stable size
+	function normalizeAvatar(url: string | undefined): string | undefined {
+		if (!url) return url;
+		try {
+			const u = new URL(url);
+			if (u.hostname.endsWith('googleusercontent.com')) {
+				// If no size specified, request a reasonable one
+				if (!u.searchParams.has('sz')) u.searchParams.set('sz', '96');
+				return u.toString();
+			}
+		} catch (_) {
+			// fall through to original
+		}
+		return url;
+	}
+
+	$: avatarUrl = normalizeAvatar($page.data.session?.user?.image);
 </script>
 
 <svelte:window bind:innerWidth on:resize={checkScreenSize} />
@@ -144,10 +162,11 @@
 		<div class="navbar-end">
 			{#if $page.data.session}
 				<div class="flex items-center">
-					{#if $page.data.session.user?.image}
+					{#if avatarUrl}
 						<img
-							src={$page.data.session.user.image}
+							src={avatarUrl}
 							alt="avatar"
+							referrerpolicy="no-referrer"
 							class="mr-3 h-10 w-10 rounded-full border-2 border-accent-content"
 						/>
 					{/if}
