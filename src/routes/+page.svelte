@@ -2,7 +2,6 @@
 	import EventGrid from '$lib/EventGrid.svelte';
 	import { fetchEventsBetween, queryScoreSummary } from '$lib/firebase';
 	import type { HouseEvent } from '$lib/format';
-	import { formatDate, numberToRoman } from '$lib/utils';
 	import RankBar from '$lib/RankBar.svelte';
 	import { onMount } from 'svelte';
 

@@ -23,6 +23,7 @@
 		"svelte-spa-router": "^4.0.1"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^2.2.2",
 		"@event-calendar/core": "^3.10.0",
 		"@event-calendar/day-grid": "^3.10.0",
 		"@event-calendar/interaction": "^3.10.0",
