@@ -29,9 +29,9 @@
 	});
 </script>
 
-<h1>PRISMS International News - Homepage</h1>
+<h1>PRISMS - Homepage</h1>
 <p>
-	Welcome to the PRISMS International News homepage. Here, you will be able to see information about
+	Welcome to the PRISMS homepage. Here, you will be able to see information about
 	house events.
 </p>
 
