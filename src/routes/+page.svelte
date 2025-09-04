@@ -30,10 +30,7 @@
 </script>
 
 <h1>PRISMS - Homepage</h1>
-<p>
-	Welcome to the PRISMS homepage. Here, you will be able to see information about
-	house events.
-</p>
+<p>Welcome to the PRISMS homepage. Here, you will be able to see information about house events.</p>
 
 <RankBar
 	albemarle={scores.albemarle}

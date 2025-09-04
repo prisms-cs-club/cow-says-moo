@@ -20,21 +20,19 @@
 	let loaded = false;
 
 	const _d = (index: number) => {
-		const encodedUrls = [
-			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAxLTI2XzE5LTE1LTMzLnBuZz9yYXc9dHJ1ZQ==',
-			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluLzBiZjA2ZGQ5N2FkMWYxZmM5ZWY1ZWNiNjMwMmQ0OGQxMTM0MDE5MDgyMS5wbmc/cmF3PXRydWU=',
-			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAyLTExXzE3LTQ0LTU5LnBuZz9yYXc9dHJ1ZQoK',
-			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAyLTExXzE3LTQ2LTA3LnBuZz9yYXc9dHJ1ZQ==',
-			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluLzM1MGM1NGUzM2MzYTFjZThhOGE4NjM2OTM0M2Q0YmVkMjg2NDMxMDQ1LmpwZz9yYXc9dHJ1ZQ==',
-			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAxLTI2XzE5LTE2LTM1LnBuZz9yYXc9dHJ1ZQo=',
-			'aHR0cHM6Ly9naXRodWIuY29tL255Y3Rpdm9lL2FmcXVlcmlxeXJpcWJmYXMvYmxvYi9tYWluL1BpeFBpbl8yMDI1LTAxLTI2XzE5LTE2LTQzLnBuZz9yYXc9dHJ1ZQ=='
+		const _e = [
+			'/image/footer/PixPin_2025-01-26_19-15-33-b450cfc8.png',
+			'/image/footer/PixPin_2025-01-26_19-16-35-e4ecaee9.png',
+			'/image/footer/PixPin_2025-01-26_19-16-43-9f2af5e9.png',
+			'/image/footer/PixPin_2025-02-11_17-44-59-7c8eeb98.png',
+			'/image/footer/furina-b7335471.png'
 		];
-		return browser ? atob(encodedUrls[index]) : '';
+		return _e[Math.floor(Math.random() * _e.length)];
 	};
 
 	function checkForEasterEgg(event: KeyboardEvent) {
 		if (event.key === 'Enter' && searchQuery === 'qwq') {
-			const imageUrl = _d(Math.floor(Math.random() * 7));
+			const imageUrl = _d(Math.floor(Math.random() * 5));
 			triggerEasterEgg(imageUrl);
 			setTimeout(() => {
 				searchQuery = '';
