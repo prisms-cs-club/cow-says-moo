@@ -3,9 +3,9 @@
 	import { browser } from '$app/environment';
 	import { showEasterEgg, easterEggImage, hideEasterEgg } from '$lib/stores/strs';
 
-	let _a = 0;
+	let _a = $state(0);
 
-	let _b = false;
+	let _b = $state(false);
 
 	const _d = () => {
 		const _e = [
@@ -18,7 +18,7 @@
 		return _e[Math.floor(Math.random() * _e.length)];
 	};
 
-	let _f = '';
+	let _f = $state('');
 
 	const _g = () => {
 		return {

@@ -2,14 +2,14 @@
 	import type { HouseEvent } from '$lib/format';
 	import { formatDate, numberToRoman } from '$lib/utils';
 
-	export let events: HouseEvent[];
+	let { events } = $props();
 
 	function genEventBtnStyle(status: string) {
 		return `background-color: var(--color-event-${status}-fg); color: var(--color-event-${status}-bg);`;
 	}
 
 	function genActivityPanelStyle(status: string) {
-		if(status !== 'current-event') {
+		if (status !== 'current-event') {
 			return `background-color: var(--color-event-${status}-bg); color: var(--color-event-${status}-fg);`;
 		} else {
 			return `color: var(--color-event-current-event-fg)`;
@@ -22,19 +22,21 @@
 		{@const eventStarted = (event.dateStart.seconds - 432000) * 1000 > Date.now()}
 		{@const status = event.winner?.toLowerCase() ?? (eventStarted ? 'upcoming' : 'current-event')}
 		<div
-			class={`activity ${status} ${(status == 'current-event') ? 'stripe-' + (i % 4) : ''}`}
+			class={`activity ${status} ${status == 'current-event' ? 'stripe-' + (i % 4) : ''}`}
 			style={genActivityPanelStyle(status)}
 		>
 			<h3 class={event.tier <= 2 ? 'font-bold' : ''}>{event.title}</h3>
 			<p>{event.description}</p>
 			<p>{formatDate(event)}, Tier {numberToRoman(event.tier)}</p>
 			<div class="event-buttons">
-				<button class="btn btn-sm event-btn" style={genEventBtnStyle(status)}>
+				<button class="event-btn btn btn-sm" style={genEventBtnStyle(status)}>
 					<a href={'/events/' + event.id} data-sveltekit-preload-data>See More</a>
 				</button>
 				{#if event.signupLink}
-					<button class="btn btn-sm event-btn" style={genEventBtnStyle(status)} on:click={() => window.open(event.signupLink!)}
-						>Sign Up</button
+					<button
+						class="event-btn btn btn-sm"
+						style={genEventBtnStyle(status)}
+						onclick={() => window.open(event.signupLink!)}>Sign Up</button
 					>
 				{/if}
 			</div>

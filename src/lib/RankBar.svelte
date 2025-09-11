@@ -1,26 +1,24 @@
 <script lang="ts">
 	import { Motion } from 'svelte-motion';
 
-	let windowWidth: number;
+	let windowWidth: number = $state(0);
 
-	export let albemarle: number;
-	export let ettl: number;
-	export let hobler: number;
-	export let lambert: number;
+	let data = $props();
+	let albemarle: number = $derived(data.albemarle);
+	let ettl: number = $derived(data.ettl);
+	let hobler: number = $derived(data.hobler);
+	let lambert: number = $derived(data.lambert);
 
-	let houses: { name: string; points: number }[] = [];
-	let maxPoints: number;
+	let houses: { name: string; points: number }[] = $derived([
+		{ name: 'Albemarle', points: albemarle },
+		{ name: 'Ettl', points: ettl },
+		{ name: 'Hobler', points: hobler },
+		{ name: 'Lambert', points: lambert }
+	]);
 
-	$: {
-		houses = [
-			{ name: 'Albemarle', points: albemarle },
-			{ name: 'Ettl', points: ettl },
-			{ name: 'Hobler', points: hobler },
-			{ name: 'Lambert', points: lambert }
-		];
-
-		maxPoints = Math.max(Math.max(...houses.map((house) => house.points)) * 1.05, 1);
-	}
+	let maxPoints: number = $derived(
+		Math.max(Math.max(...houses.map((house) => house.points)) * 1.05, 1)
+	);
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
@@ -28,7 +26,7 @@
 	{#each houses as house}
 		<div class="rank-item">
 			<div class="house-name">
-				{(windowWidth <= 480) ? house.name[0] : house.name}
+				{windowWidth <= 480 ? house.name[0] : house.name}
 			</div>
 			<div class="progress-container">
 				<Motion
@@ -36,7 +34,11 @@
 					transition={{ duration: 1.0 }}
 					let:motion
 				>
-					<div class="progress" style:background-color={`var(--color-${house.name.toLowerCase()})`} use:motion></div>
+					<div
+						class="progress"
+						style:background-color={`var(--color-${house.name.toLowerCase()})`}
+						use:motion
+					></div>
 				</Motion>
 			</div>
 			<Motion
@@ -106,15 +108,6 @@
 		position: relative;
 		overflow: hidden;
 		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-	}
-
-	.progress-shine {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 40%;
-		background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
 	}
 
 	.score {

@@ -81,3 +81,17 @@ export type Member = {
 	eventsWon?: string[]; // as the name indicates, an array of events won by the person
 	role: "student" | "teacher" | "admin";
 } | undefined;
+
+export type CalendarEvent = {
+	title: string;
+	start: string;
+	end: string;
+	color: string;
+	extendedProps: {
+		description: string;
+		tier: number;
+		result?: Record<string, number>;
+		winner?: string;
+		url: string;
+	};
+};

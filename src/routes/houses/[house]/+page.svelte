@@ -5,9 +5,9 @@
 	import type { HouseEvent } from '$lib/format';
 	import EventGrid from '$lib/EventGrid.svelte';
 
-	export let data;
+	let { data } = $props();
 
-	let eventsWon: HouseEvent[] = [];
+	let eventsWon: HouseEvent[] = $state([]);
 	onMount(async () => {
 		eventsWon = await fetchEventsWonBy(data.house);
 	});

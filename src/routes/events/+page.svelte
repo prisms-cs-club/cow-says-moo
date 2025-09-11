@@ -11,13 +11,13 @@
 	import SearchIcon from '$lib/icon/Search.svelte';
 	import CancelIcon from '$lib/icon/Cancel.svelte';
 
-	let events: HouseEvent[] = [];
-	let filteredEvents: HouseEvent[] = [];
-	let searchQuery = '';
-	let eventsPage = 1;
-	let totalPage = 1;
-	const EVENTS_PER_PAGE = 9;
-	let loaded = false;
+	let events: HouseEvent[] = $state([]);
+	let filteredEvents: HouseEvent[] = $state([]);
+	let searchQuery = $state('');
+	let eventsPage = $state(1);
+	let totalPage = $state(1);
+	const EVENTS_PER_PAGE = 12;
+	let loaded = $state(false);
 
 	const _d = (index: number) => {
 		const _e = [
@@ -41,27 +41,28 @@
 	}
 
 	function filterEvents() {
-		if (!searchQuery.trim()) {
-			filteredEvents = [...events];
-		} else {
-			const query = searchQuery.toLowerCase().trim();
-			filteredEvents = events.filter(
-				(event) =>
-					event.title.toLowerCase().includes(query) ||
-					event.description.toLowerCase().includes(query)
-			);
-		}
-		totalPage = Math.ceil(filteredEvents.length / EVENTS_PER_PAGE);
+		// Compute filtered list locally to avoid reading a state we also write
+		// within the same effect (which would cause an infinite loop with $effect).
+		const query = searchQuery.toLowerCase().trim();
+		const nextFiltered = !query
+			? [...events]
+			: events.filter(
+					(event) =>
+						event.title.toLowerCase().includes(query) ||
+						(event.description ?? '').toLowerCase().includes(query)
+				);
+
+		filteredEvents = nextFiltered;
+		totalPage = Math.ceil(nextFiltered.length / EVENTS_PER_PAGE);
 		eventsPage = 1; // Reset to first page when searching
 	}
 
-	$: if (loaded && events) {
-		filterEvents();
-	}
-
-	$: if (searchQuery !== undefined) {
-		filterEvents();
-	}
+	$effect(() => {
+		if (loaded && events) {
+			console.log('active');
+			filterEvents();
+		}
+	});
 
 	onMount(async () => {
 		events = await fetchEvents();
@@ -85,13 +86,13 @@
 					bind:value={searchQuery}
 					placeholder="Search events..."
 					class="join"
-					on:keydown={checkForEasterEgg}
+					onkeydown={checkForEasterEgg}
 				/>
 				<button class="join" style:display="inline"
 					><SearchIcon class="inline-svg" size="1em" /></button
 				>
 				{#if searchQuery}
-					<button class="join" style:display="inline-block" on:click={() => (searchQuery = '')}
+					<button class="join" style:display="inline-block" onclick={() => (searchQuery = '')}
 						><CancelIcon class="inline-svg" size="1em" /></button
 					>
 				{/if}
@@ -110,7 +111,7 @@
 			<div class="join mx-auto">
 				<button
 					class="btn join-item"
-					on:click={async () => {
+					onclick={async () => {
 						if (eventsPage > 1) {
 							eventsPage--;
 						}
@@ -121,14 +122,14 @@
 				{#each Array(totalPage).keys() as page}
 					<button
 						class={`btn join-item ${page + 1 === eventsPage ? 'btn-active' : ''}`}
-						on:click={async () => (eventsPage = page + 1)}
+						onclick={async () => (eventsPage = page + 1)}
 					>
 						{page + 1}
 					</button>
 				{/each}
 				<button
 					class="btn join-item"
-					on:click={async () => {
+					onclick={async () => {
 						if (eventsPage < totalPage) {
 							eventsPage++;
 						}

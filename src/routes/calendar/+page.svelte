@@ -5,16 +5,16 @@
 	import Interaction from '@event-calendar/interaction';
 	import { fetchEvents } from '$lib/firebase';
 	import { onMount } from 'svelte';
-	import type { HouseEvent } from '$lib/format.d.ts';
+	import type { HouseEvent, CalendarEvent } from '$lib/format.d.ts';
 	import { numberToRoman } from '$lib/utils';
 	import { goto } from '$app/navigation';
 
-	let calendarEvents = [];
+	let calendarEvents: CalendarEvent[] = $state([]);
 	let plugins = [DayGrid, TimeGrid, Interaction];
-	let options: object;
+	let options: object | null = $state(null);
 	let tooltip: HTMLElement;
 	let tooltipContent: string = '';
-	let tooltipVisible = false;
+	let tooltipVisible = $state(false);
 
 	const baseOptions = {
 		view: 'dayGridMonth',
@@ -23,8 +23,8 @@
 			center: 'title',
 			end: 'dayGridMonth,timeGridWeek'
 		},
- 		eventTimeFormat: () => '',
- 		locale: 'en',
+		eventTimeFormat: () => '',
+		locale: 'en',
 		eventClick: function (info: any) {
 			if (info.event.extendedProps.url) {
 				goto(info.event.extendedProps.url);

@@ -1,9 +1,7 @@
 <script>
 	import { Motion } from 'svelte-motion';
-	export let url = '';
-
-	// This key will change when the URL changes, causing a re-render
-	$: key = url;
+	let data = $props();
+	let key = $derived(data.url);
 </script>
 
 {#key key}
@@ -27,7 +25,7 @@
 		let:motion
 	>
 		<div class="transition-container" use:motion>
-			<slot></slot>
+			{@render data.children()}
 		</div>
 	</Motion>
 {/key}

@@ -1,7 +1,7 @@
 <!-- Author: Jammy -->
 
-<script>
-	export let source_page;
+<script lang="ts">
+	let { source_page } = $props();
 </script>
 
 <input type="text" placeholder="Please speak politely" class="input w-full max-w-xs" />
