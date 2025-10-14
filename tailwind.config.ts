@@ -6,7 +6,7 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				navbarColor: '#a61618',
+				navbarColor: '#a61618'
 			}
 		}
 	},
