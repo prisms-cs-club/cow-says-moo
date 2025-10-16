@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 	import { showEasterEgg, easterEggImage, hideEasterEgg } from '$lib/stores/strs';
 
@@ -65,24 +64,28 @@
 		}
 	}
 
-	onMount(() => {
+	$effect(() => {
 		if (browser) {
 			document.addEventListener('click', _j);
 			document.addEventListener('keydown', handleKeydown);
-		}
-	});
 
-	onDestroy(() => {
-		if (browser) {
-			document.removeEventListener('click', _j);
-			document.removeEventListener('keydown', handleKeydown);
+			return () => {
+				document.removeEventListener('click', _j);
+				document.removeEventListener('keydown', handleKeydown);
+			};
 		}
 	});
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<footer class="no-select footer bg-base-200 p-10 text-base-content" on:click|stopPropagation={_i}>
+<footer
+	class="no-select footer bg-base-200 p-10 text-base-content"
+	onclick={(e) => {
+		e.stopPropagation();
+		_i(e);
+	}}
+>
 	<aside class="grid-flow-col items-center">
 		<p>Copyright © PRISMS CS Club {new Date().getFullYear()} - All right reserved</p>
 	</aside>

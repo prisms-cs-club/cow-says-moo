@@ -1,4 +1,4 @@
-import type { Timestamp } from "firebase/firestore";
+import type { Timestamp } from 'firebase/firestore';
 
 /**
  * Type definition of the news.
@@ -74,13 +74,15 @@ export type House = {
 	points: number;
 };
 
-export type Member = {
-	email: string;
-	name: string;
-	house: string;
-	eventsWon?: string[]; // as the name indicates, an array of events won by the person
-	role: "student" | "teacher" | "admin";
-} | undefined;
+export type Member =
+	| {
+			email: string;
+			name: string;
+			house: string;
+			eventsWon?: string[]; // as the name indicates, an array of events won by the person
+			role: 'student' | 'teacher' | 'admin';
+	  }
+	| undefined;
 
 export type CalendarEvent = {
 	title: string;

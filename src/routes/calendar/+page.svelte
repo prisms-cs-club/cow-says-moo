@@ -4,7 +4,6 @@
 	import TimeGrid from '@event-calendar/time-grid';
 	import Interaction from '@event-calendar/interaction';
 	import { fetchEvents } from '$lib/firebase';
-	import { onMount } from 'svelte';
 	import type { HouseEvent, CalendarEvent } from '$lib/format.d.ts';
 	import { numberToRoman } from '$lib/utils';
 	import { goto } from '$app/navigation';
@@ -86,42 +85,44 @@
 		});
 	}
 
-	onMount(async () => {
-		let events = await fetchEvents();
-		calendarEvents = events.map((event: HouseEvent) => {
-			let eventColor = '';
+	$effect.pre(() => {
+		(async () => {
+			let events = await fetchEvents();
+			calendarEvents = events.map((event: HouseEvent) => {
+				let eventColor = '';
 
-			if (event.winner?.toLocaleLowerCase() === 'albemarle') {
-				eventColor = 'var(--color-albemarle)';
-			} else if (event.winner?.toLowerCase() === 'lambert') {
-				eventColor = 'var(--color-lambert)';
-			} else if (event.winner?.toLowerCase() === 'ettl') {
-				eventColor = 'var(--color-ettl)';
-			} else if (event.winner?.toLowerCase() === 'hobler') {
-				eventColor = 'var(--color-hobler)';
-			} else {
-				eventColor = 'var(--color-event-upcoming-fg-2)';
-			}
-
-			return {
-				title: event.title,
-				start: event.dateStart.toDate().toISOString(),
-				end: event.dateEnd.toDate().toISOString(),
-				color: eventColor,
-				extendedProps: {
-					description: event.description,
-					tier: event.tier,
-					result: event.result,
-					winner: event.winner,
-					url: `/events/${event.id}`
+				if (event.winner?.toLocaleLowerCase() === 'albemarle') {
+					eventColor = 'var(--color-albemarle)';
+				} else if (event.winner?.toLowerCase() === 'lambert') {
+					eventColor = 'var(--color-lambert)';
+				} else if (event.winner?.toLowerCase() === 'ettl') {
+					eventColor = 'var(--color-ettl)';
+				} else if (event.winner?.toLowerCase() === 'hobler') {
+					eventColor = 'var(--color-hobler)';
+				} else {
+					eventColor = 'var(--color-event-upcoming-fg-2)';
 				}
-			};
-		});
 
-		options = {
-			...baseOptions,
-			events: calendarEvents
-		};
+				return {
+					title: event.title,
+					start: event.dateStart.toDate().toISOString(),
+					end: event.dateEnd.toDate().toISOString(),
+					color: eventColor,
+					extendedProps: {
+						description: event.description,
+						tier: event.tier,
+						result: event.result,
+						winner: event.winner,
+						url: `/events/${event.id}`
+					}
+				};
+			});
+
+			options = {
+				...baseOptions,
+				events: calendarEvents
+			};
+		})();
 	});
 </script>
 

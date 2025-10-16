@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import RankBar from '$lib/RankBar.svelte';
 	import type { DataType } from './+page';
 	import { formatDate, numberToRoman } from '$lib/utils';
 	const { data }: { data: DataType } = $props();
-
-	onMount(async () => {});
 </script>
 
 <div id="frame">

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { load } from './+page';
 	import { fetchEventsWonBy } from '$lib/firebase';
 	import type { HouseEvent } from '$lib/format';
@@ -8,8 +7,11 @@
 	let { data } = $props();
 
 	let eventsWon: HouseEvent[] = $state([]);
-	onMount(async () => {
-		eventsWon = await fetchEventsWonBy(data.house);
+
+	$effect.pre(() => {
+		(async () => {
+			eventsWon = await fetchEventsWonBy(data.house);
+		})();
 	});
 </script>
 

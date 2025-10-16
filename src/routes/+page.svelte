@@ -3,29 +3,30 @@
 	import { fetchEventsBetween, queryScoreSummary } from '$lib/firebase';
 	import type { HouseEvent } from '$lib/format';
 	import RankBar from '$lib/RankBar.svelte';
-	import { onMount } from 'svelte';
 
 	type scoreSummary = {
 		[key: string]: number;
 	};
 
-	let scores: scoreSummary = {
+	let scores: scoreSummary = $state({
 		albemarle: 0,
 		ettl: 0,
 		hobler: 0,
 		lambert: 0
-	};
-	let ongoingEvents: HouseEvent[] = [];
-	let recentEvents: HouseEvent[] = [];
+	});
+	let ongoingEvents: HouseEvent[] = $state([]);
+	let recentEvents: HouseEvent[] = $state([]);
 
-	onMount(async () => {
-		const now = new Date();
-		const oneDayAgo = new Date();
-		oneDayAgo.setDate(now.getDate() - 1);
-		recentEvents = await fetchEventsBetween(oneDayAgo, undefined, 3);
-		ongoingEvents = await fetchEventsBetween(now, oneDayAgo);
-		scores = await queryScoreSummary();
-		console.log('loaded');
+	$effect.pre(() => {
+		(async () => {
+			const now = new Date();
+			const oneDayAgo = new Date();
+			oneDayAgo.setDate(now.getDate() - 1);
+			recentEvents = await fetchEventsBetween(oneDayAgo, undefined, 3);
+			ongoingEvents = await fetchEventsBetween(now, oneDayAgo);
+			scores = await queryScoreSummary();
+			console.log('loaded');
+		})();
 	});
 </script>
 

@@ -1,22 +1,23 @@
 <script lang="ts">
 	import { queryScoreSummary } from '$lib/firebase';
 	import RankBar from '$lib/RankBar.svelte';
-	import { onMount } from 'svelte';
 
 	type scoreSummary = {
 		[key: string]: number;
 	};
 
-	let scores: scoreSummary = {
+	let scores: scoreSummary = $state({
 		albemarle: 0,
 		ettl: 0,
 		hobler: 0,
 		lambert: 0
-	};
+	});
 
-	onMount(async () => {
-		scores = await queryScoreSummary();
-		console.log('loaded');
+	$effect.pre(() => {
+		(async () => {
+			scores = await queryScoreSummary();
+			console.log('loaded');
+		})();
 	});
 </script>
 

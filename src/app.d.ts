@@ -7,11 +7,11 @@ declare global {
 		// interface Platform {}
 
 		interface Locals {
-			session: import('@auth/core').Session | null
-		  }
-		  interface PageData {
-			session: import('@auth/core').Session | null
-		  }
+			session: import('@auth/core').Session | null;
+		}
+		interface PageData {
+			session: import('@auth/core').Session | null;
+		}
 	}
 }
 

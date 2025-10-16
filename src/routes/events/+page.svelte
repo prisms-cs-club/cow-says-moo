@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import type { HouseEvent } from '$lib/format';
 	import { fetchEvents, fetchUpdateTime } from '$lib/firebase';
 	import { Timestamp } from 'firebase/firestore';
@@ -64,15 +63,17 @@
 		}
 	});
 
-	onMount(async () => {
-		events = await fetchEvents();
-		filteredEvents = [...events];
-		totalPage = Math.ceil(events.length / EVENTS_PER_PAGE);
-		loaded = true;
+	$effect.pre(() => {
+		(async () => {
+			events = await fetchEvents();
+			filteredEvents = [...events];
+			totalPage = Math.ceil(events.length / EVENTS_PER_PAGE);
+			loaded = true;
 
-		let updateTime = await fetchUpdateTime();
-		console.log(updateTime);
-		console.log(events);
+			let updateTime = await fetchUpdateTime();
+			console.log(updateTime);
+			console.log(events);
+		})();
 	});
 </script>
 

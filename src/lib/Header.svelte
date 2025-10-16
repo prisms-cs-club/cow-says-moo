@@ -2,16 +2,15 @@
 	import { page } from '$app/stores';
 	import SignInIcon from '$lib/icon/SignIn.svelte';
 	import SignOutIcon from '$lib/icon/SignOut.svelte';
-	import { onMount } from 'svelte';
 	import { Motion } from 'svelte-motion';
 
-	let innerWidth = 0;
-	let mobile = false;
-	let mobileMenuOpen = false;
-	let animating = false;
+	let innerWidth = $state(0);
+	let mobile = $state(false);
+	let mobileMenuOpen = $state(false);
+	let animating = $state(false);
 
-	onMount(() => {
-		// Check initial screen size
+	$effect(() => {
+		// Check initial screen size on mount
 		checkScreenSize();
 	});
 
@@ -40,7 +39,7 @@
 	}
 
 	// Delay function for animation
-	function delay(ms) {
+	function delay(ms: number) {
 		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
@@ -74,10 +73,10 @@
 		return url;
 	}
 
-	$: avatarUrl = normalizeAvatar($page.data.session?.user?.image);
+	let avatarUrl = $derived(normalizeAvatar($page.data.session?.user?.image));
 </script>
 
-<svelte:window bind:innerWidth on:resize={checkScreenSize} />
+<svelte:window bind:innerWidth onresize={checkScreenSize} />
 
 <div class="fixed left-0 right-0 top-0 z-50 w-full px-4 py-2">
 	<div class="custom-navbar navbar rounded-lg shadow-lg backdrop-blur-md">
@@ -89,7 +88,7 @@
 						class="btn btn-ghost text-accent-content lg:hidden"
 						aria-label="Toggle mobile menu"
 						class:active={mobileMenuOpen}
-						on:click={toggleMobileMenu}
+						onclick={toggleMobileMenu}
 						disabled={animating}
 					>
 						<svg
@@ -117,20 +116,20 @@
 							class="custom-navbar-dropdown menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box p-2 shadow"
 						>
 							<li>
-								<a href="/" class="nav-link text-lg font-medium" on:click={closeMobileMenu}>Home</a>
+								<a href="/" class="nav-link text-lg font-medium" onclick={closeMobileMenu}>Home</a>
 							</li>
 							<li>
-								<a href="/houses" class="nav-link text-lg font-medium" on:click={closeMobileMenu}
+								<a href="/houses" class="nav-link text-lg font-medium" onclick={closeMobileMenu}
 									>Houses & Rankings</a
 								>
 							</li>
 							<li>
-								<a href="/events" class="nav-link text-lg font-medium" on:click={closeMobileMenu}
+								<a href="/events" class="nav-link text-lg font-medium" onclick={closeMobileMenu}
 									>Events</a
 								>
 							</li>
 							<li>
-								<a href="/calendar" class="nav-link text-lg font-medium" on:click={closeMobileMenu}
+								<a href="/calendar" class="nav-link text-lg font-medium" onclick={closeMobileMenu}
 									>Calendar</a
 								>
 							</li>

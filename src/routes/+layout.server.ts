@@ -1,3 +1,3 @@
-export const load = async ({locals}) => {
-  return {session: await locals.auth()};
+export const load = async ({ locals }) => {
+	return { session: await locals.auth() };
 };
