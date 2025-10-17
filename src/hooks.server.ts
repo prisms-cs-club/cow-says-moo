@@ -2,8 +2,10 @@
 import { SvelteKitAuth } from '@auth/sveltekit';
 import Google from '@auth/core/providers/google';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, AUTH_SECRET } from '$env/static/private';
+import { sequence } from '@sveltejs/kit/hooks';
+import { createOrUpdateMember, getMemberByEmail } from '$lib/firebase';
 
-export const { handle, signIn, signOut } = SvelteKitAuth({
+const authHandle = SvelteKitAuth({
 	providers: [
 		Google({
 			clientId: GOOGLE_CLIENT_ID,
@@ -39,6 +41,30 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 				session.user.image = token.picture as string;
 			}
 			return session;
+		},
+		async signIn({ user }) {
+			// When user signs in, check if they exist in members collection
+			if (user.email) {
+				try {
+					const existingMember = await getMemberByEmail(user.email);
+
+					// If member doesn't exist, create a placeholder entry
+					if (!existingMember) {
+						await createOrUpdateMember(user.email, {
+							name: '', // Will be set during onboarding
+							house: '', // Will be set during onboarding
+							role: 'student'
+						});
+						console.log('Created new member entry for:', user.email);
+					}
+				} catch (error) {
+					console.error('Error checking/creating member:', error);
+					// Don't block sign in if there's an error
+				}
+			}
+			return true;
 		}
 	}
 });
+
+export const { handle } = authHandle;

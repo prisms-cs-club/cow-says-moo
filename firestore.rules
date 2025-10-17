@@ -1,0 +1,65 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if the user's email matches
+    function isOwner(email) {
+      return isSignedIn() && request.auth.token.email == email;
+    }
+    
+    // Helper function to check if user is admin
+    // Returns false if member document doesn't exist (safer for new users)
+    function isAdmin() {
+      return isSignedIn() && 
+             exists(/databases/$(database)/documents/members/$(request.auth.token.email)) &&
+             get(/databases/$(database)/documents/members/$(request.auth.token.email)).data.role == 'admin';
+    }
+    
+    // Helper function to check if email domain is prismsus.org
+    function isPrismsEmail(email) {
+      return email.matches('.*@prismsus.org$');
+    }
+    
+    // Events - publicly readable, writable with valid data structure
+    // (allows Google Sheets script to update)
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if request.resource.data.points.albemarle is number
+                   && request.resource.data.points.ettl is number
+                   && request.resource.data.points.hobler is number
+                   && request.resource.data.points.lambert is number;
+    }
+
+    // Summary - publicly readable, publicly writable
+    // (allows Google Sheets script to update)
+    match /summary/{section} {
+      allow read: if true;
+      allow write: if true;
+    }    // Members collection - publicly writable with validation
+    match /members/{email} {
+      // Anyone can read member documents (needed for admin panel)
+      allow read: if true;
+      
+      // Anyone can create a member document with valid structure
+      // Must have email, role must be 'student', email must be @prismsus.org
+      allow create: if isPrismsEmail(email) &&
+                       request.resource.data.email == email &&
+                       request.resource.data.role == 'student' &&
+                       request.resource.data.keys().hasAll(['email', 'role']);
+      
+      // Anyone can update a member document BUT cannot change role to admin
+      // This allows onboarding to work while preventing privilege escalation
+      allow update: if request.resource.data.email == email &&
+                       request.resource.data.role == resource.data.role; // Cannot change role
+      
+      // Only admins can delete member documents
+      allow delete: if isAdmin();
+    }
+  }
+}

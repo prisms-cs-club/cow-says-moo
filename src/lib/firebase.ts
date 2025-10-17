@@ -197,3 +197,116 @@ export async function queryScoreSummary(): Promise<{ [key: string]: number }> {
 	const docRef = await getDoc(response);
 	return docRef.data() as { [key: string]: number };
 }
+
+/**
+ * Fetch a member by their email address
+ */
+export async function getMemberByEmail(email: string): Promise<import('$lib/format').Member> {
+	try {
+		const docRef = await getDoc(doc(db, 'members', email));
+		if (docRef.exists()) {
+			return docRef.data() as import('$lib/format').Member;
+		}
+		return undefined;
+	} catch (error) {
+		console.error('Error fetching member by email:', error);
+		return undefined;
+	}
+}
+
+/**
+ * Check if a user is an admin
+ */
+export async function isAdmin(email: string | null | undefined): Promise<boolean> {
+	if (!email) return false;
+	const member = await getMemberByEmail(email);
+	return member?.role === 'admin';
+}
+
+/**
+ * Fetch all members from the database
+ */
+export async function getAllMembers(): Promise<NonNullable<import('$lib/format').Member>[]> {
+	try {
+		const querySnapshot = await getDocs(collection(db, 'members'));
+		return querySnapshot.docs.map((doc) => {
+			const data = doc.data();
+			return {
+				email: doc.id,
+				name: data.name,
+				house: data.house,
+				eventsWon: data.eventsWon || [],
+				role: data.role
+			} as NonNullable<import('$lib/format').Member>;
+		});
+	} catch (error) {
+		console.error('Error fetching all members:', error);
+		return [];
+	}
+}
+
+/**
+ * Fetch members by house
+ */
+export async function getMembersByHouse(
+	house: string
+): Promise<NonNullable<import('$lib/format').Member>[]> {
+	try {
+		const q = query(collection(db, 'members'), where('house', '==', house));
+		const querySnapshot = await getDocs(q);
+		return querySnapshot.docs.map((doc) => {
+			const data = doc.data();
+			return {
+				email: doc.id,
+				name: data.name,
+				house: data.house,
+				eventsWon: data.eventsWon || [],
+				role: data.role
+			} as NonNullable<import('$lib/format').Member>;
+		});
+	} catch (error) {
+		console.error(`Error fetching members for house ${house}:`, error);
+		return [];
+	}
+}
+
+/**
+ * Create or update a member in the database
+ */
+export async function createOrUpdateMember(
+	email: string,
+	data: {
+		name?: string;
+		house?: string;
+		role?: 'student' | 'teacher' | 'admin';
+	}
+): Promise<void> {
+	try {
+		const { setDoc } = await import('firebase/firestore');
+		const memberRef = doc(db, 'members', email);
+		const existingMember = await getMemberByEmail(email);
+
+		const memberData = {
+			email,
+			name: data.name ?? existingMember?.name ?? '',
+			house: data.house ?? existingMember?.house ?? '',
+			role: data.role ?? existingMember?.role ?? 'student',
+			eventsWon: existingMember?.eventsWon ?? []
+		};
+
+		await setDoc(memberRef, memberData, { merge: true });
+		console.log('Member created/updated:', email);
+	} catch (error) {
+		console.error('Error creating/updating member:', error);
+		throw error;
+	}
+}
+
+/**
+ * Check if a member needs to complete onboarding (missing name or house)
+ */
+export async function needsOnboarding(email: string): Promise<boolean> {
+	const member = await getMemberByEmail(email);
+	if (!member) return true;
+	return !member.name || !member.house;
+}

@@ -74,6 +74,7 @@
 	}
 
 	let avatarUrl = $derived(normalizeAvatar($page.data.session?.user?.image));
+	let isAdmin = $derived($page.data.isAdmin ?? false);
 </script>
 
 <svelte:window bind:innerWidth onresize={checkScreenSize} />
@@ -133,6 +134,13 @@
 									>Calendar</a
 								>
 							</li>
+							{#if isAdmin}
+								<li>
+									<a href="/admin" class="nav-link text-lg font-medium" onclick={closeMobileMenu}
+										>Admin Panel</a
+									>
+								</li>
+							{/if}
 						</ul>
 					</Motion>
 				</div>
@@ -154,6 +162,11 @@
 				<li>
 					<a href="/calendar" class="nav-link px-5 py-3 text-lg font-medium">Calendar</a>
 				</li>
+				{#if isAdmin}
+					<li>
+						<a href="/admin" class="nav-link px-5 py-3 text-lg font-medium">Admin Panel</a>
+					</li>
+				{/if}
 			</ul>
 		</div>
 
