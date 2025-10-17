@@ -80,7 +80,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <footer
-	class="no-select footer bg-base-200 p-10 text-base-content"
+	class="no-select footer bg-base-200 text-base-content p-10"
 	onclick={(e) => {
 		e.stopPropagation();
 		_i(e);

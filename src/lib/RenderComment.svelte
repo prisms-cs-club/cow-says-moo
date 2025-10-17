@@ -8,8 +8,8 @@
 	let json_obj = JSON.parse(page);
 </script>
 
-<div class="mockup-window border border-base-300">
-	<div class="justify-left flex border-t border-base-300 px-4 py-1">{json_obj.title}</div>
+<div class="mockup-window border-base-300 border">
+	<div class="justify-left border-base-300 flex border-t px-4 py-1">{json_obj.title}</div>
 	<div class="border-base-0 justify-left flex border-t px-4 py-1">
 		Date of writing: {json_obj.date}
 	</div>
