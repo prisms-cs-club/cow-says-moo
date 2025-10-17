@@ -1,6 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin 'daisyui';
+
+@theme {
+	--color-navbar-color: #a61618;
+}
 
 :root {
 	--color-albemarle: #ffdb00;
