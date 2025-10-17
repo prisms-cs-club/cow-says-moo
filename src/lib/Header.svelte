@@ -79,7 +79,7 @@
 
 <svelte:window bind:innerWidth onresize={checkScreenSize} />
 
-<div class="fixed left-0 right-0 top-0 z-50 w-full px-4 py-2">
+<div class="fixed top-0 right-0 left-0 z-50 w-full px-4 py-2">
 	<div class="custom-navbar navbar rounded-lg shadow-lg backdrop-blur-md">
 		<!-- Mobile menu -->
 		<div class="navbar-start">
@@ -114,7 +114,7 @@
 						initial="closed"
 					>
 						<ul
-							class="custom-navbar-dropdown menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box p-2 shadow"
+							class="custom-navbar-dropdown menu dropdown-content menu-sm rounded-box z-[1] mt-3 w-52 p-2 shadow"
 						>
 							<li>
 								<a href="/" class="nav-link text-lg font-medium" onclick={closeMobileMenu}>Home</a>
@@ -179,7 +179,7 @@
 							src={avatarUrl}
 							alt="avatar"
 							referrerpolicy="no-referrer"
-							class="mr-3 h-10 w-10 rounded-full border-2 border-accent-content"
+							class="border-accent-content mr-3 h-10 w-10 rounded-full border-2"
 						/>
 					{/if}
 					<a

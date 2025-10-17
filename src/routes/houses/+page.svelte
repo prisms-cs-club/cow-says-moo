@@ -36,7 +36,7 @@
 <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;">
 	{#each ['albemarle', 'ettl', 'hobler', 'lambert'] as house}
 		<a
-			class="card m-4 bg-base-100 shadow-xl"
+			class="card bg-base-100 m-4 shadow-xl"
 			style="width: 20%"
 			href="/houses/{house}"
 			data-sveltekit-preload-data
