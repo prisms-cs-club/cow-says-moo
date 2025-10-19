@@ -24,7 +24,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.2.6",
-		"@event-calendar/core": "~3.12.0",
+		"@event-calendar/core": "~4.7.0",
 		"@event-calendar/day-grid": "^3.12.0",
 		"@event-calendar/interaction": "^3.12.0",
 		"@event-calendar/time-grid": "^3.12.0",
@@ -41,7 +41,7 @@
 		"@types/node": "^24.8.1",
 		"autoprefixer": "^10.4.21",
 		"daisyui": "^5.3.7",
-		"eslint": "^9.37.0",
+		"eslint": "^9.38.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.12.4",
 		"globals": "^16.4.0",
