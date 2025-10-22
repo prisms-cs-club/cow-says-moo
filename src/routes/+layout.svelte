@@ -2,10 +2,21 @@
 	import '../app.css';
 	import Header from '$lib/Header.svelte';
 	import Footer from '$lib/Footer.svelte';
-	import PageTransition from '$lib/pageTransition.svelte';
-	import { page } from '$app/stores'; // Import page store to track URL changes
+	import { onNavigate } from '$app/navigation';
 
 	let { children } = $props();
+
+	// Use View Transitions API for all page transitions
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 </script>
 
 <svelte:head>
@@ -15,9 +26,7 @@
 <Header />
 
 <div id="content">
-	<PageTransition url={$page.url.pathname}>
-		{@render children()}
-	</PageTransition>
+	{@render children()}
 </div>
 
 <Footer />
@@ -26,6 +35,5 @@
 	#content {
 		flex: 1;
 		margin: 8% 11%;
-		will-change: transform, opacity; /* Optimize for animations */
 	}
 </style>

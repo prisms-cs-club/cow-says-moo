@@ -1,17 +1,13 @@
-import type { HouseEvent } from './format';
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-export function formatDate(event: HouseEvent): string {
-	if (event.dateStart.seconds === event.dateEnd.seconds) {
-		return event.dateStart.toDate().toLocaleDateString();
-	} else {
-		return `${event.dateStart.toDate().toLocaleDateString()} - ${event.dateEnd.toDate().toLocaleDateString()}`;
-	}
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
 }
 
-export function numberToRoman(x: number): string {
-	if (x === 1) return 'I';
-	if (x === 2) return 'II';
-	if (x === 3) return 'III';
-	if (x === 4) return 'IV';
-	return 'N/A';
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type WithoutChild<T> = T extends { child?: any } ? Omit<T, "child"> : T;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type WithoutChildren<T> = T extends { children?: any } ? Omit<T, "children"> : T;
+export type WithoutChildrenOrChild<T> = WithoutChildren<WithoutChild<T>>;
+export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?: U | null };

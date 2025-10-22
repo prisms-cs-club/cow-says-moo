@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Motion } from 'svelte-motion';
+	import { animate } from 'animejs';
 
 	let windowWidth: number = $state(0);
 
@@ -19,35 +19,59 @@
 	let maxPoints: number = $derived(
 		Math.max(Math.max(...houses.map((house) => house.points)) * 1.05, 1)
 	);
+
+	let progressBars: (HTMLDivElement | undefined)[] = $state([]);
+	let scoreElements: (HTMLDivElement | undefined)[] = $state([]);
+
+	$effect(() => {
+		// Wait for all elements to be bound and data to be loaded
+		if (progressBars.length === 0 || !houses || houses.length === 0) return;
+
+		// Animate progress bars
+		progressBars.forEach((bar, index) => {
+			if (bar && houses[index]) {
+				const targetWidth = (houses[index].points / maxPoints) * 100;
+				animate(bar, {
+					width: [`0%`, `${targetWidth}%`],
+					duration: 1000,
+					easing: 'out(2)'
+				});
+			}
+		});
+
+		// Animate scores
+		scoreElements.forEach((score) => {
+			if (score) {
+				animate(score, {
+					opacity: [0, 1],
+					translateX: [-60, -30],
+					duration: 500,
+					delay: 800,
+					easing: 'out(2)'
+				});
+			}
+		});
+	});
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} />
 <div class="rank-container">
-	{#each houses as house}
+	{#each houses as house, i}
 		<div class="rank-item">
 			<div class="house-name">
 				{windowWidth <= 480 ? house.name[0] : house.name}
 			</div>
 			<div class="progress-container">
-				<Motion
-					animate={{ width: [`0%`, `${(house.points / maxPoints) * 100}%`] }}
-					transition={{ duration: 1.0 }}
-					let:motion
-				>
-					<div
-						class="progress"
-						style:background-color={`var(--color-${house.name.toLowerCase()})`}
-						use:motion
-					></div>
-				</Motion>
+				<div
+					bind:this={progressBars[i]}
+					class="progress"
+					style:background-color={`var(--color-${house.name.toLowerCase()})`}
+					style:width="0%"
+				></div>
 			</div>
-			<Motion
-				animate={{ opacity: [0, 1], x: [-60, -30] }}
-				transition={{ delay: 0.8, duration: 0.5 }}
-				let:motion
-			>
-				<div class="score" use:motion>{house.points}</div>
-			</Motion>
+			<div bind:this={scoreElements[i]} class="score" style:opacity="0">
+				{house.points}
+			</div>
 		</div>
 	{/each}
 </div>
@@ -107,7 +131,6 @@
 		border-radius: var(--rounded-box, 1rem);
 		position: relative;
 		overflow: hidden;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 	}
 
 	.score {

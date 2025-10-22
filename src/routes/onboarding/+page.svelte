@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { Input } from '$lib/components/ui/input';
+	import { Button } from '$lib/components/ui/button';
+	import { Alert, AlertDescription } from '$lib/components/ui/alert';
+	import { AlertCircle } from '@lucide/svelte';
 
 	let { data } = $props();
 
@@ -67,28 +71,24 @@
 		<form onsubmit={handleSubmit} class="space-y-6">
 			<!-- Name Input -->
 			<div class="form-control">
-				<label class="label" for="name">
-					<span class="label-text text-lg font-semibold">What name would you like to use?</span>
+				<label class="mb-2 block text-lg font-semibold" for="name">
+					What name would you like to use?
 				</label>
-				<input
+				<Input
 					id="name"
 					type="text"
 					bind:value={name}
 					placeholder="Enter your preferred name"
-					class="input input-lg input-bordered"
+					class="text-lg"
 					required
 					disabled={submitting}
 				/>
-				<div class="label">
-					<span class="label-text-alt">This is how you'll appear on the leaderboards</span>
-				</div>
+				<p class="mt-1 text-sm text-gray-500">This is how you'll appear on the leaderboards</p>
 			</div>
 
 			<!-- House Selection -->
 			<div class="form-control">
-				<div class="label">
-					<span class="label-text text-lg font-semibold">Select your house</span>
-				</div>
+				<div class="mb-2 text-lg font-semibold">Select your house</div>
 				<div class="mt-2 grid grid-cols-2 gap-4">
 					{#each houses as houseOption}
 						<label class="house-option cursor-pointer" class:selected={house === houseOption.value}>
@@ -97,7 +97,7 @@
 								name="house"
 								value={houseOption.value}
 								bind:group={house}
-								class="radio-primary radio"
+								class="sr-only"
 								disabled={submitting}
 							/>
 							<div class="house-card {houseOption.color}">
@@ -114,32 +114,22 @@
 			</div>
 
 			{#if error}
-				<div class="alert alert-error">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-6 w-6 shrink-0 stroke-current"
-						fill="none"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-						/>
-					</svg>
-					<span>{error}</span>
-				</div>
+				<Alert variant="destructive">
+					<AlertCircle class="h-4 w-4" />
+					<AlertDescription>{error}</AlertDescription>
+				</Alert>
 			{/if}
 
-			<button type="submit" class="btn btn-primary btn-lg w-full" disabled={submitting}>
+			<Button type="submit" class="w-full" size="lg" disabled={submitting}>
 				{#if submitting}
-					<span class="loading loading-spinner"></span>
+					<span
+						class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent"
+					></span>
 					Completing Setup...
 				{:else}
 					Complete Setup
 				{/if}
-			</button>
+			</Button>
 		</form>
 	</div>
 </div>
@@ -168,11 +158,6 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
-	}
-
-	.house-option input[type='radio'] {
-		position: absolute;
-		opacity: 0;
 	}
 
 	.house-card {
@@ -225,5 +210,38 @@
 		.house-name {
 			font-size: 1rem;
 		}
+	}
+
+	:global(::view-transition-old(root)),
+	:global(::view-transition-new(root)) {
+		animation: none;
+	}
+
+	/* Custom fade animations */
+	@keyframes fade-out {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	/* Apply fade animations to root */
+	:global(::view-transition-old(root)) {
+		animation: 300ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
+	}
+
+	:global(::view-transition-new(root)) {
+		animation: 400ms cubic-bezier(0, 0, 0.2, 1) both fade-in;
 	}
 </style>

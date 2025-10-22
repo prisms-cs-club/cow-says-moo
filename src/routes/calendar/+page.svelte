@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { fetchEvents } from '$lib/firebase';
 	import type { HouseEvent } from '$lib/format.d.ts';
-	import { numberToRoman } from '$lib/utils';
+	import { numberToRoman } from '$lib/houseEventUtils';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 
@@ -501,7 +501,6 @@
 	.toolbar-button.active {
 		background-color: var(--color-theme-1);
 		border-color: var(--color-theme-1);
-		color: white;
 	}
 
 	.calendar-body {
@@ -700,5 +699,38 @@
 		.event-tooltip {
 			max-width: 280px;
 		}
+	}
+
+	:global(::view-transition-old(root)),
+	:global(::view-transition-new(root)) {
+		animation: none;
+	}
+
+	/* Custom fade animations */
+	@keyframes fade-out {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	/* Apply fade animations to root */
+	:global(::view-transition-old(root)) {
+		animation: 300ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
+	}
+
+	:global(::view-transition-new(root)) {
+		animation: 400ms cubic-bezier(0, 0, 0.2, 1) both fade-in;
 	}
 </style>

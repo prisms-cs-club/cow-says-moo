@@ -80,15 +80,15 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <footer
-	class="no-select footer bg-base-200 text-base-content p-10"
+	class="no-select bg-slate-100 p-10 text-slate-900"
 	onclick={(e) => {
 		e.stopPropagation();
 		_i(e);
 	}}
 >
-	<aside class="grid-flow-col items-center">
+	<div class="flex items-center justify-center">
 		<p>Copyright © PRISMS CS Club {new Date().getFullYear()} - All right reserved</p>
-	</aside>
+	</div>
 </footer>
 
 {#if _b || $showEasterEgg}

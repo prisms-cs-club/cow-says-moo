@@ -2,16 +2,41 @@
 	import { page } from '$app/stores';
 	import SignInIcon from '$lib/icon/SignIn.svelte';
 	import SignOutIcon from '$lib/icon/SignOut.svelte';
-	import { Motion } from 'svelte-motion';
+	import { Button } from '$lib/components/ui/button';
+	import { animate } from 'animejs';
 
 	let innerWidth = $state(0);
 	let mobile = $state(false);
 	let mobileMenuOpen = $state(false);
 	let animating = $state(false);
+	let dropdownElement: HTMLUListElement | undefined = $state();
 
 	$effect(() => {
 		// Check initial screen size on mount
 		checkScreenSize();
+	});
+
+	// Animate dropdown when mobileMenuOpen changes
+	$effect(() => {
+		if (dropdownElement) {
+			if (mobileMenuOpen) {
+				// Opening animation
+				animate(dropdownElement, {
+					scaleY: [0, 1],
+					opacity: [0, 1],
+					duration: 300,
+					easing: 'out(2)'
+				});
+			} else {
+				// Closing animation
+				animate(dropdownElement, {
+					scaleY: [1, 0],
+					opacity: [1, 0],
+					duration: 300,
+					easing: 'in(2)'
+				});
+			}
+		}
 	});
 
 	function checkScreenSize() {
@@ -43,20 +68,6 @@
 		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
-	// Animation variants for dropdown menu
-	const dropdownVariants = {
-		open: {
-			scaleY: 1,
-			opacity: 1,
-			transition: { duration: 0.3, ease: 'easeOut' }
-		},
-		closed: {
-			scaleY: 1,
-			opacity: 0,
-			transition: { duration: 0.3, ease: 'easeIn' }
-		}
-	};
-
 	// Normalize Google avatar URLs and ensure a stable size
 	function normalizeAvatar(url: string | undefined): string | undefined {
 		if (!url) return url;
@@ -79,16 +90,19 @@
 
 <svelte:window bind:innerWidth onresize={checkScreenSize} />
 
-<div class="fixed top-0 right-0 left-0 z-50 w-full px-4 py-2">
-	<div class="custom-navbar navbar rounded-lg shadow-lg backdrop-blur-md">
+<div id="header" class="fixed top-0 right-0 left-0 z-50 w-full px-4 py-2">
+	<div
+		class="custom-navbar flex items-center justify-between rounded-lg px-4 py-3 shadow-lg backdrop-blur-md"
+	>
 		<!-- Mobile menu -->
-		<div class="navbar-start">
+		<div class="flex items-center">
 			{#if mobile}
-				<div class="dropdown">
-					<button
-						class="btn btn-ghost text-accent-content lg:hidden"
+				<div class="relative">
+					<Button
+						variant="ghost"
+						size="icon"
+						class="{mobileMenuOpen ? 'active' : ''} text-accent-content lg:hidden"
 						aria-label="Toggle mobile menu"
-						class:active={mobileMenuOpen}
 						onclick={toggleMobileMenu}
 						disabled={animating}
 					>
@@ -106,104 +120,126 @@
 								d="M4 6h16M4 12h8m-8 6h16"
 							/>
 						</svg>
-					</button>
+					</Button>
 
-					<Motion
-						animate={mobileMenuOpen ? 'open' : 'closed'}
-						variants={dropdownVariants}
-						initial="closed"
-					>
+					{#if mobileMenuOpen}
 						<ul
-							class="custom-navbar-dropdown menu dropdown-content menu-sm rounded-box z-[1] mt-3 w-52 p-2 shadow"
+							bind:this={dropdownElement}
+							class="custom-navbar-dropdown absolute top-full left-0 z-[1] mt-3 w-52 rounded-lg p-2 shadow-lg"
+							style="transform-origin: top;"
 						>
-							<li>
-								<a href="/" class="nav-link text-lg font-medium" onclick={closeMobileMenu}>Home</a>
-							</li>
-							<li>
-								<a href="/houses" class="nav-link text-lg font-medium" onclick={closeMobileMenu}
-									>Houses & Rankings</a
+							<li class="mb-2">
+								<a
+									href="/"
+									class="nav-link block rounded px-4 py-3 text-lg font-medium"
+									onclick={closeMobileMenu}>Home</a
 								>
 							</li>
-							<li>
-								<a href="/events" class="nav-link text-lg font-medium" onclick={closeMobileMenu}
-									>Events</a
+							<li class="mb-2">
+								<a
+									href="/houses"
+									class="nav-link block rounded px-4 py-3 text-lg font-medium"
+									onclick={closeMobileMenu}>Houses & Rankings</a
 								>
 							</li>
-							<li>
-								<a href="/calendar" class="nav-link text-lg font-medium" onclick={closeMobileMenu}
-									>Calendar</a
+							<li class="mb-2">
+								<a
+									href="/events"
+									class="nav-link block rounded px-4 py-3 text-lg font-medium"
+									onclick={closeMobileMenu}>Events</a
+								>
+							</li>
+							<li class="mb-2">
+								<a
+									href="/calendar"
+									class="nav-link block rounded px-4 py-3 text-lg font-medium"
+									onclick={closeMobileMenu}>Calendar</a
 								>
 							</li>
 							{#if isAdmin}
-								<li>
-									<a href="/admin" class="nav-link text-lg font-medium" onclick={closeMobileMenu}
-										>Admin Panel</a
+								<li class="mb-2">
+									<a
+										href="/admin"
+										class="nav-link block rounded px-4 py-3 text-lg font-medium"
+										onclick={closeMobileMenu}>Admin Panel</a
 									>
 								</li>
 							{/if}
 						</ul>
-					</Motion>
+					{/if}
 				</div>
 			{/if}
 		</div>
 
 		<!-- Desktop nav links -->
-		<div class="navbar-center hidden lg:flex">
-			<ul class="menu menu-horizontal gap-2 px-1">
+		<div class="hidden lg:flex">
+			<ul class="flex items-center gap-2 px-1">
 				<li>
-					<a href="/" class="nav-link px-5 py-3 text-lg font-medium">Home</a>
+					<a href="/" class="nav-link block rounded px-5 py-3 text-lg font-medium">Home</a>
 				</li>
 				<li>
-					<a href="/houses" class="nav-link px-5 py-3 text-lg font-medium">Houses & Rankings</a>
+					<a href="/houses" class="nav-link block rounded px-5 py-3 text-lg font-medium"
+						>Houses & Rankings</a
+					>
 				</li>
 				<li>
-					<a href="/events" class="nav-link px-5 py-3 text-lg font-medium">Events</a>
+					<a href="/events" class="nav-link block rounded px-5 py-3 text-lg font-medium">Events</a>
 				</li>
 				<li>
-					<a href="/calendar" class="nav-link px-5 py-3 text-lg font-medium">Calendar</a>
+					<a href="/calendar" class="nav-link block rounded px-5 py-3 text-lg font-medium"
+						>Calendar</a
+					>
 				</li>
 				{#if isAdmin}
 					<li>
-						<a href="/admin" class="nav-link px-5 py-3 text-lg font-medium">Admin Panel</a>
+						<a href="/admin" class="nav-link block rounded px-5 py-3 text-lg font-medium"
+							>Admin Panel</a
+						>
 					</li>
 				{/if}
 			</ul>
 		</div>
 
 		<!-- Auth links -->
-		<div class="navbar-end">
+		<div class="flex items-center">
 			{#if $page.data.session}
-				<div class="flex items-center">
+				<div class="flex items-center gap-3">
 					{#if avatarUrl}
 						<img
 							src={avatarUrl}
 							alt="avatar"
 							referrerpolicy="no-referrer"
-							class="border-accent-content mr-3 h-10 w-10 rounded-full border-2"
+							class="border-accent-content h-10 w-10 rounded-full border-2"
 						/>
 					{/if}
-					<a
+					<Button
+						variant="ghost"
+						class="auth-btn px-5 py-2 text-lg font-medium"
 						href="/auth/signout"
-						class="auth-btn btn btn-ghost px-5 py-2 text-lg font-medium"
 						data-sveltekit-preload-data="off"
 					>
 						Sign Out <SignOutIcon class="ml-2" size="1em" />
-					</a>
+					</Button>
 				</div>
 			{:else}
-				<a
+				<Button
+					variant="ghost"
+					class="auth-btn px-5 py-2 text-lg font-medium"
 					href="/auth/signin"
-					class="auth-btn btn btn-ghost px-5 py-2 text-lg font-medium"
 					data-sveltekit-preload-data="off"
 				>
 					Sign In <SignInIcon class="ml-2" size="1em" />
-				</a>
+				</Button>
 			{/if}
 		</div>
 	</div>
 </div>
 
 <style>
+	#header {
+		view-transition-name: header;
+	}
+
 	.custom-navbar {
 		background-color: rgba(166, 22, 24, 0.85);
 	}
@@ -268,21 +304,8 @@
 		transform: scale(0.98) !important;
 	}
 
-	/* Enhanced navigation link spacing */
-	:global(.menu-horizontal) {
-		gap: 0.5rem !important;
-	}
-
-	:global(.dropdown-content li) {
-		margin-bottom: 0.5rem !important;
-	}
-
-	:global(.dropdown-content li a) {
-		padding: 0.75rem 1rem !important;
-	}
-
 	/* Hamburger button active state */
-	:global(.btn.active) {
+	:global(button.active) {
 		background-color: rgba(250, 206, 197, 0.2) !important;
 	}
 

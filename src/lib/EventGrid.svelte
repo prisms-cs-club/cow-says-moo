@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { HouseEvent } from '$lib/format';
-	import { formatDate, numberToRoman } from '$lib/utils';
+	import { formatDate, numberToRoman } from '$lib/houseEventUtils';
+	import { Button } from '$lib/components/ui/button';
 
 	let { events } = $props();
 
@@ -29,14 +30,15 @@
 			<p>{event.description}</p>
 			<p>{formatDate(event)}, Tier {numberToRoman(event.tier)}</p>
 			<div class="event-buttons">
-				<button class="event-btn btn btn-sm" style={genEventBtnStyle(status)}>
+				<Button class="event-btn" size="sm" style={genEventBtnStyle(status)}>
 					<a href={'/events/' + event.id} data-sveltekit-preload-data>See More</a>
-				</button>
+				</Button>
 				{#if event.signupLink}
-					<button
-						class="event-btn btn btn-sm"
+					<Button
+						class="event-btn"
+						size="sm"
 						style={genEventBtnStyle(status)}
-						onclick={() => window.open(event.signupLink!)}>Sign Up</button
+						onclick={() => window.open(event.signupLink!)}>Sign Up</Button
 					>
 				{/if}
 			</div>
@@ -142,12 +144,7 @@
 		margin-bottom: 10px;
 	}
 
-	.activity button {
-		min-width: 100px;
-		text-align: center;
-	}
-
-	.activity button.event-btn {
+	.activity :global(.event-btn) {
 		min-width: 100px;
 		text-align: center;
 		box-shadow: 0 3px 4px rgba(0, 0, 0, 0);
@@ -155,12 +152,12 @@
 		border: none;
 	}
 
-	.activity button.event-btn:hover {
+	.activity :global(.event-btn:hover) {
 		transform: translateY(-2px);
 		box-shadow: 0 4px 6px rgba(110, 110, 110, 0.4);
 	}
 
-	.activity button.event-btn:active {
+	.activity :global(.event-btn:active) {
 		transform: translateY(1px);
 		box-shadow: 0 2px 3px rgba(110, 110, 110, 0.2);
 	}

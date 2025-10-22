@@ -2,13 +2,15 @@
 	import type { HouseEvent } from '$lib/format';
 	import { fetchEvents, fetchUpdateTime } from '$lib/firebase';
 	import { Timestamp } from 'firebase/firestore';
-	import { formatDate, numberToRoman } from '$lib/utils';
+	import { formatDate, numberToRoman } from '$lib/houseEventUtils';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { triggerEasterEgg } from '$lib/stores/strs';
 	import EventGrid from '$lib/EventGrid.svelte';
 	import SearchIcon from '$lib/icon/Search.svelte';
 	import CancelIcon from '$lib/icon/Cancel.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import { Input } from '$lib/components/ui/input';
 
 	let events: HouseEvent[] = $state([]);
 	let filteredEvents: HouseEvent[] = $state([]);
@@ -79,23 +81,28 @@
 
 <div class="main-content">
 	<div class="header-container">
-		<h1>Events</h1>
+		<div class="page-title">Events</div>
 		<div class="search-container">
-			<div class="search-input join">
-				<input
+			<div class="search-input flex items-center gap-1 pr-2">
+				<div class="pl-3 text-[var(--color-theme-1)]">
+					<SearchIcon class="inline-svg" size="1.2em" />
+				</div>
+				<Input
 					type="text"
 					bind:value={searchQuery}
 					placeholder="Search events..."
-					class="join"
+					class="flex-1 border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
 					onkeydown={checkForEasterEgg}
 				/>
-				<button class="join" style:display="inline"
-					><SearchIcon class="inline-svg" size="1em" /></button
-				>
 				{#if searchQuery}
-					<button class="join" style:display="inline-block" onclick={() => (searchQuery = '')}
-						><CancelIcon class="inline-svg" size="1em" /></button
+					<Button
+						variant="ghost"
+						size="icon"
+						class="h-8 w-8 hover:bg-transparent"
+						onclick={() => (searchQuery = '')}
 					>
+						<CancelIcon class="inline-svg" size="1em" />
+					</Button>
 				{/if}
 			</div>
 		</div>
@@ -109,9 +116,10 @@
 			)}
 		/>
 		<div class="flex">
-			<div class="join mx-auto">
-				<button
-					class="btn join-item"
+			<div class="mx-auto flex items-center gap-1">
+				<Button
+					variant="outline"
+					size="sm"
 					onclick={async () => {
 						if (eventsPage > 1) {
 							eventsPage--;
@@ -119,17 +127,19 @@
 					}}
 				>
 					&lt;
-				</button>
+				</Button>
 				{#each Array(totalPage).keys() as page}
-					<button
-						class={`btn join-item ${page + 1 === eventsPage ? 'btn-active' : ''}`}
+					<Button
+						variant={page + 1 === eventsPage ? 'default' : 'outline'}
+						size="sm"
 						onclick={async () => (eventsPage = page + 1)}
 					>
 						{page + 1}
-					</button>
+					</Button>
 				{/each}
-				<button
-					class="btn join-item"
+				<Button
+					variant="outline"
+					size="sm"
 					onclick={async () => {
 						if (eventsPage < totalPage) {
 							eventsPage++;
@@ -137,7 +147,7 @@
 					}}
 				>
 					&gt;
-				</button>
+				</Button>
 			</div>
 		</div>
 		{#if filteredEvents.length === 0}
@@ -146,8 +156,12 @@
 			</p>
 		{/if}
 	{:else}
-		<p>Loading...</p>
-		<span class="loading loading-bars loading-lg"></span>
+		<div class="flex flex-col items-center gap-4">
+			<p>Loading...</p>
+			<div
+				class="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"
+			></div>
+		</div>
 	{/if}
 </div>
 
@@ -162,47 +176,33 @@
 		margin-bottom: 20px;
 	}
 
+	.page-title {
+		font-size: 2rem;
+		font-weight: bold;
+		color: var(--color-theme-1);
+	}
+
 	.search-container {
 		position: relative;
-		max-width: 300px;
+		max-width: 400px;
 		width: 100%;
 	}
 
 	.search-input {
-		border: 2px solid var(--color-theme-1);
-		color: var(--color-theme-1);
 		border-radius: 20px;
-		padding: 0 10px;
+		padding: 8px 4px;
 		width: 100%;
 		font-size: 16px;
-		transition: all 0.3s ease;
+		transition: all 0.2s ease;
+		background-color: white;
+		outline: 2px solid rgba(166, 22, 24, 0.15);
+		outline-offset: 2px;
+		box-shadow: 0 0 0px rgba(166, 22, 24, 0);
 	}
 
-	.search-input input {
-		border: none;
-		padding: 8px;
-		margin: 0;
-		outline: none;
-		background: #00000000;
-		width: 100%;
-	}
-
-	.search-input button {
-		padding: 8px;
-	}
-
-	.search-input:focus {
-		outline: none;
-		box-shadow: 0 0 5px rgba(166, 22, 24, 0.5);
-	}
-
-	.clear-search {
-		position: absolute;
-		right: 10px;
-		top: 50%;
-		transform: translateY(-50%);
-		min-width: auto;
-		font-size: 20px;
+	.search-input:focus-within {
+		outline-color: rgba(166, 22, 24, 0.8);
+		outline-offset: 3px;
 	}
 
 	.no-results {
@@ -210,14 +210,6 @@
 		margin-top: 20px;
 		color: var(--color-theme-1);
 		font-size: 18px;
-	}
-
-	.loading {
-		color: var(--color-theme-1);
-	}
-
-	button.btn-active {
-		background-color: #9b2a24e8; /* Slightly darker shade */
 	}
 
 	@media (max-width: 640px) {
@@ -235,5 +227,38 @@
 	.main-content {
 		position: relative;
 		min-height: 400px;
+	}
+
+	:global(::view-transition-old(root)),
+	:global(::view-transition-new(root)) {
+		animation: none;
+	}
+
+	/* Custom fade animations */
+	@keyframes fade-out {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	/* Apply fade animations to root */
+	:global(::view-transition-old(root)) {
+		animation: 300ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
+	}
+
+	:global(::view-transition-new(root)) {
+		animation: 400ms cubic-bezier(0, 0, 0.2, 1) both fade-in;
 	}
 </style>
