@@ -41,6 +41,7 @@
 	let calendarTitle = $state('');
 	let tooltip: HTMLElement;
 	let tooltipVisible = $state(false); // tooltip does not work properly...
+	let timeoutIds: Set<ReturnType<typeof setTimeout>> = new Set();
 
 	const baseOptions: Options = {
 		defaultView: 'month',
@@ -200,7 +201,7 @@
 				calendarInstance.createEvents(calendarEvents);
 
 				// Re-setup hover listeners after events are loaded
-				setTimeout(() => {
+				const timeoutId = setTimeout(() => {
 					const eventElements = calendarContainer?.querySelectorAll('.toastui-calendar-event');
 					eventElements?.forEach((eventEl) => {
 						const htmlEventEl = eventEl as HTMLElement;
@@ -215,7 +216,9 @@
 							}
 						}
 					});
+					timeoutIds.delete(timeoutId);
 				}, 300);
+				timeoutIds.add(timeoutId);
 			}
 		} catch (error) {
 			console.error('Failed to load events for the calendar', error);
@@ -228,19 +231,31 @@
 	function handleToday() {
 		calendarInstance?.today();
 		updateCalendarTitle();
-		setTimeout(() => reattachHoverListeners(), 100);
+		const timeoutId = setTimeout(() => {
+			reattachHoverListeners();
+			timeoutIds.delete(timeoutId);
+		}, 100);
+		timeoutIds.add(timeoutId);
 	}
 
 	function handlePrev() {
 		calendarInstance?.prev();
 		updateCalendarTitle();
-		setTimeout(() => reattachHoverListeners(), 100);
+		const timeoutId = setTimeout(() => {
+			reattachHoverListeners();
+			timeoutIds.delete(timeoutId);
+		}, 100);
+		timeoutIds.add(timeoutId);
 	}
 
 	function handleNext() {
 		calendarInstance?.next();
 		updateCalendarTitle();
-		setTimeout(() => reattachHoverListeners(), 100);
+		const timeoutId = setTimeout(() => {
+			reattachHoverListeners();
+			timeoutIds.delete(timeoutId);
+		}, 100);
+		timeoutIds.add(timeoutId);
 	}
 
 	function changeView(view: 'month' | 'week') {
@@ -251,7 +266,11 @@
 		calendarInstance.changeView(view);
 		currentView = view;
 		updateCalendarTitle();
-		setTimeout(() => reattachHoverListeners(), 100);
+		const timeoutId = setTimeout(() => {
+			reattachHoverListeners();
+			timeoutIds.delete(timeoutId);
+		}, 100);
+		timeoutIds.add(timeoutId);
 	}
 
 	function reattachHoverListeners() {
@@ -305,7 +324,7 @@
 		tooltip.style.visibility = 'hidden';
 		tooltipVisible = true;
 
-		setTimeout(() => {
+		const timeoutId = setTimeout(() => {
 			if (!tooltip) return;
 			let left = rect.left + rect.width / 2 - tooltip.offsetWidth / 2 + scrollLeft;
 			let top = rect.top - tooltip.offsetHeight - 10 + scrollTop;
@@ -322,7 +341,9 @@
 			tooltip.style.left = `${left}px`;
 			tooltip.style.top = `${top}px`;
 			tooltip.style.visibility = 'visible';
+			timeoutIds.delete(timeoutId);
 		}, 0);
+		timeoutIds.add(timeoutId);
 	}
 
 	function hideTooltip() {
@@ -383,6 +404,10 @@
 			observer?.disconnect();
 			calendarInstance?.destroy();
 			calendarInstance = null;
+
+			// Clear all pending timeouts
+			timeoutIds.forEach((id) => clearTimeout(id));
+			timeoutIds.clear();
 		};
 	});
 </script>

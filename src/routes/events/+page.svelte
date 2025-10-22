@@ -11,6 +11,7 @@
 	import CancelIcon from '$lib/icon/Cancel.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
+	import { animate } from 'animejs';
 
 	let events: HouseEvent[] = $state([]);
 	let filteredEvents: HouseEvent[] = $state([]);
@@ -19,6 +20,12 @@
 	let totalPage = $state(1);
 	const EVENTS_PER_PAGE = 12;
 	let loaded = $state(false);
+	let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+	// Animation elements
+	let headerContainer: HTMLDivElement | undefined = $state();
+	let eventGridContainer: HTMLDivElement | undefined = $state();
+	let paginationContainer: HTMLDivElement | undefined = $state();
 
 	const _d = (index: number) => {
 		const _e = [
@@ -35,8 +42,15 @@
 		if (event.key === 'Enter' && searchQuery === 'qwq') {
 			const imageUrl = _d(Math.floor(Math.random() * 5));
 			triggerEasterEgg(imageUrl);
-			setTimeout(() => {
+
+			// Clear any existing timeout
+			if (timeoutId !== null) {
+				clearTimeout(timeoutId);
+			}
+
+			timeoutId = setTimeout(() => {
 				searchQuery = '';
+				timeoutId = null;
 			}, 100);
 		}
 	}
@@ -65,6 +79,42 @@
 		}
 	});
 
+	$effect(() => {
+		// Run animations when content is loaded
+		if (loaded) {
+			// Staggered entrance animation for different sections
+			if (headerContainer) {
+				animate(headerContainer, {
+					translateY: [-30, 0],
+					opacity: [0, 1],
+					duration: 800,
+					delay: 200,
+					easing: 'out(3)'
+				});
+			}
+
+			if (eventGridContainer) {
+				animate(eventGridContainer, {
+					translateY: [40, 0],
+					opacity: [0, 1],
+					duration: 900,
+					delay: 400,
+					easing: 'out(2)'
+				});
+			}
+
+			if (paginationContainer) {
+				animate(paginationContainer, {
+					translateY: [20, 0],
+					opacity: [0, 1],
+					duration: 800,
+					delay: 600,
+					easing: 'out(2)'
+				});
+			}
+		}
+	});
+
 	$effect.pre(() => {
 		(async () => {
 			events = await fetchEvents();
@@ -76,11 +126,19 @@
 			console.log(updateTime);
 			console.log(events);
 		})();
+
+		// Cleanup function to clear timeout when component unmounts
+		return () => {
+			if (timeoutId !== null) {
+				clearTimeout(timeoutId);
+				timeoutId = null;
+			}
+		};
 	});
 </script>
 
 <div class="main-content">
-	<div class="header-container">
+	<div class="header-container" bind:this={headerContainer} style="opacity: 0;">
 		<div class="page-title">Events</div>
 		<div class="search-container">
 			<div class="search-input flex items-center gap-1 pr-2">
@@ -109,13 +167,15 @@
 	</div>
 
 	{#if loaded}
-		<EventGrid
-			events={filteredEvents.slice(
-				(eventsPage - 1) * EVENTS_PER_PAGE,
-				eventsPage * EVENTS_PER_PAGE
-			)}
-		/>
-		<div class="flex">
+		<div bind:this={eventGridContainer} style="opacity: 0;">
+			<EventGrid
+				events={filteredEvents.slice(
+					(eventsPage - 1) * EVENTS_PER_PAGE,
+					eventsPage * EVENTS_PER_PAGE
+				)}
+			/>
+		</div>
+		<div class="flex" bind:this={paginationContainer} style="opacity: 0;">
 			<div class="mx-auto flex items-center gap-1">
 				<Button
 					variant="outline"
@@ -128,7 +188,7 @@
 				>
 					&lt;
 				</Button>
-				{#each Array(totalPage).keys() as page}
+				{#each Array(totalPage).keys() as page (page)}
 					<Button
 						variant={page + 1 === eventsPage ? 'default' : 'outline'}
 						size="sm"
