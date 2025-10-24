@@ -18,13 +18,13 @@ import {
  * Firebase configuration.
  */
 const firebaseConfig = {
-	apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+	apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
 	authDomain: 'cow-says-moo.firebaseapp.com',
 	databaseURL: 'https://cow-says-moo-default-rtdb.firebaseio.com',
 	projectId: 'cow-says-moo',
 	storageBucket: 'cow-says-moo.firebasestorage.app',
-	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-	appId: import.meta.env.VITE_FIREBASE_APP_ID
+	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
+	appId: import.meta.env.VITE_FIREBASE_APP_ID || ''
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
