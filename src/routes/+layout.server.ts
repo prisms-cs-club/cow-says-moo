@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals, url }) => {
 	const session = await locals.auth();
-	
+
 	// TODO: Re-enable Firebase checks after implementing proper server-side Firebase
 	// For now, skip Firebase calls to prevent Worker timeouts on Cloudflare
 	const adminStatus = false;
