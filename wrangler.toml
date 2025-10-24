@@ -2,3 +2,8 @@ name = "cow-says-moo"
 pages_build_output_dir = ".svelte-kit/cloudflare"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+
+[vars]
+VITE_FIREBASE_API_KEY = "AIzaSyA_u-dNDgYCkl-Sh7FW-bj42m9hoW_GRcs"
+VITE_FIREBASE_MESSAGING_SENDER_ID = "930455928110"
+VITE_FIREBASE_APP_ID = "1:930455928110:web:fb911ef83dc61712f24ebf"
