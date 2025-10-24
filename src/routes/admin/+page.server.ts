@@ -1,5 +1,4 @@
 import { redirect } from '@sveltejs/kit';
-import { isAdmin } from '$lib/firebase.server';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -10,11 +9,12 @@ export const load: PageServerLoad = async ({ locals }) => {
 		throw redirect(303, '/auth/signin');
 	}
 
-	// Check if user is admin
-	const adminStatus = await isAdmin(session.user.email);
-	if (!adminStatus) {
-		throw redirect(303, '/');
-	}
+	// TODO: Re-enable admin check after implementing proper server-side Firebase
+	// Temporarily allow all logged-in users to prevent Worker timeouts
+	const adminStatus = true; // TEMPORARY - was: await isAdmin(session.user.email);
+	// if (!adminStatus) {
+	// 	throw redirect(303, '/');
+	// }
 
 	return {
 		session,

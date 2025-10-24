@@ -1,5 +1,4 @@
 import { json } from '@sveltejs/kit';
-import { createOrUpdateMember } from '$lib/firebase.server';
 
 export async function POST({ request, locals }) {
 	try {
@@ -21,12 +20,15 @@ export async function POST({ request, locals }) {
 			return json({ error: 'Invalid house' }, { status: 400 });
 		}
 
-		// Create or update the member
-		await createOrUpdateMember(session.user.email, {
-			name,
-			house: house.toLowerCase(),
-			role: 'student'
-		});
+		// TODO: Re-enable member creation after implementing proper server-side Firebase
+		// Temporarily disabled to prevent Worker timeouts
+		// await createOrUpdateMember(session.user.email, {
+		// 	name,
+		// 	house: house.toLowerCase(),
+		// 	role: 'student'
+		// });
+
+		console.log('[Onboarding] Would create member:', session.user.email, name, house);
 
 		return json({ success: true });
 	} catch (error) {

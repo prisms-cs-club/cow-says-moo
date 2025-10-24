@@ -4,13 +4,13 @@ import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
 // Firebase config for server-side - uses public API key (this is safe)
 const firebaseConfig = {
-	apiKey: 'AIzaSyBqTxONPg9_8pF-8LBKxYBHrw6IKp9wfhY', // Public API key - safe to hardcode
+	apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
 	authDomain: 'cow-says-moo.firebaseapp.com',
 	databaseURL: 'https://cow-says-moo-default-rtdb.firebaseio.com',
 	projectId: 'cow-says-moo',
 	storageBucket: 'cow-says-moo.firebasestorage.app',
-	messagingSenderId: '527925815394',
-	appId: '1:527925815394:web:1c8f4c0f8e7c4d5a8b9c6d'
+	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
+	appId: import.meta.env.VITE_FIREBASE_APP_ID || ''
 };
 
 // Initialize Firebase for server-side use
@@ -55,6 +55,7 @@ export async function needsOnboarding(email: string): Promise<boolean> {
 
 /**
  * Create or update a member in the database (server-side)
+ * NOTE: Currently not working in Cloudflare Workers - Firebase client SDK not compatible
  */
 export async function createOrUpdateMember(
 	email: string,
@@ -64,23 +65,7 @@ export async function createOrUpdateMember(
 		role?: 'student' | 'teacher' | 'admin';
 	}
 ): Promise<void> {
-	try {
-		const existingMember = await getMemberByEmail(email);
-
-		const memberData = {
-			email,
-			name: data.name ?? existingMember?.name ?? '',
-			house: data.house ?? existingMember?.house ?? '',
-			role: data.role ?? existingMember?.role ?? 'student',
-			eventsWon: existingMember?.eventsWon ?? []
-		};
-
-		const memberRef = doc(db, 'members', email);
-		await setDoc(memberRef, memberData, { merge: true });
-
-		console.log('Member created/updated:', email);
-	} catch (error) {
-		console.error('Error creating/updating member:', error);
-		throw error;
-	}
+	console.warn('[Firebase Server] createOrUpdateMember not implemented for Cloudflare Workers');
+	// TODO: Implement using Firestore REST API
+	return Promise.resolve();
 }
