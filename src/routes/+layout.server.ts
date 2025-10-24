@@ -1,4 +1,4 @@
-import { isAdmin, needsOnboarding } from '$lib/firebase';
+import { isAdmin, needsOnboarding } from '$lib/firebase.server';
 import { redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals, url }) => {
