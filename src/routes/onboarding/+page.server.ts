@@ -1,4 +1,5 @@
 import { redirect } from '@sveltejs/kit';
+import { getMemberByEmail, needsOnboarding } from '$lib/firebase.server';
 
 export const load = async ({ locals }) => {
 	const session = await locals.auth();
@@ -8,15 +9,15 @@ export const load = async ({ locals }) => {
 		throw redirect(303, '/auth/signin');
 	}
 
-	// TODO: Re-enable onboarding check after implementing proper server-side Firebase
-	// Temporarily skip check to prevent Worker timeouts
-	const needs = false; // TEMPORARY - was: await needsOnboarding(session.user.email);
-	const member = undefined; // TEMPORARY - was: await getMemberByEmail(session.user.email);
+	// Check if user needs onboarding
+	const needs = await needsOnboarding(session.user.email);
 
 	// If they don't need onboarding, redirect to home
 	if (!needs) {
 		throw redirect(303, '/');
 	}
+
+	const member = await getMemberByEmail(session.user.email);
 
 	return {
 		session,

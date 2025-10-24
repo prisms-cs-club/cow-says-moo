@@ -1,36 +1,75 @@
 import type { Member } from '$lib/format';
-import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
-// Firebase config for server-side - uses public API key (this is safe)
-const firebaseConfig = {
-	apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
-	authDomain: 'cow-says-moo.firebaseapp.com',
-	databaseURL: 'https://cow-says-moo-default-rtdb.firebaseio.com',
-	projectId: 'cow-says-moo',
-	storageBucket: 'cow-says-moo.firebasestorage.app',
-	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-	appId: import.meta.env.VITE_FIREBASE_APP_ID || ''
-};
-
-// Initialize Firebase for server-side use
-const firebaseApp = initializeApp(firebaseConfig, 'server-app');
-const db = getFirestore(firebaseApp);
+// Firestore REST API configuration for Cloudflare Workers
+const PROJECT_ID = 'cow-says-moo';
+const FIRESTORE_BASE_URL = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 
 /**
- * Fetch a member by their email address (server-side)
+ * Convert Firestore REST API document format to plain object
+ */
+function parseFirestoreDocument(doc: any): any {
+	if (!doc || !doc.fields) return null;
+
+	const result: any = {};
+	for (const [key, value] of Object.entries(doc.fields)) {
+		const fieldValue = value as any;
+		if (fieldValue.stringValue !== undefined) {
+			result[key] = fieldValue.stringValue;
+		} else if (fieldValue.integerValue !== undefined) {
+			result[key] = parseInt(fieldValue.integerValue);
+		} else if (fieldValue.arrayValue?.values) {
+			result[key] = fieldValue.arrayValue.values.map(
+				(v: any) => v.stringValue ?? v.integerValue ?? null
+			);
+		} else if (fieldValue.arrayValue) {
+			result[key] = [];
+		}
+	}
+	return result;
+}
+
+/**
+ * Convert plain object to Firestore REST API document format
+ */
+function toFirestoreDocument(data: any): any {
+	const fields: any = {};
+	for (const [key, value] of Object.entries(data)) {
+		if (typeof value === 'string') {
+			fields[key] = { stringValue: value };
+		} else if (typeof value === 'number') {
+			fields[key] = { integerValue: value };
+		} else if (Array.isArray(value)) {
+			fields[key] = {
+				arrayValue: {
+					values: value.map((v) => ({ stringValue: String(v) }))
+				}
+			};
+		}
+	}
+	return { fields };
+}
+
+/**
+ * Fetch a member by their email address (server-side using REST API)
  */
 export async function getMemberByEmail(email: string): Promise<Member | undefined> {
 	try {
-		const docRef = doc(db, 'members', email);
-		const docSnap = await getDoc(docRef);
+		const url = `${FIRESTORE_BASE_URL}/members/${encodeURIComponent(email)}`;
+		const response = await fetch(url);
 
-		if (docSnap.exists()) {
-			return docSnap.data() as Member;
+		if (response.status === 404) {
+			return undefined;
 		}
-		return undefined;
+
+		if (!response.ok) {
+			console.error('[Firebase Server] Error fetching member:', response.status);
+			return undefined;
+		}
+
+		const data = await response.json();
+		return parseFirestoreDocument(data) as Member;
 	} catch (error) {
-		console.error('Error fetching member by email:', error);
+		console.error('[Firebase Server] Error fetching member by email:', error);
 		return undefined;
 	}
 }
@@ -54,8 +93,7 @@ export async function needsOnboarding(email: string): Promise<boolean> {
 }
 
 /**
- * Create or update a member in the database (server-side)
- * NOTE: Currently not working in Cloudflare Workers - Firebase client SDK not compatible
+ * Create or update a member in the database (server-side using REST API)
  */
 export async function createOrUpdateMember(
 	email: string,
@@ -65,7 +103,35 @@ export async function createOrUpdateMember(
 		role?: 'student' | 'teacher' | 'admin';
 	}
 ): Promise<void> {
-	console.warn('[Firebase Server] createOrUpdateMember not implemented for Cloudflare Workers');
-	// TODO: Implement using Firestore REST API
-	return Promise.resolve();
+	try {
+		const existingMember = await getMemberByEmail(email);
+
+		const memberData = {
+			email,
+			name: data.name ?? existingMember?.name ?? '',
+			house: data.house ?? existingMember?.house ?? '',
+			role: data.role ?? existingMember?.role ?? 'student',
+			eventsWon: existingMember?.eventsWon ?? []
+		};
+
+		const url = `${FIRESTORE_BASE_URL}/members/${encodeURIComponent(email)}`;
+		const response = await fetch(url, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(toFirestoreDocument(memberData))
+		});
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			console.error('[Firebase Server] Error updating member:', response.status, errorText);
+			throw new Error(`Failed to update member: ${response.status}`);
+		}
+
+		console.log('[Firebase Server] Member created/updated:', email);
+	} catch (error) {
+		console.error('[Firebase Server] Error creating/updating member:', error);
+		throw error;
+	}
 }
